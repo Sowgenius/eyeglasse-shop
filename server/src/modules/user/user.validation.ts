@@ -1,11 +1,10 @@
-import { Types } from 'mongoose';
 import { z } from 'zod';
 import { role } from './user.constants';
 
 export const userSchema = z.object({
   name: z.string(),
   email: z.string().email(),
-  password: z.string(),
+  password: z.string().min(6),
 });
 
 export const loginPayload = z.object({
@@ -14,7 +13,7 @@ export const loginPayload = z.object({
 });
 
 export const jwtPayload = z.object({
-  _id: z.custom<Types.ObjectId>(),
+  userId: z.string().uuid(),
   role: z.enum(role),
 });
 

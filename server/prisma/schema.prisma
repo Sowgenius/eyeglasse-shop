@@ -1,0 +1,316 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  password  String
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  products      Product[]
+  customers     Customer[]
+  quotes        Quote[]
+  invoices      Invoice[]
+  prescriptions Prescription[]
+  stockMovements StockMovement[]
+
+  @@map("users")
+}
+
+model Customer {
+  id           String   @id @default(uuid())
+  firstName    String
+  lastName     String
+  email        String?
+  phone        String?
+  address      String?
+  city         String?
+  postalCode   String?
+  birthDate    DateTime?
+  notes        String?
+  insuranceProvider String?
+  insuranceNumber   String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  userId        String
+  user          User           @relation(fields: [userId], references: [id])
+  quotes        Quote[]
+  invoices      Invoice[]
+  prescriptions Prescription[]
+  exams         EyeExam[]
+
+  @@map("customers")
+}
+
+model Product {
+  id              String   @id @default(uuid())
+  name            String
+  sku             String   @unique
+  description     String?
+  imageSrc        String?
+  brand           String
+  price           Decimal  @db.Decimal(10, 2)
+  costPrice       Decimal? @db.Decimal(10, 2)
+  quantity        Int      @default(0)
+  reorderPoint    Int      @default(10)
+  reorderQuantity Int      @default(50)
+  
+  frameMaterial   String
+  frameShape      String
+  lensType        String
+  color           String
+  gender          String
+  templeLength    Int
+  bridgeSize      Int
+  hingeType       String
+  
+  supplierName    String?
+  supplierContact String?
+  location        String?
+  
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  userId         String
+  user           User            @relation(fields: [userId], references: [id])
+  quoteItems     QuoteItem[]
+  invoiceItems   InvoiceItem[]
+  stockMovements StockMovement[]
+
+  @@map("products")
+}
+
+model StockMovement {
+  id            String    @id @default(uuid())
+  type          MovementType
+  quantity      Int
+  previousStock Int
+  newStock      Int
+  reason        String?
+  referenceId   String?   // Invoice ID, Adjustment ID, etc.
+  referenceType String?   // 'INVOICE', 'ADJUSTMENT', 'RETURN', etc.
+  createdAt     DateTime  @default(now())
+
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("stock_movements")
+}
+
+model Quote {
+  id          String      @id @default(uuid())
+  quoteNumber String      @unique
+  status      QuoteStatus @default(DRAFT)
+  
+  subtotal    Decimal     @db.Decimal(10, 2)
+  taxRate     Decimal     @default(0.00) @db.Decimal(5, 2)
+  taxAmount   Decimal     @db.Decimal(10, 2)
+  total       Decimal     @db.Decimal(10, 2)
+  
+  validUntil  DateTime?
+  notes       String?
+  terms       String?
+  
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  sentAt      DateTime?
+  acceptedAt  DateTime?
+  rejectedAt  DateTime?
+  convertedToInvoiceId String?
+
+  customerId  String
+  customer    Customer    @relation(fields: [customerId], references: [id])
+  userId      String
+  user        User        @relation(fields: [userId], references: [id])
+  items       QuoteItem[]
+
+  @@map("quotes")
+}
+
+model QuoteItem {
+  id          String  @id @default(uuid())
+  description String
+  quantity    Int
+  unitPrice   Decimal @db.Decimal(10, 2)
+  discount    Decimal @default(0.00) @db.Decimal(10, 2)
+  total       Decimal @db.Decimal(10, 2)
+
+  quoteId   String
+  quote     Quote   @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  productId String?
+  product   Product? @relation(fields: [productId], references: [id])
+
+  @@map("quote_items")
+}
+
+model Invoice {
+  id            String        @id @default(uuid())
+  invoiceNumber String        @unique
+  quoteId       String?
+  status        InvoiceStatus @default(PENDING)
+  
+  subtotal      Decimal       @db.Decimal(10, 2)
+  taxRate       Decimal       @default(0.00) @db.Decimal(5, 2)
+  taxAmount     Decimal       @db.Decimal(10, 2)
+  total         Decimal       @db.Decimal(10, 2)
+  amountPaid    Decimal       @default(0.00) @db.Decimal(10, 2)
+  balanceDue    Decimal       @db.Decimal(10, 2)
+  
+  issueDate     DateTime      @default(now())
+  dueDate       DateTime
+  
+  notes         String?
+  terms         String?
+  
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  paidAt        DateTime?
+  sentAt        DateTime?
+
+  customerId    String
+  customer      Customer      @relation(fields: [customerId], references: [id])
+  userId        String
+  user          User          @relation(fields: [userId], references: [id])
+  items         InvoiceItem[]
+  payments      Payment[]
+
+  @@map("invoices")
+}
+
+model InvoiceItem {
+  id          String  @id @default(uuid())
+  description String
+  quantity    Int
+  unitPrice   Decimal @db.Decimal(10, 2)
+  discount    Decimal @default(0.00) @db.Decimal(10, 2)
+  total       Decimal @db.Decimal(10, 2)
+
+  invoiceId String
+  invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  productId String?
+  product   Product? @relation(fields: [productId], references: [id])
+
+  @@map("invoice_items")
+}
+
+model Payment {
+  id          String        @id @default(uuid())
+  amount      Decimal       @db.Decimal(10, 2)
+  method      PaymentMethod
+  reference   String?       // Check number, transaction ID, etc.
+  notes       String?
+  createdAt   DateTime      @default(now())
+
+  invoiceId   String
+  invoice     Invoice       @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+}
+
+model Prescription {
+  id              String    @id @default(uuid())
+  prescriptionDate DateTime
+  expiryDate      DateTime?
+  prescribedBy    String?
+  
+  // Right Eye (OD)
+  odSph           String?
+  odCyl           String?
+  odAxis          String?
+  odAdd           String?
+  odPd            String?
+  
+  // Left Eye (OS)
+  osSph           String?
+  osCyl           String?
+  osAxis          String?
+  osAdd           String?
+  osPd            String?
+  
+  // Additional
+  nearPd          String?
+  lensTypeRecommended String?
+  notes           String?
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  customerId      String
+  customer        Customer  @relation(fields: [customerId], references: [id])
+  userId          String
+  user            User      @relation(fields: [userId], references: [id])
+
+  @@map("prescriptions")
+}
+
+model EyeExam {
+  id                    String   @id @default(uuid())
+  examDate              DateTime
+  visualAcuityRight     String?
+  visualAcuityLeft      String?
+  tonometryRight        String?  // Eye pressure
+  tonometryLeft         String?
+  slitLampFindings      String?
+  fundusExam            String?
+  recommendations       String?
+  nextExamRecommendedDate DateTime?
+  
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  customerId            String
+  customer              Customer @relation(fields: [customerId], references: [id])
+
+  @@map("eye_exams")
+}
+
+enum Role {
+  USER
+  MANAGER
+}
+
+enum MovementType {
+  IN
+  OUT
+  ADJUSTMENT
+  RETURN
+}
+
+enum QuoteStatus {
+  DRAFT
+  SENT
+  ACCEPTED
+  REJECTED
+  EXPIRED
+}
+
+enum InvoiceStatus {
+  PENDING
+  PARTIAL
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+enum PaymentMethod {
+  CASH
+  CHECK
+  CREDIT_CARD
+  DEBIT_CARD
+  BANK_TRANSFER
+  INSURANCE
+  OTHER
+}

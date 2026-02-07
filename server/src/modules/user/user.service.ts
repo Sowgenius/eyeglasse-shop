@@ -1,10 +1,8 @@
 import { env } from '@/config';
+import { prisma } from '@/lib/prisma';
 import { AppError } from '@/utils';
-import { compare } from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { Types, startSession } from 'mongoose';
-import { ProductModel } from '../product/product.model';
-import { ProductSalesModel } from '../sales/sales.model';
 import {
   DeleteAccountPayload,
   LoginPayload,
@@ -12,12 +10,18 @@ import {
   TJwtPayload,
   User,
 } from './user.interface';
-import { UserModel } from './user.model';
 
-export async function create(payload: User) {
-  const user = await UserModel.create(payload);
+export async function create(payload: Omit<User, 'id' | 'role' | 'createdAt' | 'updatedAt'>) {
+  const hashedPassword = await hash(payload.password, 10);
+  
+  const user = await prisma.user.create({
+    data: {
+      ...payload,
+      password: hashedPassword,
+    },
+  });
 
-  const token = jwt.sign({ _id: user._id, role: user.role }, env.JWT_SECRET, {
+  const token = jwt.sign({ userId: user.id, role: user.role }, env.JWT_SECRET, {
     expiresIn: '15d',
   });
 
@@ -25,7 +29,9 @@ export async function create(payload: User) {
 }
 
 export async function login(payload: LoginPayload) {
-  const user = await UserModel.findOne({ email: payload.email });
+  const user = await prisma.user.findUnique({
+    where: { email: payload.email },
+  });
 
   if (!user) throw new AppError(404, 'User is not registered.');
 
@@ -33,7 +39,7 @@ export async function login(payload: LoginPayload) {
 
   if (!isMatched) throw new AppError(401, 'Password does not match.');
 
-  const token = jwt.sign({ _id: user._id, role: user.role }, env.JWT_SECRET, {
+  const token = jwt.sign({ userId: user.id, role: user.role }, env.JWT_SECRET, {
     expiresIn: '15d',
   });
 
@@ -44,7 +50,9 @@ export async function login(payload: LoginPayload) {
 }
 
 export async function getUser(payload: TJwtPayload) {
-  const user = await UserModel.findById(payload._id);
+  const user = await prisma.user.findUnique({
+    where: { id: payload.userId },
+  });
 
   if (!user) throw new AppError(404, 'User does not exist.');
 
@@ -52,7 +60,9 @@ export async function getUser(payload: TJwtPayload) {
 }
 
 export async function logout(payload: LogoutPayload) {
-  const user = await UserModel.findOne({ email: payload.email });
+  const user = await prisma.user.findUnique({
+    where: { email: payload.email },
+  });
 
   if (!user) throw new AppError(404, 'User does not exist.');
 
@@ -61,9 +71,11 @@ export async function logout(payload: LogoutPayload) {
 
 export async function deleteAccount(
   payload: DeleteAccountPayload,
-  userId: Types.ObjectId
+  userId: string
 ) {
-  const user = await UserModel.findById(userId);
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
 
   if (!user) throw new AppError(404, 'User does not exist.');
 
@@ -71,21 +83,68 @@ export async function deleteAccount(
 
   if (!isMatched) throw new AppError(401, 'Password does not match.');
 
-  const session = await startSession();
-
-  try {
-    session.startTransaction();
-
-    await ProductModel.deleteMany({ userId: user._id });
-    await ProductSalesModel.deleteMany({ userId: user._id });
-    await UserModel.findByIdAndDelete(user._id);
-
-    session.commitTransaction();
-    session.endSession();
-  } catch (error) {
-    session.abortTransaction();
-    session.endSession();
-  }
+  // Delete in transaction
+  await prisma.$transaction(async (tx) => {
+    await tx.payment.deleteMany({
+      where: {
+        invoice: {
+          userId,
+        },
+      },
+    });
+    
+    await tx.invoiceItem.deleteMany({
+      where: {
+        invoice: {
+          userId,
+        },
+      },
+    });
+    
+    await tx.invoice.deleteMany({
+      where: { userId },
+    });
+    
+    await tx.quoteItem.deleteMany({
+      where: {
+        quote: {
+          userId,
+        },
+      },
+    });
+    
+    await tx.quote.deleteMany({
+      where: { userId },
+    });
+    
+    await tx.prescription.deleteMany({
+      where: { userId },
+    });
+    
+    await tx.eyeExam.deleteMany({
+      where: {
+        customer: {
+          userId,
+        },
+      },
+    });
+    
+    await tx.customer.deleteMany({
+      where: { userId },
+    });
+    
+    await tx.stockMovement.deleteMany({
+      where: { userId },
+    });
+    
+    await tx.product.deleteMany({
+      where: { userId },
+    });
+    
+    await tx.user.delete({
+      where: { id: userId },
+    });
+  });
 
   return user;
 }

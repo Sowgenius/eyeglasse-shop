@@ -9,7 +9,10 @@ import {
 } from './user.validation';
 
 export type User = z.infer<typeof userSchema> & {
+  id: string;
   role: Role;
+  createdAt: Date;
+  updatedAt: Date;
 };
 export type LoginPayload = z.infer<typeof loginPayload>;
 export type TJwtPayload = z.infer<typeof jwtPayload>;

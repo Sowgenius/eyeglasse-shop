@@ -6,11 +6,12 @@ dotenv.config({ path: path.join(process.cwd(), '.env') });
 
 export const env = z
   .object({
-    PORT: z.number().default(8080),
-    MONGODB_URI: z.string().url(),
-    saltRounds: z.number().default(10),
+    PORT: z.coerce.number().default(8080),
+    DATABASE_URL: z.string(),
     JWT_SECRET: z.string(),
-    CLIENT_DOMAIN: z.string().url(),
+    RESEND_API_KEY: z.string().optional(),
+    CLIENT_URL: z.string().url().default('http://localhost:3000'),
+    NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
     isDevelopment: z.boolean().default(process.env.NODE_ENV !== 'production'),
   })
   .parse(process.env);

@@ -13,7 +13,6 @@ export function verifyToken(role?: Role) {
       if (!bearerHeader || !bearerHeader.startsWith('Bearer'))
         throw new Error();
 
-      // Extract the token by removing the "Bearer " prefix
       const token = bearerHeader.split(' ')[1];
 
       jwt.verify(token, env.JWT_SECRET, (err, decoded) => {
