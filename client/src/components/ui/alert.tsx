@@ -69,3 +69,5 @@ export function AlertDestructive({ message }: { message: string }) {
     </Alert>
   );
 }
+
+export { Alert, AlertTitle, AlertDescription };
