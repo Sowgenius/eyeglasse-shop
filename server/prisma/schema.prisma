@@ -22,6 +22,7 @@ model User {
   invoices      Invoice[]
   prescriptions Prescription[]
   stockMovements StockMovement[]
+  installmentPlans InstallmentPlan[]
 
   @@map("users")
 }
@@ -48,6 +49,7 @@ model Customer {
   invoices      Invoice[]
   prescriptions Prescription[]
   exams         EyeExam[]
+  installmentPlans InstallmentPlan[]
 
   @@map("customers")
 }
@@ -186,6 +188,7 @@ model Invoice {
   user          User          @relation(fields: [userId], references: [id])
   items         InvoiceItem[]
   payments      Payment[]
+  installmentPlans InstallmentPlan[]
 
   @@map("invoices")
 }
@@ -313,4 +316,72 @@ enum PaymentMethod {
   BANK_TRANSFER
   INSURANCE
   OTHER
+}
+
+model InstallmentPlan {
+  id              String            @id @default(uuid())
+  planNumber      String            @unique
+  invoiceId       String
+  invoice         Invoice           @relation(fields: [invoiceId], references: [id])
+  customerId      String
+  customer        Customer          @relation(fields: [customerId], references: [id])
+  totalAmount     Decimal           @db.Decimal(10, 2)
+  numPayments     Int
+  paymentAmount   Decimal           @db.Decimal(10, 2)
+  frequency       InstallmentFrequency @default(MONTHLY)
+  startDate       DateTime
+  status          InstallmentStatus @default(ACTIVE)
+  lateFeePercent  Decimal?          @db.Decimal(5, 2) // Late fee percentage
+  notes           String?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  
+  payments        InstallmentPayment[]
+  
+  userId          String
+  user            User              @relation(fields: [userId], references: [id])
+
+  @@map("installment_plans")
+}
+
+model InstallmentPayment {
+  id              String            @id @default(uuid())
+  installmentPlanId String
+  installmentPlan InstallmentPlan   @relation(fields: [installmentPlanId], references: [id], onDelete: Cascade)
+  paymentNumber   Int
+  dueDate         DateTime
+  amount          Decimal           @db.Decimal(10, 2)
+  lateFee         Decimal?          @db.Decimal(10, 2)
+  totalAmount     Decimal           @db.Decimal(10, 2) // amount + lateFee
+  paidAmount      Decimal?          @db.Decimal(10, 2)
+  paidDate        DateTime?
+  status          PaymentStatus     @default(PENDING)
+  paymentMethod   PaymentMethod?
+  notes           String?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  @@map("installment_payments")
+}
+
+enum InstallmentFrequency {
+  WEEKLY
+  BIWEEKLY
+  MONTHLY
+  QUARTERLY
+}
+
+enum InstallmentStatus {
+  ACTIVE
+  PAID
+  CANCELLED
+  DEFAULTED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  PARTIAL
+  OVERDUE
+  WAIVED
 }
