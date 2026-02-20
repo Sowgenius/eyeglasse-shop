@@ -386,7 +386,7 @@ pm2 save
 
 ---
 
-### Option 5: Doker avec Coolify/Portainer
+### Option 5: Docker (Coolify/Portainer)
 
 ```dockerfile
 # server/Dockerfile
