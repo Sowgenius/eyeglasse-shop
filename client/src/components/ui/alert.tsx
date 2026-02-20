@@ -56,4 +56,21 @@ const AlertDescription = React.forwardRef<
 ))
 AlertDescription.displayName = "AlertDescription"
 
-export { Alert, AlertTitle, AlertDescription }
+// Custom destructive alert with error styling
+const AlertDestructive = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    role="alert"
+    className={cn(
+      "relative w-full rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-destructive",
+      className
+    )}
+    {...props}
+  />
+))
+AlertDestructive.displayName = "AlertDestructive"
+
+export { Alert, AlertTitle, AlertDescription, AlertDestructive }
