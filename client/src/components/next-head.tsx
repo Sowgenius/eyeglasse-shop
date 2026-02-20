@@ -8,7 +8,7 @@ type NextHeadProps = {
 export function NextHead({ favicon, title }: NextHeadProps) {
   return (
     <Head>
-      {title && <title>{`${title.trim()} | A-6`}</title>}
+      {title && <title>{`${title.trim()} | Z-0`}</title>}
       {favicon && (
         <link rel="shortcut icon" href={favicon} type="image/x-icon" />
       )}

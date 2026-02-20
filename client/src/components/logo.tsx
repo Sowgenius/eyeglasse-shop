@@ -17,7 +17,7 @@ export function Logo({ className }: LogoProps) {
       )}
     >
       <MacOption className={cn('mr-2 size-6', className?.logo)} />
-      A-6
+      Z-0
     </div>
   );
 }
