@@ -208,7 +208,6 @@ export async function getById(invoiceId: string, jwtPayload: TJwtPayload) {
       payments: {
         orderBy: { createdAt: 'desc' },
       },
-      quote: true,
     },
   });
 }
@@ -318,7 +317,7 @@ export async function addPayment(
   const newAmountPaid = Number(invoice.amountPaid) + payload.amount;
   const newBalanceDue = Number(invoice.total) - newAmountPaid;
 
-  let newStatus = invoice.status;
+  let newStatus: 'PENDING' | 'PARTIAL' | 'PAID' | 'OVERDUE' | 'CANCELLED' = invoice.status as any;
   if (newBalanceDue <= 0) {
     newStatus = 'PAID';
   } else if (newAmountPaid > 0) {

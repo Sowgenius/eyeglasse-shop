@@ -24,7 +24,7 @@ export const getPrescriptions = catchAsync(async (req: Request, res) => {
 });
 
 export const getPrescription = catchAsync(async (req: Request, res) => {
-  const { prescriptionId } = req.params;
+  const prescriptionId = req.params.prescriptionId as string;
   const data = await prescriptionServices.getById(prescriptionId, req.jwtPayload);
 
   if (!data) {
@@ -41,7 +41,7 @@ export const getPrescription = catchAsync(async (req: Request, res) => {
 });
 
 export const updatePrescription = catchAsync<PrescriptionUpdate>(async (req: Request, res) => {
-  const { prescriptionId } = req.params;
+  const prescriptionId = req.params.prescriptionId as string;
   const data = await prescriptionServices.update(prescriptionId, req.body, req.jwtPayload);
 
   return sendResponse(res, {
@@ -51,7 +51,7 @@ export const updatePrescription = catchAsync<PrescriptionUpdate>(async (req: Req
 });
 
 export const deletePrescription = catchAsync(async (req: Request, res) => {
-  const { prescriptionId } = req.params;
+  const prescriptionId = req.params.prescriptionId as string;
   await prescriptionServices.remove(prescriptionId, req.jwtPayload);
 
   return sendResponse(res, {

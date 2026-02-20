@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { auth } from '@/middlewares/auth';
+import { verifyToken } from '@/middlewares/auth';
 import { validateRequest } from '@/middlewares/validate-request';
 import {
   createPlan,
@@ -20,29 +20,29 @@ const router = Router();
 
 router.post(
   '/',
-  auth,
+  verifyToken(),
   validateRequest(createInstallmentPlanSchema),
   createPlan
 );
 
-router.get('/', auth, getPlans);
-router.get('/overdue', auth, getOverduePayments);
-router.get('/:planId', auth, getPlan);
+router.get('/', verifyToken(), getPlans);
+router.get('/overdue', verifyToken(), getOverduePayments);
+router.get('/:planId', verifyToken(), getPlan);
 
 router.patch(
   '/:planId',
-  auth,
+  verifyToken(),
   validateRequest(updateInstallmentPlanSchema),
   updatePlan
 );
 
 router.patch(
   '/payments/:paymentId',
-  auth,
+  verifyToken(),
   validateRequest(makePaymentSchema),
   makePayment
 );
 
-router.delete('/:planId', auth, cancelPlan);
+router.delete('/:planId', verifyToken(), cancelPlan);
 
 export { router as InstallmentRoutes };

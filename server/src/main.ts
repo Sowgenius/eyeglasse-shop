@@ -1,14 +1,15 @@
 import { env } from '@config';
-import app from 'app';
-import mongoose from 'mongoose';
+import app from './app';
 
 (async function () {
   try {
-    await mongoose.connect(env.MONGODB_URI);
     app.listen(env.PORT, () => {
-      console.log(`Server listening on ${env.PORT}`);
+      console.log(`🚀 Server listening on port ${env.PORT}`);
+      console.log(`📚 API Documentation: http://localhost:${env.PORT}/api/health`);
+      console.log(`🔧 Environment: ${env.NODE_ENV}`);
     });
   } catch (error) {
-    console.log(error);
+    console.error('❌ Failed to start server:', error);
+    process.exit(1);
   }
 })();

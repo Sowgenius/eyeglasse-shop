@@ -13,7 +13,7 @@ import { RegisterPayload, registerFormSchema } from '@/schema/auth-form-schema';
 import { SetStateActionType } from '@/types/set-state-action';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UseFormReturn, useForm } from 'react-hook-form';
 import { Eye, EyeClosed } from '../../icons';
 import { Button } from '../../ui/button';
@@ -38,14 +38,18 @@ export function RegisterForm({
     resolver: zodResolver(registerFormSchema),
   });
 
-  if (data) {
-    setTokenCookie(data.token);
-    router.reload();
-  }
+  useEffect(() => {
+    if (data) {
+      setTokenCookie(data.token);
+      router.reload();
+    }
+  }, [data, router]);
 
-  if (error && 'message' in error) {
-    setError(error.message);
-  }
+  useEffect(() => {
+    if (error && 'message' in error) {
+      setError(error.message);
+    }
+  }, [error, setError]);
 
   return (
     <div className={cn('grid gap-6', className)} {...props}>
@@ -126,22 +130,23 @@ function PasswordField({
   const [isShowing, setIsShowing] = useState(false);
 
   return (
-    <FormField
-      control={form.control}
-      name={name}
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>{i > 0 && 'Confirm'} Password</FormLabel>
-          <div className="relative">
-            <FormControl>
-              <Input
-                className="transition-all"
-                type={isShowing ? 'text' : 'password'}
-                placeholder="****"
-                disabled={isLoading}
-                {...field}
-              />
-            </FormControl>
+            <FormField
+              control={form.control}
+              name={name}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{i > 0 && 'Confirm'} Password</FormLabel>
+                  <div className="relative">
+                    <FormControl>
+                      <Input
+                        className="transition-all"
+                        type={isShowing ? 'text' : 'password'}
+                        placeholder="****"
+                        autoComplete={i > 0 ? 'new-password' : 'new-password'}
+                        disabled={isLoading}
+                        {...field}
+                      />
+                    </FormControl>
             <button
               type="button"
               onClick={() => setIsShowing(!isShowing)}

@@ -24,7 +24,7 @@ export const getInvoices = catchAsync(async (req: Request, res) => {
 });
 
 export const getInvoice = catchAsync(async (req: Request, res) => {
-  const { invoiceId } = req.params;
+  const invoiceId = req.params.invoiceId as string;
   const data = await invoiceServices.getById(invoiceId, req.jwtPayload);
 
   if (!data) {
@@ -41,7 +41,7 @@ export const getInvoice = catchAsync(async (req: Request, res) => {
 });
 
 export const updateInvoice = catchAsync<InvoiceUpdate>(async (req: Request, res) => {
-  const { invoiceId } = req.params;
+  const invoiceId = req.params.invoiceId as string;
   const data = await invoiceServices.update(invoiceId, req.body, req.jwtPayload);
 
   return sendResponse(res, {
@@ -51,7 +51,7 @@ export const updateInvoice = catchAsync<InvoiceUpdate>(async (req: Request, res)
 });
 
 export const deleteInvoice = catchAsync(async (req: Request, res) => {
-  const { invoiceId } = req.params;
+  const invoiceId = req.params.invoiceId as string;
   await invoiceServices.remove(invoiceId, req.jwtPayload);
 
   return sendResponse(res, {
@@ -60,7 +60,7 @@ export const deleteInvoice = catchAsync(async (req: Request, res) => {
 });
 
 export const addPaymentToInvoice = catchAsync<Payment>(async (req: Request, res) => {
-  const { invoiceId } = req.params;
+  const invoiceId = req.params.invoiceId as string;
   const data = await invoiceServices.addPayment(invoiceId, req.body, req.jwtPayload.userId);
 
   return sendResponse(res, {

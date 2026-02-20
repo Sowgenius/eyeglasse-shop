@@ -25,7 +25,7 @@ export const getQuotes = catchAsync(async (req: Request, res) => {
 });
 
 export const getQuote = catchAsync(async (req: Request, res) => {
-  const { quoteId } = req.params;
+  const quoteId = req.params.quoteId as string;
   const data = await quoteServices.getById(quoteId, req.jwtPayload);
 
   if (!data) {
@@ -42,7 +42,7 @@ export const getQuote = catchAsync(async (req: Request, res) => {
 });
 
 export const updateQuote = catchAsync<QuoteUpdate>(async (req: Request, res) => {
-  const { quoteId } = req.params;
+  const quoteId = req.params.quoteId as string;
   const data = await quoteServices.update(quoteId, req.body, req.jwtPayload);
 
   return sendResponse(res, {
@@ -52,7 +52,7 @@ export const updateQuote = catchAsync<QuoteUpdate>(async (req: Request, res) => 
 });
 
 export const deleteQuote = catchAsync(async (req: Request, res) => {
-  const { quoteId } = req.params;
+  const quoteId = req.params.quoteId as string;
   await quoteServices.remove(quoteId, req.jwtPayload);
 
   return sendResponse(res, {
@@ -61,7 +61,7 @@ export const deleteQuote = catchAsync(async (req: Request, res) => {
 });
 
 export const sendQuote = catchAsync(async (req: Request, res) => {
-  const { quoteId } = req.params;
+  const quoteId = req.params.quoteId as string;
 
   // Get quote with customer details first
   const quote = await quoteServices.getById(quoteId, req.jwtPayload);

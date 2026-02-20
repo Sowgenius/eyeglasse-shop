@@ -25,7 +25,7 @@ export const getCustomers = catchAsync(async (req: Request, res) => {
 });
 
 export const getCustomer = catchAsync(async (req: Request, res) => {
-  const { customerId } = req.params;
+  const customerId = req.params.customerId as string;
   const data = await customerServices.getById(customerId, req.jwtPayload);
 
   if (!data) {
@@ -42,7 +42,7 @@ export const getCustomer = catchAsync(async (req: Request, res) => {
 });
 
 export const updateCustomer = catchAsync<CustomerUpdate>(async (req: Request, res) => {
-  const { customerId } = req.params;
+  const customerId = req.params.customerId as string;
   const data = await customerServices.update(customerId, req.body, req.jwtPayload);
 
   return sendResponse(res, {
@@ -52,7 +52,7 @@ export const updateCustomer = catchAsync<CustomerUpdate>(async (req: Request, re
 });
 
 export const deleteCustomer = catchAsync(async (req: Request, res) => {
-  const { customerId } = req.params;
+  const customerId = req.params.customerId as string;
   await customerServices.remove(customerId, req.jwtPayload);
 
   return sendResponse(res, {

@@ -34,4 +34,3 @@ export const updateInstallmentPlanSchema = z.object({
 
 export type CreateInstallmentPlan = z.infer<typeof createInstallmentPlanSchema>;
 export type MakePayment = z.infer<typeof makePaymentSchema>;
-export type PaymentStatus = z.infer<typeof paymentStatus>;

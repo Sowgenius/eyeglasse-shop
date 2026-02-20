@@ -41,18 +41,22 @@ export function LoginForm({
     }
   }, [login, demoCredentials]);
 
+  useEffect(() => {
+    if (error && 'message' in error) {
+      setError(error.message);
+    }
+  }, [error, setError]);
+
+  useEffect(() => {
+    if (data) {
+      setTokenCookie(data.token);
+      router.reload();
+    }
+  }, [data, router]);
+
   const form = useForm<LoginPayload>({
     resolver: zodResolver(loginFormSchema),
   });
-
-  if (error && 'message' in error) {
-    setError(error.message);
-  }
-
-  if (data) {
-    setTokenCookie(data.token);
-    router.reload();
-  }
 
   return (
     <div className={cn('grid gap-6', className)}>
@@ -93,6 +97,7 @@ export function LoginForm({
                       className="transition-all"
                       type={isShowing ? 'text' : 'password'}
                       placeholder="****"
+                      autoComplete="current-password"
                       disabled={isLoading || !!demoCredentials}
                       {...field}
                     />

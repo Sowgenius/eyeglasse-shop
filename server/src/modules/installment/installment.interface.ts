@@ -8,3 +8,4 @@ import {
 export type CreateInstallmentPlan = z.infer<typeof createInstallmentPlanSchema>;
 export type MakePayment = z.infer<typeof makePaymentSchema>;
 export type UpdateInstallmentPlan = z.infer<typeof updateInstallmentPlanSchema>;
+export type PaymentStatus = 'PENDING' | 'PAID' | 'PARTIAL' | 'OVERDUE' | 'WAIVED';

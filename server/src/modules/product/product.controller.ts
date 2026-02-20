@@ -4,9 +4,9 @@ import { Query } from './product.interface';
 import * as productServices from './product.service';
 
 export const addProduct = catchAsync(async (req, res) => {
-  const { _id } = req.jwtPayload;
+  const { userId } = req.jwtPayload;
 
-  const data = await productServices.add(req.body, _id);
+  const data = await productServices.add(req.body, userId);
 
   sendResponse(res, {
     status: 201,
@@ -27,7 +27,7 @@ export const getProducts = catchAsync(async (req, res) => {
 });
 
 export const updateProduct = catchAsync(async (req, res) => {
-  const { productId } = req.params;
+  const productId = req.params.productId as string;
 
   const data = await productServices.update(req.jwtPayload, productId ,req.body);
 
@@ -41,11 +41,9 @@ export const updateProduct = catchAsync(async (req, res) => {
 });
 
 export const deleteProduct = catchAsync(async (req, res) => {
-  const { productId } = req.params;
+  const productId = req.params.productId as string;
 
-  const result = await productServices.remove(productId, req.jwtPayload);
-
-  if (!result.deletedCount) throw new AppError(404, 'Product not found.');
+  await productServices.remove(productId, req.jwtPayload);
 
   sendResponse(res, {
     status: 200,
@@ -55,10 +53,10 @@ export const deleteProduct = catchAsync(async (req, res) => {
 });
 
 export const bulkDeleteProducts = catchAsync(async (req, res) => {
-  const result = await productServices.bulkDelete(req.body, req.jwtPayload);
+  const { count } = await productServices.bulkDelete(req.body, req.jwtPayload);
 
   sendResponse(res, {
     status: 200,
-    message: `${result.deletedCount} products were deleted successfully!`,
+    message: `${count} products were deleted successfully!`,
   });
 });

@@ -33,7 +33,7 @@ export const getPlans = catchAsync(async (req: Request, res) => {
 });
 
 export const getPlan = catchAsync(async (req: Request, res) => {
-  const { planId } = req.params;
+  const planId = req.params.planId as string;
   const data = await installmentService.getById(planId, req.jwtPayload);
 
   if (!data) {
@@ -50,7 +50,7 @@ export const getPlan = catchAsync(async (req: Request, res) => {
 });
 
 export const makePayment = catchAsync<MakePayment>(async (req: Request, res) => {
-  const { paymentId } = req.params;
+  const paymentId = req.params.paymentId as string;
   const data = await installmentService.makePayment(
     paymentId,
     req.body,
@@ -73,7 +73,7 @@ export const getOverduePayments = catchAsync(async (req: Request, res) => {
 });
 
 export const cancelPlan = catchAsync(async (req: Request, res) => {
-  const { planId } = req.params;
+  const planId = req.params.planId as string;
   const data = await installmentService.cancelPlan(planId, req.jwtPayload);
 
   return sendResponse(res, {
@@ -84,7 +84,7 @@ export const cancelPlan = catchAsync(async (req: Request, res) => {
 
 export const updatePlan = catchAsync<UpdateInstallmentPlan>(
   async (req: Request, res) => {
-    const { planId } = req.params;
+    const planId = req.params.planId as string;
     const data = await installmentService.updatePlan(
       planId,
       req.body,

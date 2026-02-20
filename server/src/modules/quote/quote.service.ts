@@ -174,9 +174,9 @@ export async function update(
   }
 
   // If items are updated, recalculate totals
-  let subtotal = quote.subtotal;
-  let taxAmount = quote.taxAmount;
-  let total = quote.total;
+  let subtotal: number = Number(quote.subtotal);
+  let taxAmount: number = Number(quote.taxAmount);
+  let total: number = Number(quote.total);
 
   if (payload.items && payload.items.length > 0) {
     subtotal = payload.items.reduce((sum, item) => {
@@ -184,7 +184,7 @@ export async function update(
       return sum + itemTotal;
     }, 0);
     
-    const taxRate = payload.taxRate ?? quote.taxRate;
+    const taxRate = payload.taxRate ?? Number(quote.taxRate);
     taxAmount = subtotal * (taxRate / 100);
     total = subtotal + taxAmount;
   }

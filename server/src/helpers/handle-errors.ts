@@ -1,7 +1,6 @@
 import { ErrorResponse } from '@/interface/errors';
 import { env } from '@config';
 import { AppError } from '@utils';
-import mongoose from 'mongoose';
 import { ZodError } from 'zod';
 
 function getStack(stack: string | undefined) {
@@ -40,45 +39,7 @@ export function zodError(error: ZodError): ErrorResponse {
 
   return {
     status: 403,
-    message: 'Zod validation error',
-    error: {
-      sources,
-      stack: getStack(error.stack),
-    },
-  };
-}
-
-export function mongooseError(
-  error: mongoose.Error.ValidationError
-): ErrorResponse {
-  const sources = Object.values(error.errors).map((val) => {
-    return {
-      path: val.path,
-      message: val.message,
-    };
-  });
-
-  return {
-    status: 403,
-    message: 'Mongoose validation error',
-    error: {
-      sources,
-      stack: getStack(error.stack),
-    },
-  };
-}
-
-export function castError(error: mongoose.CastError): ErrorResponse {
-  const sources = [
-    {
-      path: error.path,
-      message: error.message,
-    },
-  ];
-
-  return {
-    status: 400,
-    message: 'Invalid data type provided',
+    message: 'Validation error',
     error: {
       sources,
       stack: getStack(error.stack),
@@ -97,7 +58,7 @@ export function duplicateError(error: any): ErrorResponse {
 
   return {
     status: 409,
-    message: 'E11000 duplicate key error',
+    message: 'Duplicate key error',
     error: {
       sources,
       stack: getStack(error.stack),
