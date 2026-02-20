@@ -1,4 +1,4 @@
-import { inter } from '@/components/fonts';
+import { dmSans, manrope } from '@/components/fonts';
 import { NextHead } from '@/components/next-head';
 import { store } from '@/redux/store';
 import '@/styles/globals.css';
@@ -12,7 +12,7 @@ function App({ Component, pageProps }: AppProps) {
       <NextHead title="Opticien Pro" favicon="/favicon.png" />
 
       <Provider store={store}>
-        <div className={`${inter.className}`}>
+        <div className={`${dmSans.variable} ${manrope.variable} font-sans`}>
           <Component {...pageProps} />
         </div>
       </Provider>

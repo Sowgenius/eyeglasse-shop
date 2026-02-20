@@ -13,6 +13,10 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['var(--font-manrope)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-dm-sans)', 'system-ui', 'sans-serif'],
+      },
       keyframes: {
         'accordion-down': {
           from: { height: '0' },
