@@ -12,6 +12,7 @@ import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { Row } from '@tanstack/react-table';
 import { CopyPlusIcon, Edit, ImageIcon, Trash2 } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'next-i18next';
 import { DeleteRow } from './row-actions/delete-row';
 import { DuplicateRow } from './row-actions/duplicate-row';
 import { EditProduct } from './row-actions/edit-product';
@@ -23,6 +24,7 @@ interface DataTableRowActionsProps {
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation('common');
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
@@ -38,7 +40,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
       <DropdownMenuContent align="start" className="w-[160px]">
         <ViewProductImage row={row.original}>
           <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-            View Image
+            {t('products.actions.viewImage')}
             <DropdownMenuShortcut>
               <ImageIcon className="size-4 stroke-current" />
             </DropdownMenuShortcut>
@@ -49,7 +51,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
 
         <EditProduct row={row.original}>
           <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-            Edit
+            {t('products.actions.edit')}
             <DropdownMenuShortcut>
               <Edit className="size-4 stroke-current" />
             </DropdownMenuShortcut>
@@ -58,7 +60,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
 
         <DuplicateRow row={row.original}>
           <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-            Duplicate
+            {t('products.actions.duplicate')}
             <DropdownMenuShortcut>
               <CopyPlusIcon className="size-4 stroke-current" />
             </DropdownMenuShortcut>
@@ -72,7 +74,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
             className="w-full text-rose-600 hover:bg-rose-100 hover:text-rose-600 focus:bg-rose-100 focus:text-rose-600"
             onSelect={(e) => e.preventDefault()}
           >
-            Delete
+            {t('products.actions.delete')}
             <DropdownMenuShortcut>
               <Trash2 className="size-4 stroke-current" />
             </DropdownMenuShortcut>

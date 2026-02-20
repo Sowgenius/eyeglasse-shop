@@ -9,6 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { BadgePlus } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'next-i18next';
 import { ProductFormFields } from '../../form/product-form-fields';
 
 export function AddProduct() {
@@ -17,9 +18,10 @@ export function AddProduct() {
   const [progress, setProgress] = useState(0);
 
   const [addProduct] = useAddProductMutation();
+  const { t } = useTranslation('common');
 
   const loaderText =
-    progress === 100 ? 'Saving...' : `Uploading image... ${progress}%`;
+    progress === 100 ? t('products.saving') : t('products.uploading', { progress });
 
   const form = useForm<ProductSchema>({
     resolver: zodResolver(productSchema),
@@ -31,18 +33,17 @@ export function AddProduct() {
         <D.DialogTrigger asChild>
           <Button size={'sm'} className="flex gap-2 items-center h-8">
             <BadgePlus className="size-4" />
-            Add New
+            {t('products.addNew')}
           </Button>
         </D.DialogTrigger>
         <D.DialogContent className="sm:max-w-[550px] overflow-y-auto max-h-[94svh]">
           <D.DialogHeader className="mt-2">
             <D.DialogTitle className="flex gap-2">
               <BadgePlus className="size-5" />
-              Add new product
+              {t('products.addProduct')}
             </D.DialogTitle>
             <D.DialogDescription className="text-left">
-              Provide details of the new product here. Click save when you are
-              done.
+              {t('products.addProductDescription')}
             </D.DialogDescription>
           </D.DialogHeader>
           <Form {...form}>
@@ -69,7 +70,7 @@ export function AddProduct() {
                 type="submit"
                 className="w-full mt-3"
               >
-                {isLoading ? loaderText : 'Save'}
+                {isLoading ? loaderText : t('common.save')}
               </Button>
             </form>
           </Form>

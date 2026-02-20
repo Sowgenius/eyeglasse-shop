@@ -21,6 +21,7 @@ import {
   Loader2
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import { useTranslation } from 'next-i18next';
 
 interface UserData {
   id: string;
@@ -36,6 +37,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const { toast } = useToast();
+  const { t } = useTranslation('common');
 
   const fetchUsers = async () => {
     try {
@@ -51,8 +53,8 @@ export default function AdminDashboard() {
     } catch (error) {
       toast({
         variant: 'destructive',
-        title: 'Error',
-        description: 'Failed to load users',
+        title: t('admin.error'),
+        description: t('admin.failedToLoadUsers'),
       });
     } finally {
       setLoading(false);
@@ -77,22 +79,22 @@ export default function AdminDashboard() {
       
       if (data.success) {
         toast({
-          title: 'Success',
+          title: t('admin.success'),
           description: data.message,
         });
         fetchUsers();
       } else {
         toast({
           variant: 'destructive',
-          title: 'Error',
-          description: data.message || 'Action failed',
+          title: t('admin.error'),
+          description: data.message || t('admin.actionFailed'),
         });
       }
     } catch (error) {
       toast({
         variant: 'destructive',
-        title: 'Error',
-        description: 'Network error',
+        title: t('admin.error'),
+        description: t('admin.networkError'),
       });
     } finally {
       setActionLoading(null);
@@ -114,22 +116,22 @@ export default function AdminDashboard() {
       
       if (data.success) {
         toast({
-          title: 'Success',
-          description: `Role updated to ${newRole}`,
+          title: t('admin.success'),
+          description: `${t('admin.roleUpdated')} ${newRole}`,
         });
         fetchUsers();
       } else {
         toast({
           variant: 'destructive',
-          title: 'Error',
-          description: data.message || 'Role update failed',
+          title: t('admin.error'),
+          description: data.message || t('admin.actionFailed'),
         });
       }
     } catch (error) {
       toast({
         variant: 'destructive',
-        title: 'Error',
-        description: 'Network error',
+        title: t('admin.error'),
+        description: t('admin.networkError'),
       });
     } finally {
       setActionLoading(null);
@@ -138,10 +140,10 @@ export default function AdminDashboard() {
 
   const getStatusBadge = (status: string) => {
     const variants: Record<string, { variant: 'default' | 'secondary' | 'destructive' | 'outline'; label: string }> = {
-      PENDING: { variant: 'secondary', label: 'Pending' },
-      ACTIVE: { variant: 'default', label: 'Active' },
-      REJECTED: { variant: 'destructive', label: 'Rejected' },
-      SUSPENDED: { variant: 'outline', label: 'Suspended' },
+      PENDING: { variant: 'secondary', label: t('admin.pending') },
+      ACTIVE: { variant: 'default', label: t('admin.active') },
+      REJECTED: { variant: 'destructive', label: t('admin.rejected') },
+      SUSPENDED: { variant: 'outline', label: t('admin.suspended') },
     };
     const config = variants[status] || { variant: 'default', label: status };
     return <Badge variant={config.variant}>{config.label}</Badge>;
@@ -152,15 +154,15 @@ export default function AdminDashboard() {
 
   return (
     <>
-      <NextHead title="Admin Dashboard" />
+      <NextHead title={t('admin.title')} />
       <div className="container mx-auto py-8 px-4">
-        <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
+        <h1 className="text-3xl font-bold mb-8">{t('admin.title')}</h1>
         
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('admin.totalUsers')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{users.length}</div>
@@ -168,7 +170,7 @@ export default function AdminDashboard() {
           </Card>
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Pending Approval</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('admin.pendingApproval')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-yellow-600">{pendingUsers.length}</div>
@@ -176,7 +178,7 @@ export default function AdminDashboard() {
           </Card>
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Active Users</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('admin.activeUsers')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-green-600">{activeUsers.length}</div>
@@ -184,7 +186,7 @@ export default function AdminDashboard() {
           </Card>
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Managers</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('admin.managers')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-blue-600">
@@ -200,18 +202,18 @@ export default function AdminDashboard() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-yellow-800">
                 <UserCheck className="h-5 w-5" />
-                Pending Approval ({pendingUsers.length})
+                {t('admin.pendingApproval')} ({pendingUsers.length})
               </CardTitle>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Role</TableHead>
-                    <TableHead>Registered</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
+                    <TableHead>{t('admin.name')}</TableHead>
+                    <TableHead>{t('admin.email')}</TableHead>
+                    <TableHead>{t('admin.role')}</TableHead>
+                    <TableHead>{t('admin.registered')}</TableHead>
+                    <TableHead className="text-right">{t('admin.actions')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -238,7 +240,7 @@ export default function AdminDashboard() {
                             ) : (
                               <CheckCircle className="h-4 w-4 mr-1" />
                             )}
-                            Approve
+                            {t('admin.approve')}
                           </Button>
                           <Button
                             size="sm"
@@ -247,7 +249,7 @@ export default function AdminDashboard() {
                             disabled={actionLoading === user.id}
                           >
                             <XCircle className="h-4 w-4 mr-1" />
-                            Reject
+                            {t('admin.reject')}
                           </Button>
                         </div>
                       </TableCell>
@@ -262,7 +264,7 @@ export default function AdminDashboard() {
         {/* All Users Section */}
         <Card>
           <CardHeader>
-            <CardTitle>All Users</CardTitle>
+            <CardTitle>{t('admin.allUsers')}</CardTitle>
           </CardHeader>
           <CardContent>
             {loading ? (
@@ -273,12 +275,12 @@ export default function AdminDashboard() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Role</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Registered</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
+                    <TableHead>{t('admin.name')}</TableHead>
+                    <TableHead>{t('admin.email')}</TableHead>
+                    <TableHead>{t('admin.role')}</TableHead>
+                    <TableHead>{t('admin.status')}</TableHead>
+                    <TableHead>{t('admin.registered')}</TableHead>
+                    <TableHead className="text-right">{t('admin.actions')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -299,8 +301,8 @@ export default function AdminDashboard() {
                             disabled={actionLoading === user.id}
                             className="border rounded px-2 py-1 text-sm"
                           >
-                            <option value="USER">USER</option>
-                            <option value="MANAGER">MANAGER</option>
+                            <option value="USER">{t('admin.user')}</option>
+                            <option value="MANAGER">{t('admin.manager')}</option>
                           </select>
                         </div>
                       </TableCell>
@@ -316,7 +318,7 @@ export default function AdminDashboard() {
                               disabled={actionLoading === user.id}
                             >
                               <UserCheck className="h-4 w-4 mr-1" />
-                              Activate
+                              {t('admin.activate')}
                             </Button>
                           ) : user.status === 'ACTIVE' ? (
                             <Button
@@ -326,7 +328,7 @@ export default function AdminDashboard() {
                               disabled={actionLoading === user.id}
                             >
                               <UserX className="h-4 w-4 mr-1" />
-                              Suspend
+                              {t('admin.suspend')}
                             </Button>
                           ) : null}
                         </div>

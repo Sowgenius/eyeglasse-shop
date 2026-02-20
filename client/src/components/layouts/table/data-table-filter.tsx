@@ -13,6 +13,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Filter } from 'lucide-react';
+import { useTranslation } from 'next-i18next';
 import { DataTableFacetedFilter } from './data-table-faceted-filter';
 import { DataTableRangeFilter } from './data-table-range-filter';
 import { DataTableToolbarProps } from './data-table-toolbar';
@@ -24,6 +25,8 @@ function isNumberField(id: string) {
 }
 
 export function FilterTable<TData>({ table }: DataTableToolbarProps<TData>) {
+  const { t } = useTranslation('common');
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -33,14 +36,14 @@ export function FilterTable<TData>({ table }: DataTableToolbarProps<TData>) {
           className="h-8 border-dashed flex items-center gap-1.5"
         >
           <Filter className="size-4" />
-          Filter
+          {t('common.filter')}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0" align="start" sideOffset={6}>
         <Command>
-          <CommandInput placeholder={'Filter by'} />
+          <CommandInput placeholder={t('common.filter')} />
           <CommandList>
-            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandEmpty>{t('common.noResults')}</CommandEmpty>
             <CommandGroup>
               {table
                 .getAllColumns()

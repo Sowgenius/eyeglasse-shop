@@ -9,6 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Edit } from 'lucide-react';
 import { ReactNode, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'next-i18next';
 import { ProductFormFields } from '../../form/product-form-fields';
 
 type EditProductProps = {
@@ -22,9 +23,10 @@ export function EditProduct({ row, children }: EditProductProps) {
   const [progress, setProgress] = useState(0);
 
   const [updateProduct] = useUpdateProductMutation();
+  const { t } = useTranslation('common');
 
   const loaderText =
-    progress === 100 ? 'Saving...' : `Uploading image... ${progress}%`;
+    progress === 100 ? t('products.saving') : t('products.uploading', { progress });
 
   const form = useForm<ProductSchema>({
     resolver: zodResolver(productSchema.partial()),
@@ -38,11 +40,11 @@ export function EditProduct({ row, children }: EditProductProps) {
         <D.DialogHeader className="mt-2">
           <D.DialogTitle className="flex gap-2">
             <Edit className="size-5" />
-            Edit product
+            {t('products.editProduct')}
           </D.DialogTitle>
 
           <D.DialogDescription className="text-left">
-            Modify details of the product here. Click save when you are done.
+            {t('products.editProductDescription')}
           </D.DialogDescription>
         </D.DialogHeader>
         <Form {...form}>
@@ -72,7 +74,7 @@ export function EditProduct({ row, children }: EditProductProps) {
             />
 
             <Button disabled={isLoading} type="submit" className="w-full mt-3">
-              {isLoading ? loaderText : 'Save'}
+              {isLoading ? loaderText : t('common.save')}
             </Button>
           </form>
         </Form>

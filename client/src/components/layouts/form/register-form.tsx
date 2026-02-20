@@ -15,6 +15,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { UseFormReturn, useForm } from 'react-hook-form';
+import { useTranslation } from 'next-i18next';
 import { Eye, EyeClosed } from '../../icons';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
@@ -33,6 +34,7 @@ export function RegisterForm({
   ...props
 }: RegisterFormProps) {
   const [register, { isLoading, data, error }] = useRegisterMutation();
+  const { t } = useTranslation('common');
 
   const router = useRouter();
 
@@ -48,11 +50,11 @@ export function RegisterForm({
         router.reload();
       } else {
         // Registration successful but pending approval
-        setSuccess('Registration successful! Your account is pending admin approval. Please wait for approval before logging in.');
+        setSuccess(t('auth.accountPending'));
         form.reset();
       }
     }
-  }, [data, router, setSuccess, form]);
+  }, [data, router, setSuccess, form, t]);
 
   useEffect(() => {
     if (error && 'message' in error) {
@@ -69,11 +71,11 @@ export function RegisterForm({
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>{t('auth.name')}</FormLabel>
                 <FormControl>
                   <Input
                     className="transition-all"
-                    placeholder="Your name"
+                    placeholder={t('auth.name')}
                     disabled={isLoading}
                     {...field}
                   />
@@ -88,7 +90,7 @@ export function RegisterForm({
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>{t('auth.email')}</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="name@example.com"
@@ -117,7 +119,7 @@ export function RegisterForm({
           ))}
 
           <Button disabled={isLoading} type="submit" className="w-full mt-3">
-            Continue
+            {t('auth.registerButton')}
           </Button>
         </form>
       </Form>
@@ -137,32 +139,35 @@ function PasswordField({
   isLoading: boolean;
 }) {
   const [isShowing, setIsShowing] = useState(false);
+  const { t } = useTranslation('common');
 
   return (
-            <FormField
-              control={form.control}
-              name={name}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{i > 0 && 'Confirm'} Password</FormLabel>
-                  <div className="relative">
-                    <FormControl>
-                      <Input
-                        className="transition-all"
-                        type={isShowing ? 'text' : 'password'}
-                        placeholder="****"
-                        autoComplete={i > 0 ? 'new-password' : 'new-password'}
-                        disabled={isLoading}
-                        {...field}
-                      />
-                    </FormControl>
+    <FormField
+      control={form.control}
+      name={name}
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>
+            {i > 0 ? t('auth.confirmPassword') : t('auth.password')}
+          </FormLabel>
+          <div className="relative">
+            <FormControl>
+              <Input
+                className="transition-all"
+                type={isShowing ? 'text' : 'password'}
+                placeholder="****"
+                autoComplete={i > 0 ? 'new-password' : 'new-password'}
+                disabled={isLoading}
+                {...field}
+              />
+            </FormControl>
             <button
               type="button"
               onClick={() => setIsShowing(!isShowing)}
               className="absolute translate-y-1/2 bottom-1/2 right-3"
             >
               <span className="sr-only">
-                {isShowing ? 'Hide' : 'Show'} password
+                {isShowing ? t('common.hide') : t('common.show')} {t('auth.password').toLowerCase()}
               </span>
               {isShowing ? <EyeClosed /> : <Eye />}
             </button>

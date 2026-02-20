@@ -16,6 +16,7 @@ import { ArrowRightLeftIcon, HistoryIcon, LogOut, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { useTranslation } from 'next-i18next';
 import { DeleteAccountModal } from './delete-account';
 import { SalesHistory } from './sales-history';
 import { ViewTransactionsModal } from './transactions';
@@ -23,6 +24,7 @@ import { ViewTransactionsModal } from './transactions';
 export function UserProfile() {
   const { data: user, error: profileError } = useProfileQuery();
   const { data: transactions } = useTransactionsQuery();
+  const { t } = useTranslation('common');
 
   const [logout, { isLoading, data: logoutData }] = useLogoutMutation();
 
@@ -42,7 +44,7 @@ export function UserProfile() {
           variant="ghost"
           className="relative size-8 rounded-full focus-visible:ring-0 group"
         >
-          <span className="sr-only">My Account</span>
+          <span className="sr-only">{t('auth.myAccount')}</span>
           <span className="relative flex shrink-0 overflow-hidden rounded-full size-8 sm:size-9 group-focus-visible:ring-2 group-focus-visible:ring-slate-300">
             <Image
               alt={`Picture for ${user?.name}`}
@@ -58,7 +60,7 @@ export function UserProfile() {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">
-              {user?.name || 'Loading...'}
+              {user?.name || t('common.loading')}
             </p>
             <p className="text-xs leading-none text-muted-foreground">
               {user?.email}
@@ -72,7 +74,7 @@ export function UserProfile() {
           <>
             <ViewTransactionsModal data={transactions}>
               <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                Transactions
+                {t('navigation.transactions')}
                 <DropdownMenuShortcut>
                   <ArrowRightLeftIcon className="size-4 stroke-current" />
                 </DropdownMenuShortcut>
@@ -86,7 +88,7 @@ export function UserProfile() {
         <div className="sm:hidden">
           <SalesHistory>
             <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-              Sales History
+              {t('dashboard.recentActivity')}
               <DropdownMenuShortcut>
                 <HistoryIcon className="size-4 stroke-current" />
               </DropdownMenuShortcut>
@@ -104,7 +106,7 @@ export function UserProfile() {
             }}
             disabled={isLoading}
           >
-            Log out
+            {t('auth.logout')}
             <DropdownMenuShortcut>
               <LogOut className="size-4 stroke-current" />
             </DropdownMenuShortcut>
@@ -116,7 +118,7 @@ export function UserProfile() {
             onSelect={(e) => e.preventDefault()}
             className="w-full text-rose-600 focus:bg-rose-100 focus:text-rose-600"
           >
-            Delete account
+            {t('auth.deleteAccount')}
             <DropdownMenuShortcut>
               <Trash2 className="size-4 stroke-current" />
             </DropdownMenuShortcut>

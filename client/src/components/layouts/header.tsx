@@ -1,5 +1,6 @@
 import { Logo } from '../logo';
 import { UserProfile } from './user-profile';
+import { LanguageSwitcher } from '../language-switcher';
 
 export function Header() {
   return (
@@ -10,7 +11,10 @@ export function Header() {
           logo: 'md:size-7',
         }}
       />
-      <UserProfile />
+      <div className="flex items-center gap-2">
+        <LanguageSwitcher />
+        <UserProfile />
+      </div>
     </header>
   );
 }

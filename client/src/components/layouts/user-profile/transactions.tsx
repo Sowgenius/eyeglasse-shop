@@ -12,6 +12,7 @@ import { formatDate } from '@/lib/format-date';
 import { TransactionsData } from '@/types/transactions-data';
 import { ArrowRightLeftIcon } from 'lucide-react';
 import { ReactNode } from 'react';
+import { useTranslation } from 'next-i18next';
 import { DownloadInvoice } from '../download-invoice';
 
 type ViewTransactionsModalProps = {
@@ -23,6 +24,8 @@ export function ViewTransactionsModal({
   data,
   children,
 }: ViewTransactionsModalProps) {
+  const { t } = useTranslation('common');
+  
   return (
     <D.Dialog>
       <D.DialogTrigger asChild>{children}</D.DialogTrigger>
@@ -30,22 +33,22 @@ export function ViewTransactionsModal({
         <D.DialogHeader>
           <D.DialogTitle className="flex items-center gap-2">
             <ArrowRightLeftIcon className="max-[400px]:size-4 size-5" />
-            <span className="max-[400px]:text-base">Transactions</span>
+            <span className="max-[400px]:text-base">{t('profile.transactions.title')}</span>
           </D.DialogTitle>
           <D.DialogDescription className="text-start">
-            A list of transactions you made from selling products
+            {t('profile.transactions.description')}
           </D.DialogDescription>
         </D.DialogHeader>
 
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="text-center">Invoice</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead>Buyer</TableHead>
-              <TableHead>Product</TableHead>
+              <TableHead className="text-center">{t('profile.transactions.invoice')}</TableHead>
+              <TableHead>{t('profile.transactions.date')}</TableHead>
+              <TableHead>{t('profile.transactions.buyer')}</TableHead>
+              <TableHead>{t('profile.transactions.product')}</TableHead>
               <TableHead className="text-right whitespace-nowrap">
-                Total Sale
+                {t('profile.transactions.totalSale')}
               </TableHead>
             </TableRow>
           </TableHeader>

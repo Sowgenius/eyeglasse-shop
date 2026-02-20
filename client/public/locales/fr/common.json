@@ -22,7 +22,13 @@
     "info": "Information",
     "yes": "Oui",
     "no": "Non",
-    "or": "ou"
+    "or": "ou",
+    "show": "Afficher",
+    "hide": "Masquer",
+    "language": "Langue",
+    "french": "Français",
+    "english": "Anglais",
+    "noResults": "Aucun résultat trouvé."
   },
   "navigation": {
     "dashboard": "Tableau de bord",
@@ -33,19 +39,63 @@
     "prescriptions": "Ordonnances",
     "reports": "Rapports",
     "settings": "Paramètres",
-    "logout": "Déconnexion"
+    "logout": "Déconnexion",
+    "transactions": "Transactions",
+    "admin": "Administration"
+  },
+  "admin": {
+    "title": "Tableau de bord admin",
+    "totalUsers": "Utilisateurs totaux",
+    "pendingApproval": "En attente d'approbation",
+    "activeUsers": "Utilisateurs actifs",
+    "managers": "Managers",
+    "approve": "Approuver",
+    "reject": "Rejeter",
+    "suspend": "Suspendre",
+    "activate": "Activer",
+    "allUsers": "Tous les utilisateurs",
+    "name": "Nom",
+    "email": "Email",
+    "role": "Rôle",
+    "status": "Statut",
+    "registered": "Inscription",
+    "actions": "Actions",
+    "user": "Utilisateur",
+    "manager": "Manager",
+    "pending": "En attente",
+    "active": "Actif",
+    "rejected": "Rejeté",
+    "suspended": "Suspendu",
+    "success": "Succès",
+    "error": "Erreur",
+    "networkError": "Erreur réseau",
+    "failedToLoadUsers": "Échec du chargement des utilisateurs",
+    "actionFailed": "L'action a échoué",
+    "roleUpdated": "Rôle mis à jour vers"
   },
   "auth": {
     "login": "Connexion",
     "register": "Inscription",
     "email": "Email",
     "password": "Mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
     "name": "Nom",
     "forgotPassword": "Mot de passe oublié ?",
     "loginSuccess": "Connexion réussie",
     "loginError": "Erreur de connexion",
     "logoutSuccess": "Déconnexion réussie",
-    "invalidCredentials": "Identifiants invalides"
+    "invalidCredentials": "Identifiants invalides",
+    "welcomeBack": "Bon retour !",
+    "enterCredentials": "Entrez vos identifiants pour vous connecter",
+    "createAccount": "Créer un compte",
+    "enterDetails": "Entrez vos informations pour créer votre compte",
+    "accountPending": "Votre compte est en attente d'approbation par un administrateur",
+    "registerButton": "S'inscrire",
+    "loginButton": "Se connecter",
+    "logout": "Déconnexion",
+    "deleteAccount": "Supprimer le compte",
+    "profile": "Profil",
+    "myAccount": "Mon compte"
   },
   "dashboard": {
     "welcome": "Bienvenue",
@@ -191,5 +241,64 @@
     "positive": "Doit être positif",
     "minLength": "Doit contenir au moins {{min}} caractères",
     "maxLength": "Ne doit pas dépasser {{max}} caractères"
+  },
+  "profile": {
+    "deleteAccount": {
+      "title": "Êtes-vous absolument sûr ?",
+      "description": "Cette action est irréversible. Elle supprimera définitivement votre compte et toutes les données associées.",
+      "passwordLabel": "Mot de passe",
+      "passwordPlaceholder": "Entrez votre mot de passe",
+      "showPassword": "Afficher le mot de passe",
+      "hidePassword": "Masquer le mot de passe",
+      "cancel": "Annuler",
+      "confirm": "Confirmer"
+    },
+    "transactions": {
+      "title": "Transactions",
+      "description": "Liste des transactions effectuées lors de la vente de produits",
+      "invoice": "Facture",
+      "date": "Date",
+      "buyer": "Acheteur",
+      "product": "Produit",
+      "totalSale": "Vente totale"
+    },
+    "salesHistory": "Historique des ventes"
+  },
+  "toolbar": {
+    "reset": "Réinitialiser",
+    "salesHistory": "Historique des ventes"
+  },
+  "salesHistory": {
+    "title": "Historique des ventes",
+    "categorizeBy": "Grouper par",
+    "notEnoughData": "Pas assez de données à afficher",
+    "daily": "Quotidien",
+    "weekly": "Hebdomadaire",
+    "monthly": "Mensuel",
+    "yearly": "Annuel"
+  },
+  "products": {
+    "addNew": "Ajouter",
+    "addProduct": "Ajouter un nouveau produit",
+    "editProduct": "Modifier le produit",
+    "duplicateProduct": "Dupliquer le produit",
+    "addProductDescription": "Entrez les détails du nouveau produit ici. Cliquez sur enregistrer quand vous avez terminé.",
+    "editProductDescription": "Modifiez les détails du produit ici. Cliquez sur enregistrer quand vous avez terminé.",
+    "duplicateProductDescription": "Modifiez les détails du produit ici. Cliquez sur enregistrer quand vous avez terminé.",
+    "saving": "Enregistrement...",
+    "uploading": "Téléchargement de l'image... {{progress}}%",
+    "delete": {
+      "title": "Êtes-vous absolument sûr ?",
+      "description": "Cette action est irréversible. Cela supprimera définitivement les données de nos serveurs.",
+      "cancel": "Annuler",
+      "confirm": "Confirmer",
+      "deleteSelected": "Supprimer la sélection"
+    },
+    "actions": {
+      "viewImage": "Voir l'image",
+      "edit": "Modifier",
+      "duplicate": "Dupliquer",
+      "delete": "Supprimer"
+    }
   }
 }

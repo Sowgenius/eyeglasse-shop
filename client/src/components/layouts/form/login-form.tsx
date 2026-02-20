@@ -15,6 +15,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'next-i18next';
 import { Eye, EyeClosed } from '../../icons';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
@@ -26,6 +27,7 @@ type LoginFormProps = React.HTMLAttributes<HTMLDivElement> & {
 export function LoginForm({ className, setError }: LoginFormProps) {
   const [isShowing, setIsShowing] = useState(false);
   const router = useRouter();
+  const { t } = useTranslation('common');
 
   const [login, { data, isLoading, error }] = useLoginMutation();
 
@@ -55,7 +57,7 @@ export function LoginForm({ className, setError }: LoginFormProps) {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>{t('auth.email')}</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="name@example.com"
@@ -78,7 +80,7 @@ export function LoginForm({ className, setError }: LoginFormProps) {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>{t('auth.password')}</FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
@@ -95,7 +97,7 @@ export function LoginForm({ className, setError }: LoginFormProps) {
                       className="absolute translate-y-1/2 bottom-1/2 right-3"
                     >
                       <span className="sr-only">
-                        {isShowing ? 'Hide' : 'Show'} password
+                        {isShowing ? t('common.hide') : t('common.show')} {t('auth.password').toLowerCase()}
                       </span>
                       {isShowing ? <EyeClosed /> : <Eye />}
                     </button>
@@ -107,7 +109,7 @@ export function LoginForm({ className, setError }: LoginFormProps) {
           />
 
           <Button disabled={isLoading} type="submit" className="w-full mt-3">
-            Continue
+            {t('auth.loginButton')}
           </Button>
         </form>
       </Form>

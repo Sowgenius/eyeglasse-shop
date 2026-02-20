@@ -3,6 +3,7 @@ import { formatCurrency } from '@/lib/format-currency';
 import { useSalesHistoryQuery } from '@/redux/api/sales';
 import { HistoryIcon } from 'lucide-react';
 import { ReactNode, useState } from 'react';
+import { useTranslation } from 'next-i18next';
 import {
   Bar,
   BarChart,
@@ -26,6 +27,12 @@ const categorizeByOptions = ['Daily', 'Weekly', 'Monthly', 'Yearly'];
 export function SalesHistory({ children }: { children: ReactNode }) {
   const [categorizeBy, setCategorizeBy] = useState('monthly');
   const { data } = useSalesHistoryQuery(categorizeBy.toLowerCase());
+  const { t } = useTranslation('common');
+
+  const translateCategory = (cat: string) => {
+    const key = cat.toLowerCase() as 'daily' | 'weekly' | 'monthly' | 'yearly';
+    return t(`salesHistory.${key}`);
+  };
 
   return (
     <D.Dialog>
@@ -35,22 +42,22 @@ export function SalesHistory({ children }: { children: ReactNode }) {
           <D.DialogTitle className="flex items-center gap-2">
             <HistoryIcon className="size-4 min-[400px]:size-5" />
 
-            <span className="max-sm:text-base text-start">Sales History</span>
+            <span className="max-sm:text-base text-start">{t('salesHistory.title')}</span>
 
             <Badge className="capitalize max-[400px]:hidden">
-              {categorizeBy}
+              {translateCategory(categorizeBy)}
             </Badge>
           </D.DialogTitle>
 
           <div className="w-24 sm:w-36">
             <Select onValueChange={setCategorizeBy} defaultValue={categorizeBy}>
               <SelectTrigger className="h-8 sm:h-9">
-                <SelectValue placeholder="Categorize by" />
+                <SelectValue placeholder={t('salesHistory.categorizeBy')} />
               </SelectTrigger>
               <SelectContent>
                 {categorizeByOptions.map((label) => (
                   <SelectItem key={label} value={label.toLowerCase()}>
-                    {label}
+                    {t(`salesHistory.${label.toLowerCase()}`)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -60,7 +67,7 @@ export function SalesHistory({ children }: { children: ReactNode }) {
 
         {!data || data.length < 2 ? (
           <p className="text-center sm:text-lg -mt-5">
-            Not enough data to display
+            {t('salesHistory.notEnoughData')}
           </p>
         ) : (
           <ResponsiveContainer width="100%" height={350}>

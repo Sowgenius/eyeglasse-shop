@@ -13,6 +13,7 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import { useBulkDeleteMutation } from '@/redux/api/products';
 import { Row, Table } from '@tanstack/react-table';
 import { Trash2Icon } from 'lucide-react';
+import { useTranslation } from 'next-i18next';
 
 type BulkDeleteProps<TData> = {
   table: Table<TData>;
@@ -24,6 +25,7 @@ function getSelectedRowsId(rows: Row<any>[]): string[] {
 
 export function BulkDelete<TData>({ table }: BulkDeleteProps<TData>) {
   const [bulkDelete, { isLoading }] = useBulkDeleteMutation();
+  const { t } = useTranslation('common');
 
   const selectedRows = table.getSelectedRowModel().rows;
   const selectedRowsId = getSelectedRowsId(selectedRows);
@@ -37,21 +39,20 @@ export function BulkDelete<TData>({ table }: BulkDeleteProps<TData>) {
           disabled={isLoading}
         >
           <Trash2Icon className="sm:mr-2 size-4" />
-          <span className="max-sm:sr-only">Delete selected</span>
+          <span className="max-sm:sr-only">{t('products.delete.deleteSelected')}</span>
         </Button>
       </AlertDialogTrigger>
 
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>{t('products.delete.title')}</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete and
-            remove it&apos;s data from our servers.
+            {t('products.delete.description')}
           </AlertDialogDescription>
         </AlertDialogHeader>
 
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>{t('products.delete.cancel')}</AlertDialogCancel>
           <AlertDialogAction
             className={buttonVariants({ variant: 'destructive' })}
             onClick={() => {
@@ -60,7 +61,7 @@ export function BulkDelete<TData>({ table }: BulkDeleteProps<TData>) {
             }}
             disabled={isLoading}
           >
-            Confirm
+            {t('products.delete.confirm')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

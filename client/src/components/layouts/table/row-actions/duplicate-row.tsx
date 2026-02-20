@@ -9,6 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { CopyPlusIcon } from 'lucide-react';
 import { ReactNode, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'next-i18next';
 import { ProductFormFields } from '../../form/product-form-fields';
 
 type DuplicateRowProps = {
@@ -22,9 +23,10 @@ export function DuplicateRow({ row, children }: DuplicateRowProps) {
   const [progress, setProgress] = useState(0);
 
   const [addProduct] = useAddProductMutation();
+  const { t } = useTranslation('common');
 
   const loaderText =
-    progress === 100 ? 'Saving...' : `Uploading image... ${progress}%`;
+    progress === 100 ? t('products.saving') : t('products.uploading', { progress });
 
   const form = useForm<ProductSchema>({
     resolver: zodResolver(productSchema.partial({ image: true })),
@@ -39,10 +41,10 @@ export function DuplicateRow({ row, children }: DuplicateRowProps) {
           <D.DialogHeader className="mt-2">
             <D.DialogTitle className="flex gap-2">
               <CopyPlusIcon className="size-5" />
-              Duplicate product
+              {t('products.duplicateProduct')}
             </D.DialogTitle>
             <D.DialogDescription className="text-left">
-              Modify details of the product here. Click save when you are done.
+              {t('products.duplicateProductDescription')}
             </D.DialogDescription>
           </D.DialogHeader>
           <Form {...form}>
@@ -76,7 +78,7 @@ export function DuplicateRow({ row, children }: DuplicateRowProps) {
                 type="submit"
                 className="w-full mt-3"
               >
-                {isLoading ? loaderText : 'Save'}
+                {isLoading ? loaderText : t('common.save')}
               </Button>
             </form>
           </Form>

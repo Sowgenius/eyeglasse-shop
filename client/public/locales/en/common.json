@@ -22,7 +22,13 @@
     "info": "Information",
     "yes": "Yes",
     "no": "No",
-    "or": "or"
+    "or": "or",
+    "show": "Show",
+    "hide": "Hide",
+    "language": "Language",
+    "french": "French",
+    "english": "English",
+    "noResults": "No results found."
   },
   "navigation": {
     "dashboard": "Dashboard",
@@ -33,19 +39,63 @@
     "prescriptions": "Prescriptions",
     "reports": "Reports",
     "settings": "Settings",
-    "logout": "Logout"
+    "logout": "Logout",
+    "transactions": "Transactions",
+    "admin": "Admin"
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "totalUsers": "Total Users",
+    "pendingApproval": "Pending Approval",
+    "activeUsers": "Active Users",
+    "managers": "Managers",
+    "approve": "Approve",
+    "reject": "Reject",
+    "suspend": "Suspend",
+    "activate": "Activate",
+    "allUsers": "All Users",
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "status": "Status",
+    "registered": "Registered",
+    "actions": "Actions",
+    "user": "User",
+    "manager": "Manager",
+    "pending": "Pending",
+    "active": "Active",
+    "rejected": "Rejected",
+    "suspended": "Suspended",
+    "success": "Success",
+    "error": "Error",
+    "networkError": "Network error",
+    "failedToLoadUsers": "Failed to load users",
+    "actionFailed": "Action failed",
+    "roleUpdated": "Role updated to"
   },
   "auth": {
     "login": "Login",
     "register": "Register",
     "email": "Email",
     "password": "Password",
+    "confirmPassword": "Confirm password",
     "name": "Name",
     "forgotPassword": "Forgot password?",
     "loginSuccess": "Login successful",
     "loginError": "Login error",
     "logoutSuccess": "Logout successful",
-    "invalidCredentials": "Invalid credentials"
+    "invalidCredentials": "Invalid credentials",
+    "welcomeBack": "Welcome back!",
+    "enterCredentials": "Enter your credentials to login",
+    "createAccount": "Create an account",
+    "enterDetails": "Enter your details to create your account",
+    "accountPending": "Your account is pending admin approval",
+    "registerButton": "Register",
+    "loginButton": "Login",
+    "logout": "Logout",
+    "deleteAccount": "Delete account",
+    "profile": "Profile",
+    "myAccount": "My account"
   },
   "dashboard": {
     "welcome": "Welcome",
@@ -191,5 +241,64 @@
     "positive": "Must be positive",
     "minLength": "Must be at least {{min}} characters",
     "maxLength": "Must not exceed {{max}} characters"
+  },
+  "profile": {
+    "deleteAccount": {
+      "title": "Are you absolutely sure?",
+      "description": "This action can't be undone. It will permanently erase your account and all of the data associated with it.",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "cancel": "Cancel",
+      "confirm": "Confirm"
+    },
+    "transactions": {
+      "title": "Transactions",
+      "description": "A list of transactions you made from selling products",
+      "invoice": "Invoice",
+      "date": "Date",
+      "buyer": "Buyer",
+      "product": "Product",
+      "totalSale": "Total Sale"
+    },
+    "salesHistory": "Sales History"
+  },
+  "toolbar": {
+    "reset": "Reset",
+    "salesHistory": "Sales History"
+  },
+  "salesHistory": {
+    "title": "Sales History",
+    "categorizeBy": "Categorize by",
+    "notEnoughData": "Not enough data to display",
+    "daily": "Daily",
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "yearly": "Yearly"
+  },
+  "products": {
+    "addNew": "Add New",
+    "addProduct": "Add new product",
+    "editProduct": "Edit product",
+    "duplicateProduct": "Duplicate product",
+    "addProductDescription": "Provide details of the new product here. Click save when you are done.",
+    "editProductDescription": "Modify details of the product here. Click save when you are done.",
+    "duplicateProductDescription": "Modify details of the product here. Click save when you are done.",
+    "saving": "Saving...",
+    "uploading": "Uploading image... {{progress}}%",
+    "delete": {
+      "title": "Are you absolutely sure?",
+      "description": "This action cannot be undone. This will permanently delete and remove its data from our servers.",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "deleteSelected": "Delete selected"
+    },
+    "actions": {
+      "viewImage": "View Image",
+      "edit": "Edit",
+      "duplicate": "Duplicate",
+      "delete": "Delete"
+    }
   }
 }

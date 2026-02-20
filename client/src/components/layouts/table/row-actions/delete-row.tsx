@@ -13,6 +13,7 @@ import { buttonVariants } from '@/components/ui/button';
 import { useDeleteProductMutation } from '@/redux/api/products';
 import { SetStateActionType } from '@/types/set-state-action';
 import { ReactNode } from 'react';
+import { useTranslation } from 'next-i18next';
 
 type DeleteRowProps = {
   children: ReactNode;
@@ -26,20 +27,20 @@ export function DeleteRow({
   setIsDropdownOpen,
 }: DeleteRowProps) {
   const [deleteProduct, { isLoading }] = useDeleteProductMutation();
+  const { t } = useTranslation('common');
 
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>{t('products.delete.title')}</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete this and
-            remove it&apos;s data from our servers.
+            {t('products.delete.description')}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>{t('products.delete.cancel')}</AlertDialogCancel>
           <AlertDialogAction
             className={buttonVariants({ variant: 'destructive' })}
             onClick={() => {
@@ -48,7 +49,7 @@ export function DeleteRow({
             }}
             disabled={isLoading}
           >
-            Confirm
+            {t('products.delete.confirm')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

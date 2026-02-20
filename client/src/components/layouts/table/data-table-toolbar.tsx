@@ -4,6 +4,7 @@ import { Cross2Icon } from '@radix-ui/react-icons';
 import { Table } from '@tanstack/react-table';
 import { HistoryIcon } from 'lucide-react';
 import { useContext } from 'react';
+import { useTranslation } from 'next-i18next';
 import { SalesHistory } from '../user-profile/sales-history';
 import { BulkDelete } from './row-actions/bulk-delete';
 import { FilterTable } from './data-table-filter';
@@ -22,6 +23,7 @@ export function DataTableToolbar<TData>({
     table.getIsSomeRowsSelected() || table.getIsAllRowsSelected();
 
   const context = useContext(ProductsContext);
+  const { t } = useTranslation('common');
 
   if (!context) return;
 
@@ -41,7 +43,7 @@ export function DataTableToolbar<TData>({
             }}
             className="h-8 px-2 lg:px-3"
           >
-            Reset
+            {t('toolbar.reset')}
             <Cross2Icon className="ml-2 size-4" />
           </Button>
         )}
@@ -56,7 +58,7 @@ export function DataTableToolbar<TData>({
           className="h-8 hidden sm:flex border-dashed"
         >
           <HistoryIcon className="mr-2 size-4" />
-          Sales History
+          {t('toolbar.salesHistory')}
         </Button>
       </SalesHistory>
       <AddProduct />
