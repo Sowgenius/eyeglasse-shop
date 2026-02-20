@@ -10,7 +10,6 @@ import { setTokenCookie } from '@/lib/set-cookie';
 import { cn } from '@/lib/utils';
 import { useLoginMutation } from '@/redux/api/auth';
 import { LoginPayload, loginFormSchema } from '@/schema/auth-form-schema';
-import { DemoCredentials } from '@/types/demo-credentials';
 import { SetStateActionType } from '@/types/set-state-action';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/router';
@@ -22,24 +21,13 @@ import { Input } from '../../ui/input';
 
 type LoginFormProps = React.HTMLAttributes<HTMLDivElement> & {
   setError: SetStateActionType<string | undefined>;
-  demoCredentials?: DemoCredentials;
 };
 
-export function LoginForm({
-  className,
-  setError,
-  demoCredentials,
-}: LoginFormProps) {
+export function LoginForm({ className, setError }: LoginFormProps) {
   const [isShowing, setIsShowing] = useState(false);
   const router = useRouter();
 
   const [login, { data, isLoading, error }] = useLoginMutation();
-
-  useEffect(() => {
-    if (demoCredentials) {
-      login(demoCredentials);
-    }
-  }, [login, demoCredentials]);
 
   useEffect(() => {
     if (error && 'message' in error) {
@@ -75,7 +63,7 @@ export function LoginForm({
                     autoCapitalize="none"
                     autoComplete="email"
                     autoCorrect="off"
-                    disabled={isLoading || !!demoCredentials}
+                    disabled={isLoading}
                     className="transition-all"
                     {...field}
                   />
@@ -98,7 +86,7 @@ export function LoginForm({
                       type={isShowing ? 'text' : 'password'}
                       placeholder="****"
                       autoComplete="current-password"
-                      disabled={isLoading || !!demoCredentials}
+                      disabled={isLoading}
                       {...field}
                     />
                     <button

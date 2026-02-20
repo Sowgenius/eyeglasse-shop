@@ -3,13 +3,16 @@ import Link from 'next/link';
 import { RegisterForm } from '@/components/layouts/form/register-form';
 import { Logo } from '@/components/logo';
 import { NextHead } from '@/components/next-head';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertDestructive } from '@/components/ui/alert';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { CheckCircle } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Register() {
   const [error, setError] = useState<string | undefined>('');
+  const [success, setSuccess] = useState<string | undefined>('');
 
   return (
     <>
@@ -36,16 +39,7 @@ export default function Register() {
           />
         </div>
 
-        <div className="lg:p-8 relative">
-          <div className="bg-white/90 absolute inset-0 z-30 flex flex-col justify-center text-center">
-            <h2 className="text-lg sm:text-xl font-bold mb-1">
-              Archived Project
-            </h2>
-            <p className="max-w-[15rem] mx-auto leading-5">
-              Use a demo account from the login page.
-            </p>
-          </div>
-
+        <div className="lg:p-8">
           <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
             <div className="flex flex-col space-y-2 text-center">
               <h1 className="text-2xl font-semibold tracking-tight">
@@ -54,10 +48,24 @@ export default function Register() {
               <p className="text-sm text-muted-foreground">
                 Enter your credentials to create your account
               </p>
+              <p className="text-xs text-muted-foreground mt-2">
+                Your account will be pending admin approval
+              </p>
             </div>
 
             {error && <AlertDestructive message={error} />}
-            <RegisterForm setError={setError} />
+            
+            {success && (
+              <Alert className="border-green-500/50 text-green-700 bg-green-50">
+                <CheckCircle className="h-4 w-4 text-green-600" />
+                <AlertTitle className="text-green-800">Success</AlertTitle>
+                <AlertDescription className="text-green-700">
+                  {success}
+                </AlertDescription>
+              </Alert>
+            )}
+            
+            <RegisterForm setError={setError} setSuccess={setSuccess} />
           </div>
         </div>
       </main>

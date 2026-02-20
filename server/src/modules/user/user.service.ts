@@ -11,21 +11,21 @@ import {
   User,
 } from './user.interface';
 
-export async function create(payload: Omit<User, 'id' | 'role' | 'createdAt' | 'updatedAt'>) {
+export async function create(payload: Omit<User, 'id' | 'role' | 'createdAt' | 'updatedAt' | 'status'>) {
   const hashedPassword = await hash(payload.password, 10);
   
   const user = await prisma.user.create({
     data: {
       ...payload,
       password: hashedPassword,
+      status: 'PENDING', // New users are pending by default
     },
   });
 
-  const token = jwt.sign({ userId: user.id, role: user.role }, env.JWT_SECRET, {
-    expiresIn: '15d',
-  });
-
-  return { user, token };
+  return { 
+    user, 
+    message: 'Registration successful. Your account is pending admin approval.' 
+  };
 }
 
 export async function login(payload: LoginPayload) {
@@ -34,6 +34,19 @@ export async function login(payload: LoginPayload) {
   });
 
   if (!user) throw new AppError(404, 'User is not registered.');
+
+  // Check if user is approved
+  if (user.status === 'PENDING') {
+    throw new AppError(403, 'Your account is pending admin approval. Please wait for approval before logging in.');
+  }
+
+  if (user.status === 'REJECTED') {
+    throw new AppError(403, 'Your account registration has been rejected. Please contact admin for more information.');
+  }
+
+  if (user.status === 'SUSPENDED') {
+    throw new AppError(403, 'Your account has been suspended. Please contact admin for more information.');
+  }
 
   const isMatched = await compare(payload.password, user.password);
 
@@ -147,4 +160,139 @@ export async function deleteAccount(
   });
 
   return user;
+}
+
+// Admin functions for user management
+
+export async function getPendingUsers() {
+  const users = await prisma.user.findMany({
+    where: { status: 'PENDING' },
+    select: {
+      id: true,
+      email: true,
+      name: true,
+      role: true,
+      status: true,
+      createdAt: true,
+    },
+    orderBy: { createdAt: 'desc' },
+  });
+
+  return users;
+}
+
+export async function getAllUsers(query: { status?: string; role?: string; search?: string }) {
+  const where: any = {};
+
+  if (query.status) {
+    where.status = query.status;
+  }
+
+  if (query.role) {
+    where.role = query.role;
+  }
+
+  if (query.search) {
+    where.OR = [
+      { email: { contains: query.search, mode: 'insensitive' } },
+      { name: { contains: query.search, mode: 'insensitive' } },
+    ];
+  }
+
+  const users = await prisma.user.findMany({
+    where,
+    select: {
+      id: true,
+      email: true,
+      name: true,
+      role: true,
+      status: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+    orderBy: { createdAt: 'desc' },
+  });
+
+  return users;
+}
+
+export async function approveUser(userId: string) {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  if (!user) throw new AppError(404, 'User not found.');
+  if (user.status !== 'PENDING') throw new AppError(400, 'User is not in pending status.');
+
+  const updatedUser = await prisma.user.update({
+    where: { id: userId },
+    data: { status: 'ACTIVE' },
+  });
+
+  return updatedUser;
+}
+
+export async function rejectUser(userId: string, reason?: string) {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  if (!user) throw new AppError(404, 'User not found.');
+  if (user.status !== 'PENDING') throw new AppError(400, 'User is not in pending status.');
+
+  const updatedUser = await prisma.user.update({
+    where: { id: userId },
+    data: { status: 'REJECTED' },
+  });
+
+  // TODO: Send email notification with rejection reason
+
+  return updatedUser;
+}
+
+export async function suspendUser(userId: string, reason?: string) {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  if (!user) throw new AppError(404, 'User not found.');
+
+  const updatedUser = await prisma.user.update({
+    where: { id: userId },
+    data: { status: 'SUSPENDED' },
+  });
+
+  // TODO: Send email notification with suspension reason
+
+  return updatedUser;
+}
+
+export async function activateUser(userId: string) {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  if (!user) throw new AppError(404, 'User not found.');
+
+  const updatedUser = await prisma.user.update({
+    where: { id: userId },
+    data: { status: 'ACTIVE' },
+  });
+
+  return updatedUser;
+}
+
+export async function updateUserRole(userId: string, role: 'USER' | 'MANAGER') {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  if (!user) throw new AppError(404, 'User not found.');
+
+  const updatedUser = await prisma.user.update({
+    where: { id: userId },
+    data: { role },
+  });
+
+  return updatedUser;
 }

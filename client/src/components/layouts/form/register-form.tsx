@@ -23,11 +23,13 @@ const passwordFields = ['password', 'confirm_password'] as const;
 
 type RegisterFormProps = React.HTMLAttributes<HTMLDivElement> & {
   setError: SetStateActionType<string | undefined>;
+  setSuccess: SetStateActionType<string | undefined>;
 };
 
 export function RegisterForm({
   className,
   setError,
+  setSuccess,
   ...props
 }: RegisterFormProps) {
   const [register, { isLoading, data, error }] = useRegisterMutation();
@@ -40,10 +42,17 @@ export function RegisterForm({
 
   useEffect(() => {
     if (data) {
-      setTokenCookie(data.token);
-      router.reload();
+      // Check if user has a token (immediate activation) or needs approval
+      if (data.token) {
+        setTokenCookie(data.token);
+        router.reload();
+      } else {
+        // Registration successful but pending approval
+        setSuccess('Registration successful! Your account is pending admin approval. Please wait for approval before logging in.');
+        form.reset();
+      }
     }
-  }, [data, router]);
+  }, [data, router, setSuccess, form]);
 
   useEffect(() => {
     if (error && 'message' in error) {

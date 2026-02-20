@@ -1,17 +1,14 @@
-import { DemoAccounts } from '@/components/layouts/demo-accounts';
 import { LoginForm } from '@/components/layouts/form/login-form';
 import { Logo } from '@/components/logo';
 import { NextHead } from '@/components/next-head';
 import { AlertDestructive } from '@/components/ui/alert';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { DemoCredentials } from '@/types/demo-credentials';
 import Link from 'next/link';
 import { useState } from 'react';
 
 export default function LoginPage() {
   const [error, setError] = useState<string | undefined>('');
-  const [demoCredentials, setDemoCredentials] = useState<DemoCredentials>();
 
   return (
     <>
@@ -49,9 +46,7 @@ export default function LoginPage() {
               </p>
             </div>
             {error && <AlertDestructive message={error} />}
-            <LoginForm demoCredentials={demoCredentials} setError={setError} />
-
-            <DemoAccounts setDemoCredentials={setDemoCredentials} />
+            <LoginForm setError={setError} />
           </div>
         </div>
       </main>
