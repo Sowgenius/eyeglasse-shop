@@ -1,18 +1,19 @@
-# Optician Pro - MVP
+# Z-0 - Optician Pro
 
-<a href="https://optician-pro-demo.vercel.app" target="_blank">
+<a href="https://z0-optician.vercel.app" target="_blank">
   <img src="https://img.shields.io/badge/Live%20Demo-Click%20Here-blue" alt="Live Demo">
 </a>
 
 Système de gestion complet pour opticiens - Devis, Factures, Stock, Clients et Ordonnances.
 
-## ✨ Fonctionnalités MVP
+## ✨ Fonctionnalités
 
 ### 📊 Tableau de bord
 - Statistiques en temps réel (chiffre d'affaires, clients, stock)
 - Alertes stock faible
 - Factures en retard
 - Actions rapides
+- Graphique historique des ventes
 
 ### 👥 Gestion des Clients
 - Fiches clients complètes
@@ -25,6 +26,7 @@ Système de gestion complet pour opticiens - Devis, Factures, Stock, Clients et 
 - Suivi de stock intelligent
 - Seuils de réapprovisionnement
 - Historique des mouvements
+- Opérations: Ajouter, Modifier, Dupliquer, Supprimer
 
 ### 📝 Devis
 - Création de devis professionnels
@@ -45,390 +47,313 @@ Système de gestion complet pour opticiens - Devis, Factures, Stock, Clients et 
 - Alertes d'expiration
 - Historique par client
 
-### 📈 Rapports
-- Rapport des ventes
-- Performance des produits
-- Analyse du stock
-- Tableau de bord financier
+### 👤 Gestion Utilisateurs
+- Inscription avec approbation admin
+- Rôles: User, Manager
+- Statuts: Pending, Active, Rejected, Suspended
+- Tableau de bord admin
 
-## 🌍 Internationalisation
-
-**Langue par défaut**: Français  
-**Langue secondaire**: Anglais
-
-Support i18n complet avec next-i18next. Facilement extensible pour ajouter d'autres langues.
+### 🌍 Internationalisation
+- **Langue par défaut**: Français
+- **Langue secondaire**: Anglais
+- Support i18n complet
 
 ## 🛠 Stack Technique
 
 ### Backend
 - **Node.js** + **Express**
-- **TypeScript** 5.7
-- **PostgreSQL** + **Prisma ORM** 6.x
+- **TypeScript**
+- **PostgreSQL** + **Prisma ORM**
 - **JWT** Authentication
-- **Resend** Email API
-- **Jest** + **Supertest** for testing
 
 ### Frontend
-- **Next.js 15** + **TypeScript**
+- **Next.js 16** + **TypeScript**
 - **React 19**
 - **Redux Toolkit** + **RTK Query**
-- **Tailwind CSS** + **Shadcn/UI**
+- **Tailwind CSS** + **Shadcn/UI** (New York style)
 - **TanStack Table**
 - **next-i18next**
-- **Vitest** + **Playwright** for testing
 
-### Documentation
-- **Docusaurus** 3.x
-- Full API documentation
-- User guides
-- Deployment guides
+---
 
-### DevOps
-- **GitHub Actions** CI/CD
-- Automated testing
-- Code coverage reporting
-- Automated documentation deployment
-
-## 🚀 Installation Rapide
+## 🚀 Installation Locale
 
 ### Prérequis
 - Node.js 18+
 - PostgreSQL 14+
 
-### 1. Cloner le projet
+### Étapes
 
 ```bash
-git clone <repository-url>
-cd eyeglasse-shop
-```
+# 1. Cloner le projet
+git clone https://github.com/your-repo/z0-optician.git
+cd z0-optician
 
-### Quick Start avec Make
+# 2. Configuration PostgreSQL
+# Créer la base de données
+createdb z0_db
 
-Si vous avez Make installé, utilisez les commandes simplifiées :
-
-```bash
-# Installation complète
-make install
-
-# Démarrer tous les serveurs
-make dev
-
-# Exécuter tous les tests
-make test
-
-# Voir toutes les commandes disponibles
-make help
-```
-
-### 2. Configuration de la base de données
-
-```bash
-# Créer la base de données PostgreSQL
-createdb optician_db
-
-# Copier et configurer les variables d'environnement
-cp server/.env.example server/.env
-# Éditer server/.env avec vos paramètres PostgreSQL
-```
-
-### 3. Installation Backend
-
-```bash
+# 3. Configuration Backend
 cd server
+cp .env.example .env
+# Éditer .env avec vos paramètres
+
+# 4. Installation et setup
 npm install
-
-# Générer le client Prisma
 npx prisma generate
-
-# Exécuter les migrations
 npx prisma migrate dev --name init
 
-# (Optionnel) Créer des données de démonstration
-npx prisma db seed
-
-# Démarrer le serveur
+# 5. Démarrer le serveur backend
 npm run dev
-```
+# Server: http://localhost:8080
 
-Le serveur démarre sur http://localhost:8080
-
-### 4. Installation Frontend
-
-```bash
-cd client
+# 6. Configuration Frontend (nouveau terminal)
+cd ../client
+cp .env.example .env.local
 npm install
-
-# Démarrer le serveur de développement
 npm run dev
+# App: http://localhost:3000
 ```
-
-L'application démarre sur http://localhost:3000
-
-### 5. Connexion
-
-Utilisez les identifiants de démonstration (si vous avez exécuté le seed) :
-- **Email**: manager@optician.pro
-- **Mot de passe**: manager123
-
-## 📁 Structure du Projet
-
-```
-eyeglasse-shop/
-├── server/
-│   ├── prisma/
-│   │   ├── schema.prisma       # Schéma de base de données
-│   │   └── seed.ts             # Données de démonstration
-│   ├── src/
-│   │   ├── modules/
-│   │   │   ├── user/           # Authentification
-│   │   │   ├── customer/       # Gestion clients
-│   │   │   ├── product/        # Gestion produits
-│   │   │   ├── quote/          # Gestion devis
-│   │   │   ├── invoice/        # Gestion factures
-│   │   │   ├── prescription/   # Ordonnances
-│   │   │   └── report/         # Rapports
-│   │   ├── lib/
-│   │   │   ├── prisma.ts       # Client Prisma
-│   │   │   └── email.ts        # Service email
-│   │   ├── routes.ts           # Routes API
-│   │   └── app.ts              # Configuration Express
-│   └── package.json
-│
-└── client/
-    ├── public/
-    │   └── locales/
-    │       ├── fr/             # Traductions françaises
-    │       └── en/             # Traductions anglaises
-    ├── src/
-    │   ├── pages/              # Pages Next.js
-    │   ├── redux/
-    │   │   └── api/            # API clients (RTK Query)
-    │   │       ├── customers.ts
-    │   │       ├── quotes.ts
-    │   │       ├── invoices.ts
-    │   │       ├── prescriptions.ts
-    │   │       └── reports.ts
-    │   └── components/         # Composants React
-    └── package.json
-```
-
-## 🔧 Configuration
 
 ### Variables d'environnement
 
-**Server (.env)**:
+**server/.env**
 ```env
-DATABASE_URL="postgresql://user:password@localhost:5432/optician_db?schema=public"
-JWT_SECRET="votre-cle-secrete"
-RESEND_API_KEY="votre-cle-resend"  # Optionnel
+DATABASE_URL="postgresql://user:password@localhost:5432/z0_db?schema=public"
+JWT_SECRET="your-super-secret-key-min-32-chars"
 CLIENT_URL="http://localhost:3000"
 NODE_ENV=development
 PORT=8080
 ```
 
-**Client (.env.local)**:
+**client/.env.local**
 ```env
 NEXT_PUBLIC_API_URL="http://localhost:8080/api"
 ```
 
-### Configuration Email (Optionnel)
+---
 
-Pour activer l'envoi d'emails:
+## ☁️ Déploiement Cloud
 
-1. Créer un compte sur [Resend](https://resend.com)
-2. Obtenir une clé API
-3. Ajouter à `server/.env`
-4. Vérifier votre domaine dans le dashboard Resend
+### Option 1: Coolify ( Recommandé )
 
-## 🚀 Deployment
+Coolify est une plateforme open-source d'auto-hébergement.
 
-### Option 1: Automated Setup (Recommended for Development)
+#### Déploiement en 5 minutes:
 
-```bash
-# Run the setup script
-./scripts/setup.sh
+1. **Créer un projet Coolify**
+   - Se connecter à votre instance Coolify
+   - Créer un nouveau projet
+   - Ajouter une nouvelle ressource "Git Repository"
 
-# This will:
-# - Check prerequisites (Node.js, PostgreSQL)
-# - Create environment files
-# - Install dependencies
-# - Set up the database
-# - Configure Git hooks (optional)
+2. **Configurer le Repository**
+   ```
+   Repository: your-github-repo/z0-optician
+   Branch: main
+   ```
+
+3. **Configuration Backend**
+   ```env
+   # Variables pour le service "server"
+   DATABASE_URL=postgresql://coolify:password@10.0.0.1:5432/z0_db
+   JWT_SECRET=generate-a-strong-random-secret
+   CLIENT_URL=https://your-coolify-domain.com
+   NODE_ENV=production
+   PORT=8080
+   ```
+
+4. **Configuration Frontend**
+   ```env
+   # Variables pour le service "client"
+   NEXT_PUBLIC_API_URL=https://your-coolify-domain.com/api
+   ```
+
+5. **Build & Start**
+   - Backend: `npm run build && npm run start`
+   - Frontend: `npm run build && npm run start`
+
+#### Avec Docker Compose (Coolify)
+
+```yaml
+# docker-compose.yml
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: z0_db
+      POSTGRES_USER: z0_user
+      POSTGRES_PASSWORD: strong_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U z0_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  server:
+    build: ./server
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: postgresql://z0_user:strong_password@postgres:5432/z0_db
+      JWT_SECRET: your-secret-key
+      CLIENT_URL: http://localhost:3000
+      NODE_ENV: production
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  client:
+    build: ./client
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8080/api
+    depends_on:
+      - server
+
+volumes:
+  postgres_data:
 ```
 
-### Option 2: Docker Deployment (Recommended for Production)
+---
+
+### Option 2: Railway
+
+Railway offre un déploiement simplifié avec PostgreSQL intégré.
+
+#### Déploiement:
+
+1. **Créer un compte Railway**
+   - Se connecter sur railway.app
+   - Créer un nouveau projet
+
+2. **Ajouter PostgreSQL**
+   - Cliquer sur "New" → "Database" → "PostgreSQL"
+   - Noter les variables générées
+
+3. **Déployer le Backend**
+   - "New" → "GitHub Repository"
+   - Sélectionner le projet
+   - Configurer:
+     ```env
+     DATABASE_URL: ${POSTGRES_URL}
+     JWT_SECRET: generate-random-secret
+     CLIENT_URL: https://your-app.up.railway.app
+     NODE_ENV: production
+     PORT: 8080
+     ```
+
+4. **Déployer le Frontend**
+   - "New" → "GitHub Repository"
+   - Sélectionner le projet (ou un sous-module)
+   - Configurer:
+     ```env
+     NEXT_PUBLIC_API_URL: https://your-backend.up.railway.app/api
+     ```
+   - Build Command: `npm run build`
+   - Start Command: `npm run start`
+
+5. **Variables Railway自动**
+   Railway injecte automatiquement `DATABASE_URL` depuis PostgreSQL
+
+#### Alternative: Monorepo Railway
+
+Pour un déploiement monorepo:
+```javascript
+// railway.json
+{
+  "build": {
+    "builder": "NIXPACKS",
+    "buildCommand": "cd server && npm install && npm run build"
+  },
+  "deploy": {
+    "numReplicas": 1,
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 10
+  }
+}
+```
+
+---
+
+### Option 3: Render
+
+#### Backend
+1. Créer un service "Web Service"
+2. Connecter le repo
+3. Configuration:
+   - Build Command: `cd server && npm install && npm run build`
+   - Start Command: `cd server && npm run start`
+4. Variables:
+   ```env
+   DATABASE_URL=postgresql://user:pass@host:5432/z0_db
+   JWT_SECRET=secret
+   CLIENT_URL=https://your-render-app.onrender.com
+   ```
+
+#### Frontend
+1. Créer un service "Static Site"
+2. Configuration:
+   - Build Command: `cd client && npm install && npm run build`
+   - Publish directory: `client/.next`
+3. Variables:
+   ```env
+   NEXT_PUBLIC_API_URL=https://your-backend.onrender.com/api
+   ```
+
+---
+
+### Option 4: VPS (DigitalOcean, Linode, Hetzner)
+
+#### Script de déploiement automatique:
 
 ```bash
-# Create environment file
+#!/bin/bash
+# deploy.sh
+
+# Mise à jour
+apt update && apt upgrade -y
+
+# Installation Node.js
+curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+apt install -y nodejs
+
+# Installation PostgreSQL
+apt install -y postgresql postgresql-contrib
+
+# Configuration PostgreSQL
+sudo -u postgres psql -c "CREATE USER z0_user WITH PASSWORD 'password';"
+sudo -u postgres psql -c "CREATE DATABASE z0_db OWNER z0_user;"
+sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE z0_db TO z0_user;"
+
+# Clone du projet
+cd /var/www
+git clone https://github.com/your-repo/z0-optician.git
+cd z0-optician
+
+# Backend
+cd server
 cp .env.example .env
+nano .env  # Configurer les variables
+npm install
+npm run build
 
-# Edit .env with your production values
-nano .env
+# Frontend
+cd ../client
+cp .env.example .env.local
+nano .env.local
+npm install
+npm run build
 
-# Build and start all services
-docker-compose up -d
-
-# View logs
-docker-compose logs -f
-
-# Stop services
-docker-compose down
-```
-
-### Option 3: Traditional Deployment
-
-#### Step 1: Environment Setup
-
-```bash
-# Install dependencies
-make install
-
-# Or manually:
-cd server && npm install
-cd ../client && npm install
-```
-
-#### Step 2: Database Setup
-
-```bash
-createdb optician_db
-
-cd server
-npx prisma migrate dev
-npx prisma db seed  # Optional: Add demo data
-```
-
-#### Step 3: Production Build
-
-```bash
-# Run deployment script
-./scripts/deploy.sh production
-
-# Or manually:
-cd server && npm run build
-cd ../client && npm run build
-```
-
-#### Step 4: Start Production Server
-
-```bash
-# Start backend
-cd server
-npm start
-
-# Start frontend (in another terminal)
-cd client
-npm start
-```
-
-### Production Checklist
-
-- [ ] Environment variables configured
-- [ ] Database migrated and seeded
-- [ ] JWT_SECRET is strong and unique
-- [ ] SSL/TLS certificates installed
-- [ ] Domain configured and DNS propagated
-- [ ] Email service configured (Resend)
-- [ ] Health check endpoint accessible (`/api/health`)
-- [ ] Automated backups configured
-- [ ] Monitoring and logging set up
-- [ ] Security headers configured
-
-### Environment Variables for Production
-
-**Server (.env)**:
-```env
-NODE_ENV=production
-DATABASE_URL="postgresql://user:password@localhost:5432/optician_db?schema=public"
-JWT_SECRET="your-super-secret-jwt-key-min-32-chars"
-RESEND_API_KEY="your-resend-api-key"
-CLIENT_URL="https://your-domain.com"
-PORT=8080
-```
-
-**Client (.env.local)**:
-```env
-NEXT_PUBLIC_API_URL="https://your-domain.com/api"
-```
-
-### Using PM2 for Process Management
-
-```bash
-# Install PM2 globally
-npm install -g pm2
-
-# Create ecosystem file
-cat > ecosystem.config.js << 'EOF'
-module.exports = {
-  apps: [
-    {
-      name: 'optician-backend',
-      cwd: './server',
-      script: './dist/main.js',
-      instances: 1,
-      autorestart: true,
-      watch: false,
-      max_memory_restart: '1G',
-      env: {
-        NODE_ENV: 'production',
-        PORT: 8080
-      },
-      error_file: './logs/backend-error.log',
-      out_file: './logs/backend-out.log',
-      log_date_format: 'YYYY-MM-DD HH:mm:ss Z'
-    },
-    {
-      name: 'optician-frontend',
-      cwd: './client',
-      script: 'npm',
-      args: 'start',
-      instances: 1,
-      autorestart: true,
-      watch: false,
-      max_memory_restart: '512M',
-      env: {
-        NODE_ENV: 'production',
-        PORT: 3000
-      },
-      error_file: './logs/frontend-error.log',
-      out_file: './logs/frontend-out.log',
-      log_date_format: 'YYYY-MM-DD HH:mm:ss Z'
-    }
-  ]
-};
-EOF
-
-# Start with PM2
-pm2 start ecosystem.config.js
-
-# Save PM2 config
-pm2 save
-
-# Setup startup script
-pm2 startup
-```
-
-### SSL/HTTPS Configuration
-
-For production, always use HTTPS. Options:
-
-1. **Using Nginx as Reverse Proxy**:
-```nginx
+# Configuration Nginx
+cat > /etc/nginx/sites-available/z0 << 'EOF'
 server {
-    listen 443 ssl http2;
+    listen 80;
     server_name your-domain.com;
-
-    ssl_certificate /path/to/cert.pem;
-    ssl_certificate_key /path/to/key.pem;
-
-    location /api {
-        proxy_pass http://localhost:8080;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-    }
 
     location / {
         proxy_pass http://localhost:3000;
@@ -436,147 +361,142 @@ server {
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
         proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
+    }
+
+    location /api {
+        proxy_pass http://localhost:8080;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
     }
 }
-```
-
-2. **Using Let's Encrypt (Certbot)**:
-```bash
-# Install Certbot
-sudo apt install certbot python3-certbot-nginx
-
-# Obtain certificate
-sudo certbot --nginx -d your-domain.com
-
-# Auto-renewal
-sudo certbot renew --dry-run
-```
-
-### Backup Strategy
-
-```bash
-# Create backup script
-cat > backup.sh << 'EOF'
-#!/bin/bash
-BACKUP_DIR="/backups/$(date +%Y%m%d_%H%M%S)"
-mkdir -p $BACKUP_DIR
-
-# Database backup
-pg_dump optician_db > $BACKUP_DIR/database.sql
-
-# File backup
-tar -czf $BACKUP_DIR/uploads.tar.gz ./server/uploads
-
-# Upload to S3 or remote storage
-aws s3 sync $BACKUP_DIR s3://your-backup-bucket/optician-pro/
 EOF
 
-chmod +x backup.sh
+ln -s /etc/nginx/sites-available/z0 /etc/nginx/sites-enabled/
+nginx -t
+systemctl restart nginx
 
-# Add to crontab (daily at 2 AM)
-0 2 * * * /path/to/backup.sh
+# PM2 pour garder les services actifs
+npm install -g pm2
+cd /var/www/z0-optician/server
+pm2 start npm --name "z0-server" -- run start
+cd /var/www/z0-optician/client
+pm2 start npm --name "z0-client" -- run start
+pm2 save
 ```
-
-## 🧪 Testing
-
-Optician Pro uses Test-Driven Development (TDD) with comprehensive test coverage.
-
-### Running Tests
-
-```bash
-# Run all tests
-make test
-
-# Backend tests only
-cd server && npm test
-
-# Frontend tests only
-cd client && npm test
-
-# E2E tests
-cd client && npm run test:e2e
-
-# With coverage
-make test-coverage
-```
-
-### Test Coverage
-
-- **Backend**: 80%+ coverage target with Jest
-- **Frontend**: 70%+ coverage target with Vitest
-- **E2E**: Complete user workflows with Playwright
-
-See [Testing Guide](docs/docs/dev/testing.md) for detailed information.
-
-## 📚 Documentation
-
-Comprehensive documentation is available via Docusaurus:
-
-```bash
-cd docs
-npm install
-npm start
-```
-
-Visit http://localhost:3001
-
-### Documentation includes:
-- Getting Started guide
-- User Guide (Dashboard, Customers, Products, etc.)
-- Development guides (Architecture, API, Testing)
-- API Reference
-- Deployment guides
-
-## 📊 Schéma de Base de Données
-
-![Database Schema](https://via.placeholder.com/800x600?text=PostgreSQL+Schema)
-
-### Principales Entités
-
-- **Users**: Gestion des utilisateurs et rôles
-- **Customers**: Informations clients
-- **Products**: Catalogue produits avec suivi de stock
-- **Quotes**: Devis avec ligne de produits
-- **Invoices**: Factures avec paiements
-- **Prescriptions**: Ordonnances optiques
-
-## 🎯 Roadmap
-
-### MVP Actuel ✅
-- [x] Migration PostgreSQL + Prisma
-- [x] Multi-langue (FR/EN)
-- [x] Gestion clients
-- [x] Gestion devis
-- [x] Gestion factures avec paiements
-- [x] Gestion ordonnances
-- [x] Suivi de stock avancé
-- [x] Tableau de bord avec rapports
-
-### Phase 2 (À venir)
-- [ ] Système de rendez-vous
-- [ ] Examens de la vue
-- [ ] Commandes laboratoire
-- [ ] Garanties et réparations
-- [ ] Intégration assurance
-- [ ] Application mobile
-- [ ] Scanner de code-barres
-
-## 🤝 Contribution
-
-Les contributions sont les bienvenues! Voir [CONTRIBUTING.md](CONTRIBUTING.md) pour les guidelines.
-
-## 📄 License
-
-Ce projet est sous licence MIT. Voir [LICENSE](LICENSE) pour plus de détails.
-
-## 📞 Support
-
-Pour toute question ou problème:
-- Ouvrir une issue sur GitHub
-- Consulter la documentation Prisma: https://prisma.io/docs
-- Consulter la documentation Next.js: https://nextjs.org/docs
 
 ---
 
-**Développé avec ❤️ pour les opticiens**
+### Option 5: Doker avec Coolify/Portainer
+
+```dockerfile
+# server/Dockerfile
+FROM node:20-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+RUN npx prisma generate
+RUN npm run build
+EXPOSE 8080
+CMD ["npm", "run", "start"]
+```
+
+```dockerfile
+# client/Dockerfile
+FROM node:20-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+ENV NEXT_PUBLIC_API_URL=/api
+RUN npm run build
+EXPOSE 3000
+CMD ["npm", "run", "start"]
+```
+
+---
+
+## 🔧 Configuration Production
+
+### Variables obligatoires
+
+| Variable | Description | Exemple |
+|----------|-------------|---------|
+| `DATABASE_URL` | Connection PostgreSQL | `postgresql://user:pass@host:5432/db` |
+| `JWT_SECRET` | Clé secrète JWT (32+ chars) | `your-secret-key` |
+| `CLIENT_URL` | URL du frontend | `https://z0.yourdomain.com` |
+| `NODE_ENV` | Environment | `production` |
+| `PORT` | Port du serveur | `8080` |
+| `NEXT_PUBLIC_API_URL` | URL API pour le frontend | `https://api.yourdomain.com` |
+
+### Checklist Déploiement
+
+- [ ] Base de données PostgreSQL créée
+- [ ] Variables d'environnement configurées
+- [ ] Migrations Prisma exécutées
+- [ ] Build réussi (server + client)
+- [ ] Domain configuré
+- [ ] SSL/HTTPS activé (Let's Encrypt)
+- [ ] Health check fonctionnel (`/api/health`)
+- [ ] Logs configurés
+
+---
+
+## 📁 Structure du Projet
+
+```
+z0-optician/
+├── server/                 # Backend API
+│   ├── prisma/
+│   │   └── schema.prisma  # Schéma BDD
+│   ├── src/
+│   │   ├── modules/      # Routes API
+│   │   ├── lib/         # Utilitaires
+│   │   └── index.ts     # Point d'entrée
+│   └── package.json
+│
+├── client/                # Frontend Next.js
+│   ├── src/
+│   │   ├── pages/       # Pages
+│   │   ├── components/  # Composants
+│   │   ├── redux/      # State management
+│   │   └── styles/      # CSS
+│   ├── public/
+│   │   └── locales/    # Traductions (fr/en)
+│   └── package.json
+│
+├── docs/                  # Documentation
+└── docker-compose.yml    # Docker config
+```
+
+---
+
+## 🧪 Testing
+
+```bash
+# Tous les tests
+make test
+
+# Backend uniquement
+cd server && npm test
+
+# Frontend uniquement  
+cd client && npm test
+```
+
+---
+
+## 📄 License
+
+MIT License - voir [LICENSE](LICENSE)
+
+---
+
+## 🆘 Support
+
+- Issues GitHub
+- Documentation dans `/docs`
+
+---
+
+**Développé avec ❤️ pour les opticiens - Z-0**
