@@ -6,8 +6,32 @@ import { InvoiceRoutes } from './modules/invoice/invoice.route';
 import { PrescriptionRoutes } from './modules/prescription/prescription.route';
 import { ReportRoutes } from './modules/report/report.route';
 import { UserRoutes } from './modules/user/user.route';
+import { prisma } from './lib/prisma';
 
 const router = Router();
+
+// Health check endpoint
+router.get('/health', async (req, res) => {
+  try {
+    // Check database connection
+    await prisma.$queryRaw`SELECT 1`;
+
+    res.status(200).json({
+      status: 'healthy',
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime(),
+      database: 'connected',
+      version: process.env.npm_package_version || '1.0.0',
+    });
+  } catch (error) {
+    res.status(503).json({
+      status: 'unhealthy',
+      timestamp: new Date().toISOString(),
+      database: 'disconnected',
+      error: 'Database connection failed',
+    });
+  }
+});
 
 router.use('/', UserRoutes);
 router.use('/customers', CustomerRoutes);

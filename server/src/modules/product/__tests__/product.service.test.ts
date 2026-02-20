@@ -32,7 +32,7 @@ describe('Product Service', () => {
     gender: 'unisex',
     templeLength: 140,
     bridgeSize: 14,
-    hingeType: 'standard',
+    hingeType: 'standard' as const,
     supplierName: 'Luxottica France',
     supplierContact: 'contact@luxottica.fr',
     location: 'A1-B2',

@@ -240,6 +240,244 @@ Pour activer l'envoi d'emails:
 3. Ajouter à `server/.env`
 4. Vérifier votre domaine dans le dashboard Resend
 
+## 🚀 Deployment
+
+### Option 1: Automated Setup (Recommended for Development)
+
+```bash
+# Run the setup script
+./scripts/setup.sh
+
+# This will:
+# - Check prerequisites (Node.js, PostgreSQL)
+# - Create environment files
+# - Install dependencies
+# - Set up the database
+# - Configure Git hooks (optional)
+```
+
+### Option 2: Docker Deployment (Recommended for Production)
+
+```bash
+# Create environment file
+cp .env.example .env
+
+# Edit .env with your production values
+nano .env
+
+# Build and start all services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop services
+docker-compose down
+```
+
+### Option 3: Traditional Deployment
+
+#### Step 1: Environment Setup
+
+```bash
+# Install dependencies
+make install
+
+# Or manually:
+cd server && npm install
+cd ../client && npm install
+```
+
+#### Step 2: Database Setup
+
+```bash
+createdb optician_db
+
+cd server
+npx prisma migrate dev
+npx prisma db seed  # Optional: Add demo data
+```
+
+#### Step 3: Production Build
+
+```bash
+# Run deployment script
+./scripts/deploy.sh production
+
+# Or manually:
+cd server && npm run build
+cd ../client && npm run build
+```
+
+#### Step 4: Start Production Server
+
+```bash
+# Start backend
+cd server
+npm start
+
+# Start frontend (in another terminal)
+cd client
+npm start
+```
+
+### Production Checklist
+
+- [ ] Environment variables configured
+- [ ] Database migrated and seeded
+- [ ] JWT_SECRET is strong and unique
+- [ ] SSL/TLS certificates installed
+- [ ] Domain configured and DNS propagated
+- [ ] Email service configured (Resend)
+- [ ] Health check endpoint accessible (`/api/health`)
+- [ ] Automated backups configured
+- [ ] Monitoring and logging set up
+- [ ] Security headers configured
+
+### Environment Variables for Production
+
+**Server (.env)**:
+```env
+NODE_ENV=production
+DATABASE_URL="postgresql://user:password@localhost:5432/optician_db?schema=public"
+JWT_SECRET="your-super-secret-jwt-key-min-32-chars"
+RESEND_API_KEY="your-resend-api-key"
+CLIENT_URL="https://your-domain.com"
+PORT=8080
+```
+
+**Client (.env.local)**:
+```env
+NEXT_PUBLIC_API_URL="https://your-domain.com/api"
+```
+
+### Using PM2 for Process Management
+
+```bash
+# Install PM2 globally
+npm install -g pm2
+
+# Create ecosystem file
+cat > ecosystem.config.js << 'EOF'
+module.exports = {
+  apps: [
+    {
+      name: 'optician-backend',
+      cwd: './server',
+      script: './dist/main.js',
+      instances: 1,
+      autorestart: true,
+      watch: false,
+      max_memory_restart: '1G',
+      env: {
+        NODE_ENV: 'production',
+        PORT: 8080
+      },
+      error_file: './logs/backend-error.log',
+      out_file: './logs/backend-out.log',
+      log_date_format: 'YYYY-MM-DD HH:mm:ss Z'
+    },
+    {
+      name: 'optician-frontend',
+      cwd: './client',
+      script: 'npm',
+      args: 'start',
+      instances: 1,
+      autorestart: true,
+      watch: false,
+      max_memory_restart: '512M',
+      env: {
+        NODE_ENV: 'production',
+        PORT: 3000
+      },
+      error_file: './logs/frontend-error.log',
+      out_file: './logs/frontend-out.log',
+      log_date_format: 'YYYY-MM-DD HH:mm:ss Z'
+    }
+  ]
+};
+EOF
+
+# Start with PM2
+pm2 start ecosystem.config.js
+
+# Save PM2 config
+pm2 save
+
+# Setup startup script
+pm2 startup
+```
+
+### SSL/HTTPS Configuration
+
+For production, always use HTTPS. Options:
+
+1. **Using Nginx as Reverse Proxy**:
+```nginx
+server {
+    listen 443 ssl http2;
+    server_name your-domain.com;
+
+    ssl_certificate /path/to/cert.pem;
+    ssl_certificate_key /path/to/key.pem;
+
+    location /api {
+        proxy_pass http://localhost:8080;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+
+2. **Using Let's Encrypt (Certbot)**:
+```bash
+# Install Certbot
+sudo apt install certbot python3-certbot-nginx
+
+# Obtain certificate
+sudo certbot --nginx -d your-domain.com
+
+# Auto-renewal
+sudo certbot renew --dry-run
+```
+
+### Backup Strategy
+
+```bash
+# Create backup script
+cat > backup.sh << 'EOF'
+#!/bin/bash
+BACKUP_DIR="/backups/$(date +%Y%m%d_%H%M%S)"
+mkdir -p $BACKUP_DIR
+
+# Database backup
+pg_dump optician_db > $BACKUP_DIR/database.sql
+
+# File backup
+tar -czf $BACKUP_DIR/uploads.tar.gz ./server/uploads
+
+# Upload to S3 or remote storage
+aws s3 sync $BACKUP_DIR s3://your-backup-bucket/optician-pro/
+EOF
+
+chmod +x backup.sh
+
+# Add to crontab (daily at 2 AM)
+0 2 * * * /path/to/backup.sh
+```
+
 ## 🧪 Testing
 
 Optician Pro uses Test-Driven Development (TDD) with comprehensive test coverage.
