@@ -39,7 +39,6 @@ describe('Installment Service', () => {
             quantity: 1,
             unitPrice: 500,
             discount: 0,
-            total: 500,
           },
         ],
         taxRate: 20,

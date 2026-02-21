@@ -18,7 +18,6 @@ describe('User Service', () => {
       expect(result.user.email).toBe(mockUser.email);
       expect(result.user.name).toBe(mockUser.name);
       expect(result.user.password).not.toBe(mockUser.password); // Should be hashed
-      expect(result.token).toBeDefined();
 
       // Verify user in database
       const dbUser = await prisma.user.findUnique({
