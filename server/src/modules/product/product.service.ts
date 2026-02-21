@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import { syncService } from '@/lib/sync';
 import { TJwtPayload } from '../user/user.interface';
 import { BulkDeletePayload, Product, ProductUpdate, Query } from './product.interface';
 
@@ -28,6 +29,14 @@ export async function add(payload: Product, userId: string) {
       },
     });
   }
+
+  // Queue sync operation
+  await syncService.queueOperation({
+    operation: 'CREATE',
+    tableName: 'products',
+    recordId: product.id,
+    data: product,
+  });
 
   return product;
 }
@@ -135,6 +144,14 @@ export async function update(
     });
   }
 
+  // Queue sync operation
+  await syncService.queueOperation({
+    operation: 'UPDATE',
+    tableName: 'products',
+    recordId: productId,
+    data: updatedProduct,
+  });
+
   return updatedProduct;
 }
 
@@ -146,10 +163,19 @@ export async function remove(productId: string, jwtPayload: TJwtPayload) {
   }
 
   // Soft delete by setting isActive to false
-  return prisma.product.update({
+  const result = await prisma.product.update({
     where: { id: productId },
     data: { isActive: false, quantity: 0 },
   });
+
+  // Queue sync operation
+  await syncService.queueOperation({
+    operation: 'DELETE',
+    tableName: 'products',
+    recordId: productId,
+  });
+
+  return result;
 }
 
 export async function bulkDelete(
@@ -165,10 +191,21 @@ export async function bulkDelete(
   }
 
   // Soft delete
-  return prisma.product.updateMany({
+  const result = await prisma.product.updateMany({
     where,
     data: { isActive: false, quantity: 0 },
   });
+
+  // Queue sync operations for each deleted product
+  for (const productId of payload.productIds) {
+    await syncService.queueOperation({
+      operation: 'DELETE',
+      tableName: 'products',
+      recordId: productId,
+    });
+  }
+
+  return result;
 }
 
 export async function getLowStock(jwtPayload: TJwtPayload) {

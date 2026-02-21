@@ -1,3 +1,6 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -6,6 +9,12 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+// For local/offline development, uncomment below and use SQLite:
+// datasource db {
+//   provider = "sqlite"
+//   url      = "file:./dev.db"
+// }
 
 model User {
   id        String     @id @default(uuid())
@@ -392,4 +401,38 @@ enum PaymentStatus {
   PARTIAL
   OVERDUE
   WAIVED
+}
+
+// ============================================
+// Sync Queue - For Offline-First Architecture
+// ============================================
+
+model SyncQueue {
+  id          String      @id @default(uuid())
+  operation   SyncOperation  // CREATE, UPDATE, DELETE
+  tableName   String
+  recordId    String
+  data        String?     // JSON stringified data for CREATE/UPDATE
+  createdAt   DateTime    @default(now())
+  syncedAt    DateTime?   // When the change was synced to remote
+  status      SyncStatus  @default(PENDING)
+  error       String?     // Error message if sync failed
+  retryCount Int         @default(0)
+  
+  @@index([status, createdAt])
+  @@map("sync_queue")
+}
+
+enum SyncOperation {
+  CREATE
+  UPDATE
+  DELETE
+}
+
+enum SyncStatus {
+  PENDING
+  SYNCING
+  SYNCED
+  FAILED
+  CONFLICT
 }

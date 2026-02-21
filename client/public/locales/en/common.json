@@ -300,5 +300,17 @@
       "duplicate": "Duplicate",
       "delete": "Delete"
     }
+  },
+  "sync": {
+    "online": "Online",
+    "offline": "Offline",
+    "pending": "{{count}} pending",
+    "synced": "Synced",
+    "failed": "{{count}} failed",
+    "lastSynced": "Last synced: {{date}}",
+    "syncNow": "Sync Now",
+    "syncing": "Syncing...",
+    "offlineNotice": "Changes will sync when online",
+    "offlineChanges": "You have {{count}} offline changes"
   }
 }

@@ -7,6 +7,7 @@ import { PrescriptionRoutes } from './modules/prescription/prescription.route';
 import { ReportRoutes } from './modules/report/report.route';
 import { UserRoutes } from './modules/user/user.route';
 import { InstallmentRoutes } from './modules/installment/installment.route';
+import SyncRoutes from './modules/sync/sync.route';
 import { prisma } from './lib/prisma';
 
 const router = Router();
@@ -42,5 +43,6 @@ router.use('/invoices', InvoiceRoutes);
 router.use('/prescriptions', PrescriptionRoutes);
 router.use('/reports', ReportRoutes);
 router.use('/installments', InstallmentRoutes);
+router.use('/sync', SyncRoutes);
 
 export default router;

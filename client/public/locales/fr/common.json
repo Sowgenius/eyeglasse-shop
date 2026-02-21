@@ -300,5 +300,17 @@
       "duplicate": "Dupliquer",
       "delete": "Supprimer"
     }
+  },
+  "sync": {
+    "online": "En ligne",
+    "offline": "Hors ligne",
+    "pending": "{{count}} en attente",
+    "synced": "Synchronisé",
+    "failed": "{{count}} échoué",
+    "lastSynced": "Dernière sync: {{date}}",
+    "syncNow": "Synchroniser",
+    "syncing": "Synchronisation...",
+    "offlineNotice": "Les modifications seront synchronisées quand en ligne",
+    "offlineChanges": "Vous avez {{count}} modifications hors ligne"
   }
 }

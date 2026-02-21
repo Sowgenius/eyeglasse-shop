@@ -1,15 +1,26 @@
 import { prisma } from '@/lib/prisma';
+import { syncService } from '@/lib/sync';
 import { TJwtPayload } from '../user/user.interface';
 import { Customer, CustomerUpdate, Query } from './customer.interface';
 
 export async function create(payload: Customer, userId: string) {
-  return prisma.customer.create({
+  const customer = await prisma.customer.create({
     data: {
       ...payload,
       userId,
       birthDate: payload.birthDate ? new Date(payload.birthDate) : null,
     },
   });
+
+  // Queue sync operation
+  await syncService.queueOperation({
+    operation: 'CREATE',
+    tableName: 'customers',
+    recordId: customer.id,
+    data: customer,
+  });
+
+  return customer;
 }
 
 export async function getAll(query: Query, jwtPayload: TJwtPayload) {
@@ -103,10 +114,20 @@ export async function update(
     data.birthDate = new Date(payload.birthDate);
   }
 
-  return prisma.customer.update({
+  const customer = await prisma.customer.update({
     where: { id: customerId },
     data,
   });
+
+  // Queue sync operation
+  await syncService.queueOperation({
+    operation: 'UPDATE',
+    tableName: 'customers',
+    recordId: customerId,
+    data: customer,
+  });
+
+  return customer;
 }
 
 export async function remove(customerId: string, jwtPayload: TJwtPayload) {
@@ -116,7 +137,16 @@ export async function remove(customerId: string, jwtPayload: TJwtPayload) {
     where.userId = jwtPayload.userId;
   }
 
-  return prisma.customer.delete({
+  const result = await prisma.customer.delete({
     where: { id: customerId },
   });
+
+  // Queue sync operation
+  await syncService.queueOperation({
+    operation: 'DELETE',
+    tableName: 'customers',
+    recordId: customerId,
+  });
+
+  return result;
 }
