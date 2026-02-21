@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import { syncService } from '@/lib/sync';
 import { TJwtPayload } from '../user/user.interface';
 import {
   CreateInstallmentPlan,
@@ -112,6 +113,75 @@ export async function createPlan(
       });
       payments.push(payment);
     }
+
+    return { plan, payments };
+  });
+}
+
+export async function createPlan(
+  payload: CreateInstallmentPlan,
+  userId: string
+) {
+  const planNumber = await getNextPlanNumber();
+  const invoice = await prisma.invoice.findUnique({
+    where: { id: payload.invoiceId },
+    include: { customer: true },
+  });
+
+  if (!invoice) {
+    throw new Error('Invoice not found');
+  }
+
+  // Calculate payment amount
+  const paymentAmount = payload.totalAmount / payload.numPayments;
+
+  return prisma.$transaction(async (tx) => {
+    // Create installment plan
+    const plan = await tx.installmentPlan.create({
+      data: {
+        planNumber,
+        invoiceId: payload.invoiceId,
+        customerId: invoice.customerId,
+        totalAmount: payload.totalAmount,
+        numPayments: payload.numPayments,
+        paymentAmount,
+        frequency: payload.frequency,
+        startDate: new Date(payload.startDate),
+        lateFeePercent: payload.lateFeePercent || 0,
+        notes: payload.notes,
+        userId,
+      },
+    });
+
+    // Create scheduled payments
+    const payments = [];
+    for (let i = 1; i <= payload.numPayments; i++) {
+      const dueDate = calculateDueDate(
+        new Date(payload.startDate),
+        i,
+        payload.frequency
+      );
+
+      const payment = await tx.installmentPayment.create({
+        data: {
+          installmentPlanId: plan.id,
+          paymentNumber: i,
+          dueDate,
+          amount: paymentAmount,
+          totalAmount: paymentAmount,
+          status: 'PENDING',
+        },
+      });
+      payments.push(payment);
+    }
+
+    // Queue sync operation for plan
+    await syncService.queueOperation({
+      operation: 'CREATE',
+      tableName: 'installment_plans',
+      recordId: plan.id,
+      data: plan,
+    });
 
     return { plan, payments };
   });
@@ -299,6 +369,14 @@ export async function makePayment(
       },
     });
 
+    // Queue sync operation for payment
+    await syncService.queueOperation({
+      operation: 'UPDATE',
+      tableName: 'installment_payments',
+      recordId: paymentId,
+      data: updatedPayment,
+    });
+
     return updatedPayment;
   });
 }
@@ -367,10 +445,20 @@ export async function cancelPlan(planId: string, jwtPayload: TJwtPayload) {
     });
 
     // Cancel the plan
-    return tx.installmentPlan.update({
+    const cancelledPlan = await tx.installmentPlan.update({
       where: { id: planId },
       data: { status: 'CANCELLED' },
     });
+
+    // Queue sync operation
+    await syncService.queueOperation({
+      operation: 'UPDATE',
+      tableName: 'installment_plans',
+      recordId: planId,
+      data: cancelledPlan,
+    });
+
+    return cancelledPlan;
   });
 }
 
@@ -385,7 +473,7 @@ export async function updatePlan(
     where.userId = jwtPayload.userId;
   }
 
-  return prisma.installmentPlan.update({
+  const plan = await prisma.installmentPlan.update({
     where: { id: planId },
     data: payload,
     include: {
@@ -393,4 +481,14 @@ export async function updatePlan(
       customer: true,
     },
   });
+
+  // Queue sync operation
+  await syncService.queueOperation({
+    operation: 'UPDATE',
+    tableName: 'installment_plans',
+    recordId: planId,
+    data: plan,
+  });
+
+  return plan;
 }

@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import { syncService } from '@/lib/sync';
 import { TJwtPayload } from '../user/user.interface';
 import { Quote, QuoteUpdate } from './quote.interface';
 
@@ -41,7 +42,7 @@ export async function create(payload: Quote, userId: string) {
   const taxAmount = subtotal * (payload.taxRate / 100);
   const total = subtotal + taxAmount;
 
-  return prisma.quote.create({
+  const quote = await prisma.quote.create({
     data: {
       quoteNumber,
       customerId: payload.customerId,
@@ -70,6 +71,16 @@ export async function create(payload: Quote, userId: string) {
       customer: true,
     },
   });
+
+  // Queue sync operation
+  await syncService.queueOperation({
+    operation: 'CREATE',
+    tableName: 'quotes',
+    recordId: quote.id,
+    data: quote,
+  });
+
+  return quote;
 }
 
 export async function getAll(query: any, jwtPayload: TJwtPayload) {
@@ -232,7 +243,7 @@ export async function update(
       });
     }
 
-    return tx.quote.update({
+    const updatedQuote = await tx.quote.update({
       where: { id: quoteId },
       data: updateData,
       include: {
@@ -240,6 +251,16 @@ export async function update(
         customer: true,
       },
     });
+
+    // Queue sync operation
+    await syncService.queueOperation({
+      operation: 'UPDATE',
+      tableName: 'quotes',
+      recordId: quoteId,
+      data: updatedQuote,
+    });
+
+    return updatedQuote;
   });
 }
 
@@ -250,9 +271,18 @@ export async function remove(quoteId: string, jwtPayload: TJwtPayload) {
     where.userId = jwtPayload.userId;
   }
 
-  return prisma.quote.delete({
+  const result = await prisma.quote.delete({
     where: { id: quoteId },
   });
+
+  // Queue sync operation
+  await syncService.queueOperation({
+    operation: 'DELETE',
+    tableName: 'quotes',
+    recordId: quoteId,
+  });
+
+  return result;
 }
 
 export async function convertToInvoice(quoteId: string, userId: string) {

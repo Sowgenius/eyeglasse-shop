@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import { syncService } from '@/lib/sync';
 import { TJwtPayload } from '../user/user.interface';
 import { Invoice, InvoiceUpdate, Payment } from './invoice.interface';
 
@@ -120,6 +121,14 @@ export async function create(payload: Invoice, userId: string) {
       }
     }
 
+    // Queue sync operation
+    await syncService.queueOperation({
+      operation: 'CREATE',
+      tableName: 'invoices',
+      recordId: invoice.id,
+      data: invoice,
+    });
+
     return invoice;
   });
 }
@@ -228,7 +237,7 @@ export async function update(
     data.dueDate = new Date(payload.dueDate);
   }
 
-  return prisma.invoice.update({
+  const invoice = await prisma.invoice.update({
     where: { id: invoiceId },
     data,
     include: {
@@ -237,6 +246,16 @@ export async function update(
       payments: true,
     },
   });
+
+  // Queue sync operation
+  await syncService.queueOperation({
+    operation: 'UPDATE',
+    tableName: 'invoices',
+    recordId: invoiceId,
+    data: invoice,
+  });
+
+  return invoice;
 }
 
 export async function remove(invoiceId: string, jwtPayload: TJwtPayload) {
@@ -289,7 +308,16 @@ export async function remove(invoiceId: string, jwtPayload: TJwtPayload) {
     // Delete invoice and related data
     await tx.payment.deleteMany({ where: { invoiceId } });
     await tx.invoiceItem.deleteMany({ where: { invoiceId } });
-    return tx.invoice.delete({ where: { id: invoiceId } });
+    const deletedInvoice = await tx.invoice.delete({ where: { id: invoiceId } });
+
+    // Queue sync operation
+    await syncService.queueOperation({
+      operation: 'DELETE',
+      tableName: 'invoices',
+      recordId: invoiceId,
+    });
+
+    return deletedInvoice;
   });
 }
 
@@ -347,6 +375,14 @@ export async function addPayment(
         payments: true,
         customer: true,
       },
+    });
+
+    // Queue sync operation
+    await syncService.queueOperation({
+      operation: 'UPDATE',
+      tableName: 'invoices',
+      recordId: invoiceId,
+      data: updatedInvoice,
     });
 
     return updatedInvoice;

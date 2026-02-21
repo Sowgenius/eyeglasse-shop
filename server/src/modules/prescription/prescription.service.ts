@@ -1,9 +1,10 @@
 import { prisma } from '@/lib/prisma';
+import { syncService } from '@/lib/sync';
 import { TJwtPayload } from '../user/user.interface';
 import { Prescription, PrescriptionUpdate } from './prescription.interface';
 
 export async function create(payload: Prescription, userId: string) {
-  return prisma.prescription.create({
+  const prescription = await prisma.prescription.create({
     data: {
       customerId: payload.customerId,
       userId,
@@ -33,6 +34,16 @@ export async function create(payload: Prescription, userId: string) {
       },
     },
   });
+
+  // Queue sync operation
+  await syncService.queueOperation({
+    operation: 'CREATE',
+    tableName: 'prescriptions',
+    recordId: prescription.id,
+    data: prescription,
+  });
+
+  return prescription;
 }
 
 export async function getAll(query: any, jwtPayload: TJwtPayload) {
@@ -124,7 +135,7 @@ export async function update(
     data.expiryDate = new Date(payload.expiryDate);
   }
 
-  return prisma.prescription.update({
+  const prescription = await prisma.prescription.update({
     where: { id: prescriptionId },
     data,
     include: {
@@ -136,6 +147,16 @@ export async function update(
       },
     },
   });
+
+  // Queue sync operation
+  await syncService.queueOperation({
+    operation: 'UPDATE',
+    tableName: 'prescriptions',
+    recordId: prescriptionId,
+    data: prescription,
+  });
+
+  return prescription;
 }
 
 export async function remove(prescriptionId: string, jwtPayload: TJwtPayload) {
@@ -145,7 +166,16 @@ export async function remove(prescriptionId: string, jwtPayload: TJwtPayload) {
     where.userId = jwtPayload.userId;
   }
 
-  return prisma.prescription.delete({
+  const result = await prisma.prescription.delete({
     where: { id: prescriptionId },
   });
+
+  // Queue sync operation
+  await syncService.queueOperation({
+    operation: 'DELETE',
+    tableName: 'prescriptions',
+    recordId: prescriptionId,
+  });
+
+  return result;
 }
