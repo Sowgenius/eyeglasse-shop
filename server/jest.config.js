@@ -9,12 +9,15 @@ module.exports = {
   },
   moduleNameMapper: {
     '^@utils$': '<rootDir>/src/utils',
+    '^@config$': '<rootDir>/src/config',
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@middlewares/(.*)$': '<rootDir>/src/middlewares/$1',
     '^@modules/(.*)$': '<rootDir>/src/modules/$1',
     '^@utils/(.*)$': '<rootDir>/src/utils/$1',
     '^@config/(.*)$': '<rootDir>/src/config/$1',
     '^@lib/(.*)$': '<rootDir>/src/lib/$1',
+    '^@helpers/(.*)$': '<rootDir>/src/helpers/$1',
+    '^@interface/(.*)$': '<rootDir>/src/interface/$1',
   },
   setupFilesAfterEnv: ['<rootDir>/src/__tests__/setup.ts'],
   collectCoverageFrom: [
