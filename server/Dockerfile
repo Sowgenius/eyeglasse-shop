@@ -8,11 +8,11 @@ RUN apk add --no-cache openssl
 WORKDIR /app
 
 # Copy package files
-COPY package*.json ./
+COPY package*.json pnpm-lock.yaml ./
 COPY prisma ./prisma/
 
-# Install dependencies
-RUN npm ci
+# Install dependencies using pnpm
+RUN npm install -g pnpm && pnpm install --frozen-lockfile
 
 # Generate Prisma Client
 RUN npx prisma generate
@@ -21,10 +21,10 @@ RUN npx prisma generate
 COPY . .
 
 # Build TypeScript
-RUN npm run build
+RUN pnpm run build
 
 # Remove dev dependencies
-RUN npm prune --production
+RUN pnpm prune --production
 
 # Expose port
 EXPOSE 8080
