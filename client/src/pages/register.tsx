@@ -56,7 +56,7 @@ export default function Register() {
               </p>
             </div>
 
-            {error && <AlertDestructive message={error} />}
+            {error && <AlertDestructive>{error}</AlertDestructive>}
             
             {success && (
               <Alert className="border-green-500/50 text-green-700 bg-green-50">

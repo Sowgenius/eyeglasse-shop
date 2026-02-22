@@ -55,7 +55,7 @@ export function AddProduct() {
 
                 const imageSrc = await handleImageUpload(image, setProgress);
 
-                await addProduct({ ...rest, imageSrc });
+                await addProduct({ ...rest, imageSrc } as any);
 
                 setIsOpen(false);
                 setIsLoading(false);
@@ -63,7 +63,7 @@ export function AddProduct() {
               })}
               className="grid gap-3"
             >
-              <ProductFormFields form={form} isLoading={isLoading} />
+              <ProductFormFields form={form as any} isLoading={isLoading} />
 
               <Button
                 disabled={isLoading}

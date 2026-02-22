@@ -49,7 +49,7 @@ export default function LoginPage() {
                 {t('auth.enterCredentials')}
               </p>
             </div>
-            {error && <AlertDestructive message={error} />}
+            {error && <AlertDestructive>{error}</AlertDestructive>}
             <LoginForm setError={setError} />
           </div>
         </div>

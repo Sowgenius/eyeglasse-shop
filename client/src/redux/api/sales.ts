@@ -26,18 +26,18 @@ const salesApi = baseApi.injectEndpoints({
         },
       }),
       transformResponse: ({ data }) => data,
-      invalidatesTags: ['products', 'sales', 'transactions'],
+      invalidatesTags: ['products', 'sales', 'transactions'] as any,
     }),
     salesHistory: build.query({
       query: (categorizeBy: string) =>
         `/sales-history?categorize_by=${categorizeBy}`,
       transformResponse: ({ data }: SalesHistoryResponse) => data,
-      providesTags: ['sales'],
+      providesTags: ['sales'] as any,
     }),
     transactions: build.query<TransactionsData[], void>({
       query: () => '/transactions',
       transformResponse: ({ data }: TransactionsResponse) => data,
-      providesTags: ['transactions'],
+      providesTags: ['transactions'] as any,
     }),
   }),
 });

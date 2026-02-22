@@ -1,30 +1,33 @@
 # Frontend Dockerfile
 FROM node:20-alpine
 
+# Install pnpm
+RUN npm install -g pnpm
+
 # Create app directory
 WORKDIR /app
 
 # Copy package files
-COPY package*.json ./
+COPY package*.json pnpm-lock.yaml ./
 
-# Install dependencies
-RUN npm ci
+# Install dependencies using pnpm
+RUN pnpm install --frozen-lockfile
 
 # Copy source code
 COPY . .
 
 # Build Next.js application
-RUN npm run build
+RUN pnpm run build
 
 # Remove dev dependencies
-RUN npm prune --production
+RUN pnpm prune --production
 
 # Expose port
 EXPOSE 3000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=30s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:3000 || exit 1
+# Health check - simple TCP check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+  CMD nc -z localhost 3000 || exit 1
 
 # Start the application
-CMD ["npm", "start"]
+CMD ["pnpm", "start"]

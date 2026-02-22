@@ -13,6 +13,11 @@ const nextConfig = {
       },
     ],
   },
+  // Exclude test files from production build
+  onDemandEntries: {
+    // Exclude test pages
+    exclude: [/\/(__tests__|test)/],
+  },
 };
 
 export default nextConfig;

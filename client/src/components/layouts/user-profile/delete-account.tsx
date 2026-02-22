@@ -79,7 +79,7 @@ export function DeleteAccountModal({ children }: { children: ReactNode }) {
           </div>
 
           {error && 'data' in error && (
-            <AlertDestructive message={(error as any).data.message} />
+            <AlertDestructive>{(error as any).data.message}</AlertDestructive>
           )}
           <D.DialogFooter className="mt-3">
             <Button

@@ -1,8 +1,12 @@
-import { Product } from '@/types/product';
 import { Params } from '@/types/query-params';
 import { baseApi } from '.';
 
-export interface ProductWithStock extends Product {
+export interface ProductWithStock {
+  _id: string;
+  name: string;
+  imageSrc: string;
+  price: number;
+  quantity: number;
   sku: string;
   costPrice?: number;
   reorderPoint: number;

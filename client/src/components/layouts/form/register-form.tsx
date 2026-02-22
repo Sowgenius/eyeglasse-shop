@@ -110,7 +110,7 @@ export function RegisterForm({
 
           {passwordFields.map((name, i) => (
             <PasswordField
-              form={form}
+              form={form as any}
               name={name}
               i={i}
               isLoading={isLoading}
@@ -133,7 +133,7 @@ function PasswordField({
   i,
   isLoading,
 }: {
-  form: UseFormReturn<RegisterPayload, any, undefined>;
+  form: UseFormReturn<any, any, undefined>;
   name: 'password' | 'confirm_password';
   i: number;
   isLoading: boolean;

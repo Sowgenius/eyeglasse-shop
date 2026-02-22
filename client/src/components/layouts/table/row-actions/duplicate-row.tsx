@@ -60,7 +60,7 @@ export function DuplicateRow({ row, children }: DuplicateRowProps) {
                   imageSrc = await handleImageUpload(image, setProgress);
                 }
 
-                await addProduct({ ...rest, imageSrc });
+                await addProduct({ ...rest, imageSrc } as any);
 
                 setIsLoading(false);
                 setIsOpen(false);
@@ -68,7 +68,7 @@ export function DuplicateRow({ row, children }: DuplicateRowProps) {
               className="grid gap-3"
             >
               <ProductFormFields
-                form={form}
+                form={form as any}
                 isLoading={isLoading}
                 defaultImgSrc={row.imageSrc}
               />

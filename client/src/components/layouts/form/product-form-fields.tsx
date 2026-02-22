@@ -29,7 +29,7 @@ import { useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 
 type Props = {
-  form: UseFormReturn<ProductSchema, any, undefined>;
+  form: UseFormReturn<any>;
   isLoading: boolean;
   defaultImgSrc?: string;
 };
