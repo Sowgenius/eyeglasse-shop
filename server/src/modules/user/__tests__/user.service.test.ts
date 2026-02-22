@@ -41,7 +41,12 @@ describe('User Service', () => {
 
   describe('login', () => {
     beforeEach(async () => {
-      await userService.create(mockUser);
+      const user = await userService.create(mockUser);
+      // Approve user for login tests
+      await prisma.user.update({
+        where: { id: user.user.id },
+        data: { status: 'ACTIVE' },
+      });
     });
 
     it('should login with valid credentials', async () => {

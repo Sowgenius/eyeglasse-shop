@@ -152,7 +152,7 @@ describe('Product Service', () => {
         updates
       );
 
-      expect(result?.price).toBe(179.99);
+      expect(result?.price.toString()).toBe('179.99');
       expect(result?.description).toBe('Updated description');
     });
 
@@ -173,7 +173,7 @@ describe('Product Service', () => {
       });
 
       expect(movements.length).toBeGreaterThanOrEqual(1);
-      const latestMovement = movements[movements.length - 1];
+      const latestMovement = movements[0]; // First element is newest due to desc order
       expect(latestMovement.type).toBe('IN');
       expect(latestMovement.quantity).toBe(5); // 30 - 25 = 5
     });
