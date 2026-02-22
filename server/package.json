@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register src/main.ts",
     "prebuild": "rimraf dist",
-    "build": "npx tsc --project tsconfig.json",
+    "build": "prisma generate && npx tsc --project tsconfig.json",
     "postbuild": "tsc-alias -p tsconfig.json",
     "start": "node ./dist/main.js",
     "test": "jest",
@@ -60,7 +60,7 @@
     "ts-node-dev": "^2.0.0",
     "tsc-alias": "^1.8.10",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.7.3"
+    "typescript": "5.4.5"
   },
   "engines": {
     "node": ">=18.0.0"

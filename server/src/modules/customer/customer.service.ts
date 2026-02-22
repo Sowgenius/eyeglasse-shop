@@ -8,7 +8,7 @@ export async function create(payload: Customer, userId: string) {
       ...payload,
       userId,
       birthDate: payload.birthDate ? new Date(payload.birthDate) : null,
-    },
+    } as any,
   });
 }
 

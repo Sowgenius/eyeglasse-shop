@@ -10,7 +10,7 @@ export async function add(payload: Product, userId: string) {
       userId,
       price: payload.price,
       costPrice: payload.costPrice || null,
-    },
+    } as any,
   });
 
   // Log initial stock movement if quantity > 0

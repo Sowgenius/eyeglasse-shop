@@ -18,8 +18,8 @@ export async function create(payload: Omit<User, 'id' | 'role' | 'createdAt' | '
     data: {
       ...payload,
       password: hashedPassword,
-      status: 'PENDING', // New users are pending by default
-    },
+      status: 'PENDING',
+    } as any,
   });
 
   return { 
