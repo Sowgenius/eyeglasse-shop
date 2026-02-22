@@ -106,7 +106,7 @@ describe('Installment Service', () => {
       expect(diffInDays).toBe(7);
     });
 
-    it.skip('❌ INTENTIONALLY FAILS: This test has a bug - expects 4 payments but creates 3', async () => {
+    it('should create correct number of payments', async () => {
       const payload = {
         ...mockInstallmentPlan,
         invoiceId: testInvoice.id,
@@ -115,8 +115,8 @@ describe('Installment Service', () => {
 
       const result = await installmentService.createPlan(payload, testUser.id);
 
-      // BUG: This assertion is wrong - we're creating 3 payments but asserting 4
-      expect(result.payments).toHaveLength(4); // This will fail
+      // Fixed: should expect 3 payments
+      expect(result.payments).toHaveLength(3);
     });
   });
 
@@ -153,17 +153,22 @@ describe('Installment Service', () => {
       expect(result.data[0].status).toBe('ACTIVE');
     });
 
-    it.skip('❌ INTENTIONALLY FAILS: Wrong role prevents seeing plans', async () => {
-      // This test checks that a user can only see their own plans
-      // But the assertion is wrong - it expects to find plans when it shouldn't
-
+    it('should filter plans by user role', async () => {
+      // Create a different user
+      const otherUser = await userService.create({
+        name: 'Other User',
+        email: 'other@example.com',
+        password: 'password123',
+      });
+      
+      // Get plans as different user
       const result = await installmentService.getAll(
         {},
-        { userId: 'different-user-id', role: 'USER' }
+        { userId: otherUser.user.id, role: 'USER' }
       );
 
-      // BUG: This expects to find the plan but shouldn't since it's for a different user
-      expect(result.data).toHaveLength(1); // This will fail with USER role
+      // Fixed: should NOT see plans from different user
+      expect(result.data).toHaveLength(0);
     });
   });
 
@@ -235,7 +240,7 @@ describe('Installment Service', () => {
       expect(result.paidAmount?.toString()).toBe('100');
     });
 
-    it.skip('❌ INTENTIONALLY FAILS: Incorrect late fee calculation', async () => {
+    it('should calculate late fee for overdue payments', async () => {
       // Create an overdue payment by manipulating the due date
       await prisma.installmentPayment.update({
         where: { id: paymentId },
@@ -255,8 +260,9 @@ describe('Installment Service', () => {
         testUser.id
       );
 
-      // BUG: This calculation is wrong - should include late fee
-      expect(result.lateFee).toBe(0); // This will fail - late fee should be calculated
+      // Fixed: late fee should be calculated (5% of 166.67 = 8.33)
+      const expectedLateFee = 166.67 * 0.05;
+      expect(parseFloat(result.lateFee?.toString() || '0')).toBeCloseTo(expectedLateFee, 2);
     });
   });
 
@@ -292,14 +298,14 @@ describe('Installment Service', () => {
       expect(result[0].status).toBe('PENDING');
     });
 
-    it.skip('❌ INTENTIONALLY FAILS: Expects no overdue payments when there are some', async () => {
+    it('should return overdue payments for user', async () => {
       const result = await installmentService.getOverduePayments({
         userId: testUser.id,
         role: 'USER',
       });
 
-      // BUG: Wrong assertion - expects empty array when there are overdue payments
-      expect(result).toHaveLength(0); // This will fail
+      // Fixed: should return overdue payments (not 0)
+      expect(result.length).toBeGreaterThan(0);
     });
   });
 
@@ -358,17 +364,21 @@ describe('Installment Service', () => {
       ).rejects.toThrow('Cannot cancel a paid plan');
     });
 
-    it.skip('❌ INTENTIONALLY FAILS: Wrong user tries to cancel plan', async () => {
-      // BUG: The service doesn't properly check user ownership
-      // This test expects it to fail but it might pass due to missing auth check
-
-      const result = await installmentService.cancelPlan(createdPlan.id, {
-        userId: 'different-user-id',
-        role: 'USER',
+    it('should prevent user from cancelling another users plan', async () => {
+      // Create another user
+      const otherUser = await userService.create({
+        name: 'Other User',
+        email: 'other-cancel@example.com',
+        password: 'password123',
       });
 
-      // This should have thrown an error but might not
-      expect(result.status).toBe('CANCELLED'); // This might pass incorrectly
+      // Try to cancel plan as different user - should fail
+      await expect(
+        installmentService.cancelPlan(createdPlan.id, {
+          userId: otherUser.user.id,
+          role: 'USER',
+        })
+      ).rejects.toThrow('Installment plan not found');
     });
   });
 });
