@@ -17,7 +17,7 @@ async function main() {
 
   const manager = await prisma.user.upsert({
     where: { email: "manager@zoomoptic.com" },
-    update: {},
+    update: { status: "ACTIVE", role: "MANAGER", name: "Manager ZO" },
     create: {
       email: "manager@zoomoptic.com",
       name: "Manager ZO",
@@ -29,7 +29,7 @@ async function main() {
 
   const user = await prisma.user.upsert({
     where: { email: "user@zoomoptic.com" },
-    update: {},
+    update: { status: "ACTIVE", role: "USER", name: "User ZO" },
     create: {
       email: "user@zoomoptic.com",
       name: "User ZO",
