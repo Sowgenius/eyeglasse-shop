@@ -1,8 +1,8 @@
 # Backend Dockerfile
 FROM node:20-alpine
 
-# Install dependencies for Prisma
-RUN apk add --no-cache openssl
+# Install dependencies for Prisma and postgresql client
+RUN apk add --no-cache openssl postgresql-client
 
 # Create app directory
 WORKDIR /app
@@ -25,6 +25,9 @@ RUN pnpm run build
 
 # Remove dev dependencies
 RUN pnpm prune --production
+
+# Run database migrations
+RUN pnpm exec prisma migrate deploy
 
 # Expose port
 EXPOSE 8080
