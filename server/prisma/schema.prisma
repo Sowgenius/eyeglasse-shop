@@ -31,7 +31,7 @@ model Customer {
   id           String   @id @default(uuid())
   firstName    String
   lastName     String
-  email        String?
+  email        String?  @unique
   phone        String?
   address      String?
   city         String?
