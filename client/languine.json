@@ -1,0 +1,15 @@
+{
+  "$schema": "https://schema.languine.ai/schema.json",
+  "source": "en",
+  "output": "public/locales",
+  "translations": {
+    "files": [
+      {
+        "format": "json",
+        "source": "common.json",
+        "output": "[locale]/common.json"
+      }
+    ]
+  },
+  "targets": ["fr"]
+}

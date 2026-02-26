@@ -85,7 +85,7 @@
     "loginError": "Erreur de connexion",
     "logoutSuccess": "Déconnexion réussie",
     "invalidCredentials": "Identifiants invalides",
-    "welcomeBack": "Bon retour !",
+    "welcomeBack": "Bienvenue !",
     "enterCredentials": "Entrez vos identifiants pour vous connecter",
     "createAccount": "Créer un compte",
     "enterDetails": "Entrez vos informations pour créer votre compte",
@@ -100,9 +100,9 @@
   "dashboard": {
     "welcome": "Bienvenue",
     "todayRevenue": "Chiffre d'affaires du jour",
-    "totalCustomers": "Clients totaux",
-    "totalProducts": "Produits totaux",
-    "totalInvoices": "Factures totales",
+    "totalCustomers": "Total clients",
+    "totalProducts": "Total produits",
+    "totalInvoices": "Total factures",
     "pendingInvoices": "Factures en attente",
     "overdueInvoices": "Factures en retard",
     "lowStock": "Stock faible",
@@ -111,9 +111,16 @@
   },
   "products": {
     "title": "Produits",
+    "addNew": "Ajouter",
     "addProduct": "Ajouter un produit",
     "editProduct": "Modifier le produit",
+    "duplicateProduct": "Dupliquer le produit",
     "deleteProduct": "Supprimer le produit",
+    "addProductDescription": "Entrez les détails du nouveau produit ici. Cliquez sur enregistrer quand vous avez terminé.",
+    "editProductDescription": "Modifiez les détails du produit ici. Cliquez sur enregistrer quand vous avez terminé.",
+    "duplicateProductDescription": "Modifiez les détails du produit ici. Cliquez sur enregistrer quand vous avez terminé.",
+    "saving": "Enregistrement...",
+    "uploading": "Téléchargement de l'image... {{progress}}%",
     "name": "Nom",
     "sku": "SKU",
     "brand": "Marque",
@@ -136,7 +143,20 @@
     "lowStockAlert": "Alerte stock faible",
     "inStock": "En stock",
     "outOfStock": "Rupture de stock",
-    "stockHistory": "Historique des stocks"
+    "stockHistory": "Historique des stocks",
+    "delete": {
+      "title": "Êtes-vous absolument sûr ?",
+      "description": "Cette action est irréversible. Cela supprimera définitivement les données de nos serveurs.",
+      "cancel": "Annuler",
+      "confirm": "Confirmer",
+      "deleteSelected": "Supprimer la sélection"
+    },
+    "actions": {
+      "viewImage": "Voir l'image",
+      "edit": "Modifier",
+      "duplicate": "Dupliquer",
+      "delete": "Supprimer"
+    }
   },
   "customers": {
     "title": "Clients",
@@ -165,7 +185,7 @@
     "deleteQuote": "Supprimer le devis",
     "sendQuote": "Envoyer le devis",
     "convertToInvoice": "Convertir en facture",
-    "quoteNumber": "N° de devis",
+    "quoteNumber": "Numéro de devis",
     "status": "Statut",
     "draft": "Brouillon",
     "sent": "Envoyé",
@@ -176,7 +196,7 @@
     "subtotal": "Sous-total",
     "tax": "TVA",
     "total": "Total",
-    "items": "Lignes",
+    "items": "Articles",
     "description": "Description",
     "quantity": "Quantité",
     "unitPrice": "Prix unitaire",
@@ -190,7 +210,7 @@
     "deleteInvoice": "Annuler la facture",
     "sendInvoice": "Envoyer la facture",
     "addPayment": "Ajouter un paiement",
-    "invoiceNumber": "N° de facture",
+    "invoiceNumber": "Numéro de facture",
     "status": "Statut",
     "pending": "En attente",
     "partial": "Partiellement payé",
@@ -209,7 +229,7 @@
     "check": "Chèque",
     "creditCard": "Carte de crédit",
     "debitCard": "Carte de débit",
-    "bankTransfer": "Virement",
+    "bankTransfer": "Virement bancaire",
     "insurance": "Assurance",
     "other": "Autre",
     "paymentReference": "Référence de paiement",
@@ -276,29 +296,5 @@
     "weekly": "Hebdomadaire",
     "monthly": "Mensuel",
     "yearly": "Annuel"
-  },
-  "products": {
-    "addNew": "Ajouter",
-    "addProduct": "Ajouter un nouveau produit",
-    "editProduct": "Modifier le produit",
-    "duplicateProduct": "Dupliquer le produit",
-    "addProductDescription": "Entrez les détails du nouveau produit ici. Cliquez sur enregistrer quand vous avez terminé.",
-    "editProductDescription": "Modifiez les détails du produit ici. Cliquez sur enregistrer quand vous avez terminé.",
-    "duplicateProductDescription": "Modifiez les détails du produit ici. Cliquez sur enregistrer quand vous avez terminé.",
-    "saving": "Enregistrement...",
-    "uploading": "Téléchargement de l'image... {{progress}}%",
-    "delete": {
-      "title": "Êtes-vous absolument sûr ?",
-      "description": "Cette action est irréversible. Cela supprimera définitivement les données de nos serveurs.",
-      "cancel": "Annuler",
-      "confirm": "Confirmer",
-      "deleteSelected": "Supprimer la sélection"
-    },
-    "actions": {
-      "viewImage": "Voir l'image",
-      "edit": "Modifier",
-      "duplicate": "Dupliquer",
-      "delete": "Supprimer"
-    }
   }
 }
