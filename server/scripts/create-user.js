@@ -20,9 +20,21 @@
  */
 
 const { PrismaClient } = require('@prisma/client');
+const { PrismaPg } = require('@prisma/adapter-pg');
+const { Pool } = require('pg');
 const bcrypt = require('bcrypt');
 
-const prisma = new PrismaClient();
+let prisma;
+let pool;
+
+async function getPrisma() {
+  if (!prisma) {
+    pool = new Pool({ connectionString: process.env.DATABASE_URL });
+    const adapter = new PrismaPg(pool);
+    prisma = new PrismaClient({ adapter });
+  }
+  return prisma;
+}
 
 function parseArgs() {
   const args = process.argv.slice(2);
@@ -131,6 +143,7 @@ function isValidEmail(email) {
 }
 
 async function createUser(options) {
+  const prisma = await getPrisma();
   try {
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({
@@ -198,6 +211,7 @@ async function main() {
     process.exit(1);
   }
 
+  const prisma = await getPrisma();
   console.log('\n📝 Creating user...\n');
   console.log('Email:', options.email);
   console.log('Name:', options.name);
@@ -205,6 +219,8 @@ async function main() {
   console.log('');
 
   await createUser(options);
+
+  await pool?.end();
 }
 
 main();

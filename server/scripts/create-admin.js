@@ -10,9 +10,9 @@
  */
 
 const { PrismaClient } = require('@prisma/client');
+const { PrismaPg } = require('@prisma/adapter-pg');
+const { Pool } = require('pg');
 const bcrypt = require('bcrypt');
-
-const prisma = new PrismaClient();
 
 const defaultUsers = [
   {
@@ -35,9 +35,8 @@ const defaultUsers = [
   },
 ];
 
-async function createUser(userData) {
+async function createUser(prisma, userData) {
   try {
-    // Check if user already exists
     const existingUser = await prisma.user.findUnique({
       where: { email: userData.email },
     });
@@ -47,10 +46,8 @@ async function createUser(userData) {
       return null;
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(userData.password, 10);
 
-    // Create user
     const user = await prisma.user.create({
       data: {
         email: userData.email,
@@ -69,13 +66,17 @@ async function createUser(userData) {
 }
 
 async function main() {
+  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+  const adapter = new PrismaPg(pool);
+  const prisma = new PrismaClient({ adapter });
+
   console.log('\n🏪 Optician Pro - Default Users Setup\n');
   console.log('Creating default users...\n');
 
   const createdUsers = [];
 
   for (const userData of defaultUsers) {
-    const user = await createUser(userData);
+    const user = await createUser(prisma, userData);
     if (user) {
       createdUsers.push(user);
     }
@@ -108,6 +109,7 @@ async function main() {
   console.log('⚠️  IMPORTANT: Change default passwords in production!\n');
 
   await prisma.$disconnect();
+  await pool.end();
 }
 
 main().catch((error) => {
