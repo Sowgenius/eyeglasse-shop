@@ -1,10 +1,11 @@
 import { DashboardLayout } from '@/components/layouts/dashboard-layout';
-import { columns } from '@/components/layouts/table/columns';
+import { getProductColumns } from '@/components/layouts/table/columns';
 import { DataTable } from '@/components/layouts/table/data-table';
 import { Toaster } from '@/components/ui/toaster';
 import { useProductsQuery } from '@/redux/api/products';
 import { Params } from '@/types/query-params';
 import { createContext, useState } from 'react';
+import { useTranslation } from 'next-i18next';
 
 export type ContextType = {
   setUrlParams: (params: Params) => void;
@@ -15,6 +16,7 @@ export type ContextType = {
 export const ProductsContext = createContext<ContextType | null>(null);
 
 export default function DashboardProducts() {
+  const { t } = useTranslation('common');
   const [params, setParams] = useState<Params | undefined>(undefined);
   const { data: products, isSuccess } = useProductsQuery(params);
 
@@ -25,6 +27,8 @@ export default function DashboardProducts() {
   function removeUrlParams() {
     setParams(undefined);
   }
+
+  const columns = getProductColumns(t);
 
   return (
     <DashboardLayout>
