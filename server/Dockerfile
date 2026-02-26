@@ -11,8 +11,8 @@ WORKDIR /app
 COPY package*.json pnpm-lock.yaml ./
 COPY prisma ./prisma/
 
-# Install dependencies using pnpm
-RUN npm install -g pnpm && pnpm install --frozen-lockfile
+# Install dependencies using pnpm (include devDependencies for Prisma CLI)
+RUN npm install -g pnpm && pnpm install --frozen-lockfile --ignore-scripts=false
 
 # Generate Prisma Client
 RUN npx prisma generate
@@ -23,12 +23,6 @@ COPY . .
 # Build TypeScript
 RUN pnpm run build
 
-# Remove dev dependencies
-RUN pnpm prune --production
-
-# Run database migrations
-RUN pnpm exec prisma migrate deploy
-
 # Expose port
 EXPOSE 8080
 
@@ -36,5 +30,5 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
   CMD nc -z localhost 8080 || exit 1
 
-# Start the application
-CMD ["node", "dist/main.js"]
+# Start the application - run migrations first, then start server
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
