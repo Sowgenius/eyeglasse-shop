@@ -10,7 +10,6 @@ WORKDIR /app
 # Copy package files
 COPY package*.json pnpm-lock.yaml ./
 COPY prisma ./prisma/
-COPY prisma.config.ts ./
 
 # Install dependencies using pnpm (include devDependencies for Prisma CLI)
 RUN npm install -g pnpm && pnpm install --frozen-lockfile --ignore-scripts=false
