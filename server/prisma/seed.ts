@@ -108,8 +108,10 @@ async function main() {
   ];
 
   for (const productData of products) {
-    await prisma.product.create({
-      data: {
+    await prisma.product.upsert({
+      where: { sku: productData.sku },
+      update: {},
+      create: {
         ...productData,
         userId: manager.id,
         imageSrc: null,
@@ -120,8 +122,10 @@ async function main() {
   console.log("✅ Created 3 sample products");
 
   // Create sample customer
-  const customer = await prisma.customer.create({
-    data: {
+  const customer = await prisma.customer.upsert({
+    where: { email: "marie.dupont@email.fr" },
+    update: {},
+    create: {
       firstName: "Marie",
       lastName: "Dupont",
       email: "marie.dupont@email.fr",
@@ -166,8 +170,10 @@ async function main() {
   console.log("✅ Created sample prescription");
 
   // Create sample quote
-  const quote = await prisma.quote.create({
-    data: {
+  const quote = await prisma.quote.upsert({
+    where: { quoteNumber: "QT-2025-0001" },
+    update: {},
+    create: {
       quoteNumber: "QT-2025-0001",
       customerId: customer.id,
       userId: manager.id,
