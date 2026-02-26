@@ -28,7 +28,10 @@
     "language": "Language",
     "french": "French",
     "english": "English",
-    "noResults": "No results found."
+    "noResults": "No results found.",
+    "selectAll": "Select all",
+    "areYouSure": "Are you sure?",
+    "manage": "Manage"
   },
   "navigation": {
     "dashboard": "Dashboard",
@@ -144,6 +147,7 @@
     "inStock": "In Stock",
     "outOfStock": "Out of Stock",
     "stockHistory": "Stock History",
+    "productName": "Product Name",
     "delete": {
       "title": "Are you absolutely sure?",
       "description": "This action cannot be undone. This will permanently delete and remove its data from our servers.",
@@ -155,8 +159,14 @@
       "viewImage": "View Image",
       "edit": "Edit",
       "duplicate": "Duplicate",
-      "delete": "Delete"
-    }
+      "delete": "Delete",
+      "sell": "Sell"
+    },
+    "selectProduct": "Select Product",
+    "sellProduct": "Sell Product",
+    "sellingProduct": "Selling Product",
+    "enterQuantity": "Enter quantity",
+    "availableStock": "Available stock"
   },
   "customers": {
     "title": "Customers",
@@ -252,7 +262,27 @@
     "pd": "PD",
     "nearPd": "Near PD",
     "lensType": "Recommended Lens Type",
-    "expiringSoon": "Expiring Soon"
+    "expiringSoon": "Expiring Soon",
+    "rightEyeValues": "Right Eye (SPH/CYL/Axis)",
+    "leftEyeValues": "Left Eye (SPH/CYL/Axis)",
+    "viewDetails": "View Details"
+  },
+  "reports": {
+    "title": "Reports",
+    "filterByDate": "Filter by Date",
+    "totalSales": "Total Sales",
+    "totalPaid": "Total Paid",
+    "totalInvoices": "Total Invoices",
+    "productsSold": "Products Sold",
+    "recentInvoices": "Recent Invoices",
+    "startDate": "Start Date",
+    "endDate": "End Date"
+  },
+  "settings": {
+    "title": "Settings",
+    "profile": "Profile",
+    "manageAccount": "Manage your account settings",
+    "changePassword": "Change Password"
   },
   "validation": {
     "required": "This field is required",

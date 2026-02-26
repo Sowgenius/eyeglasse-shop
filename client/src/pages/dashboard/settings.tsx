@@ -21,8 +21,8 @@ export default function DashboardSettings() {
 
         <Card>
           <CardHeader>
-            <CardTitle>{t('auth.profile')}</CardTitle>
-            <CardDescription>Manage your account settings</CardDescription>
+            <CardTitle>{t('settings.profile')}</CardTitle>
+            <CardDescription>{t('settings.manageAccount')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center gap-4 p-4 border rounded-lg">

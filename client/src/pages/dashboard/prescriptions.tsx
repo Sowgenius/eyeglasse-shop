@@ -77,8 +77,8 @@ export default function DashboardPrescriptions() {
                     <TableHead>{t('prescriptions.prescriptionDate')}</TableHead>
                     <TableHead>{t('prescriptions.expiryDate')}</TableHead>
                     <TableHead>{t('prescriptions.prescribedBy')}</TableHead>
-                    <TableHead>OD (SPH/CYL/Axis)</TableHead>
-                    <TableHead>OS (SPH/CYL/Axis)</TableHead>
+                    <TableHead>{t('prescriptions.rightEyeValues')}</TableHead>
+                    <TableHead>{t('prescriptions.leftEyeValues')}</TableHead>
                     <TableHead>{t('common.actions')}</TableHead>
                   </TableRow>
                 </TableHeader>

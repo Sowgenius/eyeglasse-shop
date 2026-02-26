@@ -27,28 +27,28 @@ export default function DashboardReports() {
 
   const stats = [
     {
-      title: 'Total Sales',
+      title: t('reports.totalSales'),
       value: formatCurrency(salesReport?.summary?.totalSales || 0),
       icon: DollarSignIcon,
       color: 'text-green-600',
       bgColor: 'bg-green-50',
     },
     {
-      title: 'Total Paid',
+      title: t('reports.totalPaid'),
       value: formatCurrency(salesReport?.summary?.totalPaid || 0),
       icon: TrendingUpIcon,
       color: 'text-blue-600',
       bgColor: 'bg-blue-50',
     },
     {
-      title: 'Total Invoices',
+      title: t('reports.totalInvoices'),
       value: salesReport?.summary?.totalInvoices || 0,
       icon: FileTextIcon,
       color: 'text-purple-600',
       bgColor: 'bg-purple-50',
     },
     {
-      title: 'Products Sold',
+      title: t('reports.productsSold'),
       value: productReport?.length || 0,
       icon: PackageIcon,
       color: 'text-orange-600',
@@ -65,7 +65,7 @@ export default function DashboardReports() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Filter by Date</CardTitle>
+            <CardTitle>{t('reports.filterByDate')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex gap-4">
@@ -74,12 +74,14 @@ export default function DashboardReports() {
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
                 className="w-auto"
+                placeholder={t('reports.startDate')}
               />
               <Input
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
                 className="w-auto"
+                placeholder={t('reports.endDate')}
               />
             </div>
           </CardContent>
@@ -107,7 +109,7 @@ export default function DashboardReports() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Recent Invoices</CardTitle>
+            <CardTitle>{t('reports.recentInvoices')}</CardTitle>
           </CardHeader>
           <CardContent>
             {salesLoading ? (

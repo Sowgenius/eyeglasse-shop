@@ -28,7 +28,10 @@
     "language": "Langue",
     "french": "Français",
     "english": "Anglais",
-    "noResults": "Aucun résultat trouvé."
+    "noResults": "Aucun résultat trouvé.",
+    "selectAll": "Tout sélectionner",
+    "areYouSure": "Êtes-vous sûr ?",
+    "manage": "Gérer"
   },
   "navigation": {
     "dashboard": "Tableau de bord",
@@ -144,6 +147,7 @@
     "inStock": "En stock",
     "outOfStock": "Rupture de stock",
     "stockHistory": "Historique des stocks",
+    "productName": "Nom du produit",
     "delete": {
       "title": "Êtes-vous absolument sûr ?",
       "description": "Cette action est irréversible. Cela supprimera définitivement les données de nos serveurs.",
@@ -155,8 +159,14 @@
       "viewImage": "Voir l'image",
       "edit": "Modifier",
       "duplicate": "Dupliquer",
-      "delete": "Supprimer"
-    }
+      "delete": "Supprimer",
+      "sell": "Vendre"
+    },
+    "selectProduct": "Sélectionner un produit",
+    "sellProduct": "Vendre le produit",
+    "sellingProduct": "Vente de produit",
+    "enterQuantity": "Entrez la quantité",
+    "availableStock": "Stock disponible"
   },
   "customers": {
     "title": "Clients",
@@ -252,7 +262,27 @@
     "pd": "DP",
     "nearPd": "DP de près",
     "lensType": "Type de verre recommandé",
-    "expiringSoon": "Expire bientôt"
+    "expiringSoon": "Expire bientôt",
+    "rightEyeValues": "Œil droit (SPH/CYL/Axe)",
+    "leftEyeValues": "Œil gauche (SPH/CYL/Axe)",
+    "viewDetails": "Voir les détails"
+  },
+  "reports": {
+    "title": "Rapports",
+    "filterByDate": "Filtrer par date",
+    "totalSales": "Ventes totales",
+    "totalPaid": "Total payé",
+    "totalInvoices": "Total factures",
+    "productsSold": "Produits vendus",
+    "recentInvoices": "Factures récentes",
+    "startDate": "Date de début",
+    "endDate": "Date de fin"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "profile": "Profil",
+    "manageAccount": "Gérez les paramètres de votre compte",
+    "changePassword": "Changer le mot de passe"
   },
   "validation": {
     "required": "Ce champ est requis",
