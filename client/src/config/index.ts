@@ -1,4 +1,1 @@
-export const SERVER_DOMAIN =
-  process.env.NODE_ENV === 'development'
-    ? 'http://localhost:8080/api'
-    : 'https://api-a-6.vercel.app/api';
+export const SERVER_DOMAIN = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api';
