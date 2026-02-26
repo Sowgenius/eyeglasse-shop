@@ -23,6 +23,7 @@ async function main() {
       name: "Manager ZO",
       password: managerPassword,
       role: "MANAGER",
+      status: "ACTIVE",
     },
   });
 
@@ -34,6 +35,7 @@ async function main() {
       name: "User ZO",
       password: userPassword,
       role: "USER",
+      status: "ACTIVE",
     },
   });
 
