@@ -31,7 +31,17 @@
     "noResults": "Aucun résultat trouvé.",
     "selectAll": "Tout sélectionner",
     "areYouSure": "Êtes-vous sûr ?",
-    "manage": "Gérer"
+    "manage": "Gérer",
+    "openMenu": "Ouvrir le menu",
+    "unselectImage": "Désélectionner l'image",
+    "toggleColumns": "Afficher/masquer les colonnes",
+    "rowsPerPage": "Lignes par page",
+    "goToFirstPage": "Aller à la première page",
+    "goToPreviousPage": "Aller à la page précédente",
+    "goToNextPage": "Aller à la page suivante",
+    "goToLastPage": "Aller à la dernière page",
+    "page": "Page",
+    "of": "sur"
   },
   "navigation": {
     "dashboard": "Tableau de bord",
@@ -110,7 +120,8 @@
     "overdueInvoices": "Factures en retard",
     "lowStock": "Stock faible",
     "recentActivity": "Activité récente",
-    "quickActions": "Actions rapides"
+    "quickActions": "Actions rapides",
+    "redirectMessage": "Vous ne devriez pas voir cette page"
   },
   "products": {
     "title": "Produits",
@@ -127,6 +138,7 @@
     "name": "Nom",
     "sku": "SKU",
     "brand": "Marque",
+    "brandName": "Nom de la marque",
     "price": "Prix",
     "costPrice": "Prix d'achat",
     "quantity": "Quantité",
@@ -148,6 +160,7 @@
     "outOfStock": "Rupture de stock",
     "stockHistory": "Historique des stocks",
     "productName": "Nom du produit",
+    "productImage": "Image du produit",
     "delete": {
       "title": "Êtes-vous absolument sûr ?",
       "description": "Cette action est irréversible. Cela supprimera définitivement les données de nos serveurs.",
@@ -167,6 +180,14 @@
     "sellingProduct": "Vente de produit",
     "enterQuantity": "Entrez la quantité",
     "availableStock": "Stock disponible"
+  },
+  "sales": {
+    "buyerName": "Nom de l'acheteur",
+    "quantitySold": "Quantité vendue",
+    "soldOn": "Vendu le",
+    "pickDate": "Choisir une date",
+    "soldTo": "Vendu à",
+    "downloadInvoice": "Télécharger la facture"
   },
   "customers": {
     "title": "Clients",

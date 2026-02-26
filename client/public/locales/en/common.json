@@ -31,7 +31,17 @@
     "noResults": "No results found.",
     "selectAll": "Select all",
     "areYouSure": "Are you sure?",
-    "manage": "Manage"
+    "manage": "Manage",
+    "openMenu": "Open menu",
+    "unselectImage": "Unselect image",
+    "toggleColumns": "Toggle columns",
+    "rowsPerPage": "Rows per page",
+    "goToFirstPage": "Go to first page",
+    "goToPreviousPage": "Go to previous page",
+    "goToNextPage": "Go to next page",
+    "goToLastPage": "Go to last page",
+    "page": "Page",
+    "of": "of"
   },
   "navigation": {
     "dashboard": "Dashboard",
@@ -110,7 +120,8 @@
     "overdueInvoices": "Overdue Invoices",
     "lowStock": "Low Stock",
     "recentActivity": "Recent Activity",
-    "quickActions": "Quick Actions"
+    "quickActions": "Quick Actions",
+    "redirectMessage": "You should not see this page"
   },
   "products": {
     "title": "Products",
@@ -127,6 +138,7 @@
     "name": "Name",
     "sku": "SKU",
     "brand": "Brand",
+    "brandName": "Brand Name",
     "price": "Price",
     "costPrice": "Cost Price",
     "quantity": "Quantity",
@@ -148,6 +160,7 @@
     "outOfStock": "Out of Stock",
     "stockHistory": "Stock History",
     "productName": "Product Name",
+    "productImage": "Product Image",
     "delete": {
       "title": "Are you absolutely sure?",
       "description": "This action cannot be undone. This will permanently delete and remove its data from our servers.",
@@ -167,6 +180,14 @@
     "sellingProduct": "Selling Product",
     "enterQuantity": "Enter quantity",
     "availableStock": "Available stock"
+  },
+  "sales": {
+    "buyerName": "Buyer name",
+    "quantitySold": "Quantity sold",
+    "soldOn": "Sold on",
+    "pickDate": "Pick a date",
+    "soldTo": "Sold to",
+    "downloadInvoice": "Download Invoice"
   },
   "customers": {
     "title": "Customers",

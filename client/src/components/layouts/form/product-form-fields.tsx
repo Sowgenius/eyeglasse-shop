@@ -26,6 +26,7 @@ import { ProductSchema } from '@/types/product';
 import { X } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
+import { useTranslation } from 'next-i18next';
 import { UseFormReturn } from 'react-hook-form';
 
 type Props = {
@@ -39,10 +40,10 @@ export function ProductFormFields({
   isLoading,
   defaultImgSrc = '',
 }: Props) {
+  const { t } = useTranslation('common');
   const src = defaultImgSrc ? decryptUrl(defaultImgSrc) : '';
   const [imgSrc, setImgSrc] = useState<any>(src);
 
-  // For manually resetting input field
   const [imgInputKey, setImgInputKey] = useState(0);
 
   return (
@@ -52,10 +53,10 @@ export function ProductFormFields({
         name="name"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Product Name</FormLabel>
+            <FormLabel>{t('products.productName')}</FormLabel>
             <FormControl>
               <Input
-                placeholder="Enter eye-glass name"
+                placeholder={t('products.productName')}
                 type="text"
                 disabled={isLoading}
                 className="transition-all"
@@ -72,10 +73,10 @@ export function ProductFormFields({
         name="brand"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Brand Name</FormLabel>
+            <FormLabel>{t('products.brandName')}</FormLabel>
             <FormControl>
               <Input
-                placeholder="Enter brand name"
+                placeholder={t('products.brand')}
                 type="text"
                 disabled={isLoading}
                 className="transition-all"
@@ -92,10 +93,10 @@ export function ProductFormFields({
         name="price"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Price</FormLabel>
+            <FormLabel>{t('products.price')}</FormLabel>
             <FormControl>
               <Input
-                placeholder="Price in dollars"
+                placeholder={t('products.price')}
                 type="number"
                 disabled={isLoading}
                 className="transition-all"
@@ -112,10 +113,10 @@ export function ProductFormFields({
         name="quantity"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Quantity</FormLabel>
+            <FormLabel>{t('products.quantity')}</FormLabel>
             <FormControl>
               <Input
-                placeholder="Available quantity"
+                placeholder={t('products.quantity')}
                 type="number"
                 disabled={isLoading}
                 className="transition-all"
@@ -132,11 +133,11 @@ export function ProductFormFields({
         name="frame.material"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Frame Material</FormLabel>
+            <FormLabel>{t('products.frameMaterial')}</FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
                 <SelectTrigger disabled={isLoading}>
-                  <SelectValue placeholder="Select frame material" />
+                  <SelectValue placeholder={t('products.frameMaterial')} />
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
@@ -161,11 +162,11 @@ export function ProductFormFields({
         name="frame.shape"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Frame Shape</FormLabel>
+            <FormLabel>{t('products.frameShape')}</FormLabel>
             <FormControl>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <SelectTrigger disabled={isLoading}>
-                  <SelectValue placeholder="Select frame shape" />
+                  <SelectValue placeholder={t('products.frameShape')} />
                 </SelectTrigger>
 
                 <SelectContent>
@@ -191,11 +192,11 @@ export function ProductFormFields({
         name="hinge_type"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Hinge Type</FormLabel>
+            <FormLabel>{t('products.hingeType')}</FormLabel>
             <FormControl>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <SelectTrigger disabled={isLoading}>
-                  <SelectValue placeholder="Select hinge type" />
+                  <SelectValue placeholder={t('products.hingeType')} />
                 </SelectTrigger>
 
                 <SelectContent>
@@ -221,10 +222,10 @@ export function ProductFormFields({
         name="lens_type"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Lens Type</FormLabel>
+            <FormLabel>{t('products.lensType')}</FormLabel>
             <FormControl>
               <Input
-                placeholder="Enter Lens Type"
+                placeholder={t('products.lensType')}
                 type="text"
                 disabled={isLoading}
                 className="transition-all"
@@ -241,11 +242,11 @@ export function ProductFormFields({
         name="gender"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Gender</FormLabel>
+            <FormLabel>{t('products.gender')}</FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
                 <SelectTrigger disabled={isLoading}>
-                  <SelectValue placeholder="Select gender" />
+                  <SelectValue placeholder={t('products.gender')} />
                 </SelectTrigger>
               </FormControl>
 
@@ -271,10 +272,10 @@ export function ProductFormFields({
         name="color"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Color</FormLabel>
+            <FormLabel>{t('products.color')}</FormLabel>
             <FormControl>
               <Input
-                placeholder="Enter eye-glass color"
+                placeholder={t('products.color')}
                 type="text"
                 disabled={isLoading}
                 className="transition-all"
@@ -291,10 +292,10 @@ export function ProductFormFields({
         name="temple_length"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Temple Length</FormLabel>
+            <FormLabel>{t('products.templeLength')}</FormLabel>
             <FormControl>
               <Input
-                placeholder="Enter length in mm"
+                placeholder={t('products.templeLength')}
                 type="number"
                 disabled={isLoading}
                 className="transition-all"
@@ -311,10 +312,10 @@ export function ProductFormFields({
         name="bridge_size"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Bridge Size</FormLabel>
+            <FormLabel>{t('products.bridgeSize')}</FormLabel>
             <FormControl>
               <Input
-                placeholder="Enter bridge size in mm"
+                placeholder={t('products.bridgeSize')}
                 type="number"
                 disabled={isLoading}
                 className="transition-all"
@@ -331,7 +332,7 @@ export function ProductFormFields({
         name="image"
         render={({ field }) => (
           <FormItem className="col-span-full">
-            <FormLabel>Product Image</FormLabel>
+            <FormLabel>{t('products.productImage')}</FormLabel>
             <FormControl>
               <Input
                 accept=".jpg, .jpeg, .png, .svg, .webp"
@@ -377,7 +378,7 @@ export function ProductFormFields({
                       setImgSrc(src);
                     }}
                   >
-                    <span className="sr-only">Unselect image</span>
+                    <span className="sr-only">{t('common.unselectImage')}</span>
                     <X className="size-3 stroke-gray-500 group-hover:stroke-gray-800" />
                   </button>
                 )}

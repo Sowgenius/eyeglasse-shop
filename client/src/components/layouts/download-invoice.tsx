@@ -8,6 +8,7 @@ import { PDFExport } from '@progress/kendo-react-pdf';
 import { DownloadIcon } from '@radix-ui/react-icons';
 import { useRef } from 'react';
 import { ToastAction } from '../ui/toast';
+import { useTranslation } from 'next-i18next';
 
 type DownloadInvoiceProps = {
   isToast?: boolean;
@@ -18,6 +19,7 @@ export function DownloadInvoice({
   isToast = false,
   data,
 }: DownloadInvoiceProps) {
+  const { t } = useTranslation('common');
   const ref = useRef<PDFExport>(null);
   const invoiceNumber = randomFourDigits();
 
@@ -28,10 +30,10 @@ export function DownloadInvoice({
   return (
     <>
       {isToast ? (
-        <ToastAction altText="Download invoice" onClick={handleClick}>
+        <ToastAction altText={t('invoices.title')} onClick={handleClick}>
           <DownloadIcon className="size-4" />
-          <span className="sr-only">Download</span>
-          Invoice
+          <span className="sr-only">{t('invoices.title')}</span>
+          {t('invoices.title')}
         </ToastAction>
       ) : (
         <Button
@@ -40,7 +42,7 @@ export function DownloadInvoice({
           className="block mx-auto border-dashed"
           onClick={handleClick}
         >
-          <span className="sr-only">Download Invoice</span>
+          <span className="sr-only">{t('sales.downloadInvoice')}</span>
           <DownloadIcon />
         </Button>
       )}
@@ -55,12 +57,12 @@ export function DownloadInvoice({
           <div className="w-[500px] mx-auto border rounded-md font-sans">
             <header className="flex justify-between items-center p-6">
               <div>
-                <h3 className="text-2xl font-bold tracking-tight">Invoice</h3>
+                <h3 className="text-2xl font-bold tracking-tight">{t('invoices.title')}</h3>
                 <p className="text-gray-400 font-medium">{`#${invoiceNumber}`}</p>
               </div>
 
               <div className="text-sm text-right">
-                <span className="font-semibold">Sold to</span>
+                <span className="font-semibold">{t('sales.soldTo')}</span>
                 <div className="text-gray-500 font-medium  dark:text-gray-400">
                   {data.buyer_name}
                 </div>
@@ -87,14 +89,14 @@ export function DownloadInvoice({
 
             <footer className="p-6 flex justify-between items-center">
               <div>
-                Total:
+                {t('invoices.total')}:
                 <span className="ml-1.5 font-semibold">
                   {formatCurrency(data.total_sale)}
                 </span>
               </div>
 
               <p className="text-sm text-gray-700">
-                Issued on {formatDate(data.sold_on)}
+                {t('invoices.issueDate')} {formatDate(data.sold_on)}
               </p>
             </footer>
           </div>
