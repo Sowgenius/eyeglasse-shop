@@ -3,7 +3,7 @@ import * as D from '@/components/ui/dialog';
 import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useCreateQuoteMutation } from '@/redux/api/quotes';
-import { useGetCustomersQuery } from '@/redux/api';
+import { useGetCustomersQuery } from '@/redux/api/customers';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FileText, Plus, Trash } from 'lucide-react';
 import { useState } from 'react';

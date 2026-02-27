@@ -3,7 +3,7 @@ import * as D from '@/components/ui/dialog';
 import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useCreateInvoiceMutation } from '@/redux/api/invoices';
-import { useGetCustomersQuery } from '@/redux/api';
+import { useGetCustomersQuery } from '@/redux/api/customers';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Receipt, Plus, Trash, Search } from 'lucide-react';
 import { useState } from 'react';

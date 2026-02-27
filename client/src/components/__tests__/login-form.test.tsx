@@ -30,7 +30,7 @@ describe('LoginForm', () => {
     expect(() =>
       render(
         <Provider store={mockStore}>
-          <LoginForm />
+          <LoginForm setError={() => {}} />
         </Provider>
       )
     ).not.toThrow();
