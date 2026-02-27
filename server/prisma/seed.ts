@@ -39,8 +39,21 @@ async function main() {
     },
   });
 
+  const employee = await prisma.user.upsert({
+    where: { email: "employee@zoomoptic.com" },
+    update: { status: "ACTIVE", role: "USER", name: "Employee ZO" },
+    create: {
+      email: "employee@zoomoptic.com",
+      name: "Employee ZO",
+      password: userPassword,
+      role: "USER",
+      status: "ACTIVE",
+    },
+  });
+
   console.log("✅ Created demo users:");
   console.log("   Manager: manager@zoomoptic.com / manager123");
+  console.log("   Employee: employee@zoomoptic.com / user123");
   console.log("   User: user@zoomoptic.com / user123");
 
   // Create sample products
