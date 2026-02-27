@@ -5,6 +5,7 @@ import {
   addProduct,
   bulkDeleteProducts,
   deleteProduct,
+  getProductById,
   getProducts,
   updateProduct,
 } from './product.controller';
@@ -13,6 +14,7 @@ import { bulkDeleteSchema, productSchema } from './product.validation';
 const router = Router();
 
 router.get('/', verifyToken(), getProducts);
+router.get('/:productId', verifyToken(), getProductById);
 router.post(
   '/add',
   [verifyToken(), validateRequest(productSchema)],

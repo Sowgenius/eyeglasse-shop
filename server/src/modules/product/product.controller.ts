@@ -26,6 +26,19 @@ export const getProducts = catchAsync(async (req, res) => {
   });
 });
 
+export const getProductById = catchAsync(async (req, res) => {
+  const productId = req.params.productId as string;
+
+  const data = await productServices.getById(productId, req.jwtPayload);
+
+  if (!data) throw new AppError(404, 'Product not found.');
+
+  sendResponse(res, {
+    message: 'Product retrieved successfully',
+    data,
+  });
+});
+
 export const updateProduct = catchAsync(async (req, res) => {
   const productId = req.params.productId as string;
 

@@ -19,6 +19,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { format } from 'date-fns';
 import { fr, enUS } from 'date-fns/locale';
 import { useRouter } from 'next/router';
+import { formatCurrency } from '@/lib/format-currency';
 
 const statusColors: Record<string, string> = {
   DRAFT: 'bg-slate-100 text-slate-800',
@@ -41,10 +42,6 @@ export default function DashboardQuotes() {
     if (confirm(t('quotes.deleteQuote') + '?')) {
       await deleteQuote(id);
     }
-  };
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(amount);
   };
 
   return (

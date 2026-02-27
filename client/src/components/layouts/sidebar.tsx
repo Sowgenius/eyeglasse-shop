@@ -9,6 +9,7 @@ import {
   ReceiptIcon,
   SettingsIcon,
   ShieldIcon,
+  ArrowLeftRightIcon,
   LucideIcon,
 } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -29,6 +30,7 @@ export function Sidebar() {
 
   const mainNavItems: NavItem[] = [
     { title: t('navigation.dashboard'), href: '/dashboard', icon: BarChart3Icon },
+    { title: t('navigation.transactions'), href: '/dashboard/transactions', icon: ArrowLeftRightIcon },
     { title: t('navigation.products'), href: '/dashboard/products', icon: PackageIcon },
     { title: t('navigation.customers'), href: '/dashboard/customers', icon: UsersIcon },
     { title: t('navigation.quotes'), href: '/dashboard/quotes', icon: ClipboardListIcon },

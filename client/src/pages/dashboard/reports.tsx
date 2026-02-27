@@ -10,6 +10,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { format } from 'date-fns';
 import { fr, enUS } from 'date-fns/locale';
 import { useRouter } from 'next/router';
+import { formatCurrency } from '@/lib/format-currency';
 
 export default function DashboardReports() {
   const { t } = useTranslation('common');
@@ -20,10 +21,6 @@ export default function DashboardReports() {
   
   const { data: salesReport, isLoading: salesLoading } = useGetSalesReportQuery({ startDate, endDate });
   const { data: productReport, isLoading: productsLoading } = useGetProductPerformanceQuery({ startDate, endDate });
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(amount);
-  };
 
   const stats = [
     {

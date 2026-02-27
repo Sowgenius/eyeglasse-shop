@@ -8,6 +8,7 @@ import { ReportRoutes } from './modules/report/report.route';
 import { UserRoutes } from './modules/user/user.route';
 import { InstallmentRoutes } from './modules/installment/installment.route';
 import { TransactionRoutes } from './modules/transaction/transaction.route';
+import { SalesRoutes } from './modules/sales/sales.route';
 import { prisma } from './lib/prisma';
 
 const router = Router();
@@ -44,5 +45,6 @@ router.use('/prescriptions', PrescriptionRoutes);
 router.use('/reports', ReportRoutes);
 router.use('/installments', InstallmentRoutes);
 router.use('/transactions', TransactionRoutes);
+router.use('/sales', SalesRoutes);
 
 export default router;

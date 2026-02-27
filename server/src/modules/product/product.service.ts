@@ -173,7 +173,6 @@ export async function bulkDelete(
 
 export async function getLowStock(jwtPayload: TJwtPayload) {
   const where: any = {
-    quantity: { lte: prisma.product.fields.reorderPoint },
     isActive: true,
   };
 
@@ -181,8 +180,10 @@ export async function getLowStock(jwtPayload: TJwtPayload) {
     where.userId = jwtPayload.userId;
   }
 
-  return prisma.product.findMany({
+  const products = await prisma.product.findMany({
     where,
     orderBy: { quantity: 'asc' },
   });
+
+  return products.filter(p => p.quantity <= p.reorderPoint);
 }

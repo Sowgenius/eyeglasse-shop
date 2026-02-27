@@ -6,6 +6,10 @@ import { useProductsQuery } from '@/redux/api/products';
 import { Params } from '@/types/query-params';
 import { createContext, useState } from 'react';
 import { useTranslation } from 'next-i18next';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { SearchIcon } from 'lucide-react';
+import { AddProduct } from '@/components/layouts/table/row-actions/add-product';
 
 export type ContextType = {
   setUrlParams: (params: Params) => void;
@@ -32,11 +36,37 @@ export default function DashboardProducts() {
 
   return (
     <DashboardLayout>
-      <ProductsContext.Provider
-        value={{ setUrlParams, params, removeUrlParams }}
-      >
-        {isSuccess && <DataTable data={products as any} columns={columns} />}
-      </ProductsContext.Provider>
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold">{t('products.title')}</h1>
+          </div>
+          <AddProduct />
+        </div>
+
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-4">
+              <div className="relative flex-1">
+                <SearchIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  placeholder={t('common.search')}
+                  className="pl-10"
+                  value={params?.search || ''}
+                  onChange={(e) => setUrlParams({ search: e.target.value })}
+                />
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <ProductsContext.Provider
+              value={{ setUrlParams, params, removeUrlParams }}
+            >
+              {isSuccess && <DataTable data={products as any} columns={columns} />}
+            </ProductsContext.Provider>
+          </CardContent>
+        </Card>
+      </div>
 
       <Toaster />
     </DashboardLayout>

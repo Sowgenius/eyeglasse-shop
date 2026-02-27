@@ -22,6 +22,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { format } from 'date-fns';
 import { fr, enUS } from 'date-fns/locale';
 import { useRouter } from 'next/router';
+import { formatCurrency } from '@/lib/format-currency';
 
 export default function DashboardOverview() {
   const { t } = useTranslation('common');
@@ -29,10 +30,6 @@ export default function DashboardOverview() {
   const locale = router.locale === 'en' ? enUS : fr;
   const { data: stats, isLoading: statsLoading } = useGetDashboardStatsQuery();
   const { data: salesReport, isLoading: salesLoading } = useGetSalesReportQuery({});
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(amount);
-  };
 
   const statCards = [
     {

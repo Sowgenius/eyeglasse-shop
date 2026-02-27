@@ -16,6 +16,7 @@ import { useGetCustomersQuery, useDeleteCustomerMutation } from '@/redux/api/cus
 import { useTranslation } from 'next-i18next';
 import { PlusIcon, SearchIcon, PencilIcon, TrashIcon } from 'lucide-react';
 import { Toaster } from '@/components/ui/toaster';
+import { AddCustomer } from '@/components/layouts/table/row-actions/add-customer';
 
 export default function DashboardCustomers() {
   const { t } = useTranslation('common');
@@ -37,10 +38,7 @@ export default function DashboardCustomers() {
           <div>
             <h1 className="text-2xl font-bold">{t('customers.title')}</h1>
           </div>
-          <Button>
-            <PlusIcon className="mr-2 h-4 w-4" />
-            {t('customers.addCustomer')}
-          </Button>
+          <AddCustomer />
         </div>
 
         <Card>

@@ -192,6 +192,7 @@
   "customers": {
     "title": "Clients",
     "addCustomer": "Ajouter un client",
+    "addCustomerDescription": "Remplissez les détails pour ajouter un nouveau client",
     "editCustomer": "Modifier le client",
     "deleteCustomer": "Supprimer le client",
     "firstName": "Prénom",
@@ -326,8 +327,10 @@
     },
     "transactions": {
       "title": "Transactions",
-      "description": "Liste des transactions effectuées lors de la vente de produits",
+      "description": "Liste de toutes vos transactions",
+      "all": "Toutes les transactions",
       "invoice": "Facture",
+      "payment": "Paiement",
       "date": "Date",
       "buyer": "Acheteur",
       "product": "Produit",

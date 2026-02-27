@@ -192,6 +192,7 @@
   "customers": {
     "title": "Customers",
     "addCustomer": "Add Customer",
+    "addCustomerDescription": "Fill in the details to add a new customer",
     "editCustomer": "Edit Customer",
     "deleteCustomer": "Delete Customer",
     "firstName": "First Name",
@@ -326,8 +327,10 @@
     },
     "transactions": {
       "title": "Transactions",
-      "description": "A list of transactions you made from selling products",
+      "description": "A list of all your transactions",
+      "all": "All Transactions",
       "invoice": "Invoice",
+      "payment": "Payment",
       "date": "Date",
       "buyer": "Buyer",
       "product": "Product",
