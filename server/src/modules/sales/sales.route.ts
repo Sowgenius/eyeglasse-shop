@@ -5,7 +5,6 @@ import { sendResponse } from '@/utils/send-response';
 import { Router } from 'express';
 import { prisma } from '@/lib/prisma';
 import { saleSchema } from './sales.interface';
-import { Decimal } from '@prisma/client/runtime/library';
 
 const router = Router();
 
@@ -60,12 +59,12 @@ router.post(
           customerId,
           quoteId: quoteId || null,
           userId,
-          subtotal: new Decimal(subtotal.toFixed(2)),
-          taxRate: new Decimal(taxRate.toFixed(2)),
-          taxAmount: new Decimal(taxAmount.toFixed(2)),
-          total: new Decimal(total.toFixed(2)),
-          amountPaid: processPayment ? new Decimal(total.toFixed(2)) : new Decimal('0'),
-          balanceDue: processPayment ? new Decimal('0') : new Decimal(total.toFixed(2)),
+          subtotal,
+          taxRate,
+          taxAmount,
+          total,
+          amountPaid: processPayment ? total : 0,
+          balanceDue: processPayment ? 0 : total,
           dueDate: dueDate ? new Date(dueDate) : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
           notes,
           terms,
@@ -75,9 +74,9 @@ router.post(
             create: items.map((item: any) => ({
               description: item.description,
               quantity: item.quantity,
-              unitPrice: new Decimal(item.unitPrice.toFixed(2)),
-              discount: new Decimal((item.discount || 0).toFixed(2)),
-              total: new Decimal(((item.quantity * item.unitPrice) - (item.discount || 0)).toFixed(2)),
+              unitPrice: item.unitPrice,
+              discount: item.discount || 0,
+              total: item.quantity * item.unitPrice - item.discount,
               productId: item.productId || null,
             })),
           },
@@ -100,7 +99,7 @@ router.post(
         paymentRecord = await tx.payment.create({
           data: {
             invoiceId: invoice.id,
-            amount: new Decimal(total.toFixed(2)),
+            amount: total,
             method: payment.method,
             reference: payment.reference,
             notes: payment.notes,
