@@ -26,6 +26,7 @@ router.get(
     });
 
     return sendResponse(res, {
+      message: 'Transactions retrieved successfully',
       data: transactions,
     });
   })
