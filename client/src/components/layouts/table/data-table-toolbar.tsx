@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { ProductsContext } from '@/pages/dashboard';
+import { ProductsContext } from '@/pages/dashboard/products';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import { Table } from '@tanstack/react-table';
 import { HistoryIcon } from 'lucide-react';

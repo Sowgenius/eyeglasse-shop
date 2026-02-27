@@ -12,9 +12,9 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useState } from 'react';
-import { useGetQuotesQuery, useDeleteQuoteMutation, useConvertQuoteToInvoiceMutation } from '@/redux/api/quotes';
+import { useGetQuotesQuery, useDeleteQuoteMutation } from '@/redux/api/quotes';
 import { useTranslation } from 'next-i18next';
-import { PlusIcon, SearchIcon, FileTextIcon, TrashIcon, ReceiptIcon } from 'lucide-react';
+import { PlusIcon, SearchIcon, FileTextIcon, TrashIcon } from 'lucide-react';
 import { Toaster } from '@/components/ui/toaster';
 import { format } from 'date-fns';
 import { fr, enUS } from 'date-fns/locale';
@@ -36,18 +36,10 @@ export default function DashboardQuotes() {
   const [search, setSearch] = useState('');
   const { data, isLoading } = useGetQuotesQuery({ page, limit: 10, search });
   const [deleteQuote] = useDeleteQuoteMutation();
-  const [convertToInvoice] = useConvertQuoteToInvoiceMutation();
 
   const handleDelete = async (id: string) => {
     if (confirm(t('quotes.deleteQuote') + '?')) {
       await deleteQuote(id);
-    }
-  };
-
-  const handleConvert = async (id: string) => {
-    const result = await convertToInvoice(id);
-    if ('data' in result) {
-      router.push('/dashboard/invoices');
     }
   };
 
@@ -120,11 +112,6 @@ export default function DashboardQuotes() {
                           <Button variant="ghost" size="icon">
                             <FileTextIcon className="h-4 w-4" />
                           </Button>
-                          {quote.status === 'ACCEPTED' && (
-                            <Button variant="ghost" size="icon" onClick={() => handleConvert(quote.id)}>
-                              <ReceiptIcon className="h-4 w-4" />
-                            </Button>
-                          )}
                           <Button variant="ghost" size="icon" onClick={() => handleDelete(quote.id)}>
                             <TrashIcon className="h-4 w-4 text-red-500" />
                           </Button>

@@ -25,12 +25,14 @@ import { format } from 'date-fns';
 import { BadgeDollarSign, Calendar as CalendarIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'next-i18next';
 import { z } from 'zod';
 import { DownloadInvoice } from '../../download-invoice';
 
 export function SellProduct({ row }: { row: Row<Product> }) {
   const [isOpen, setIsOpen] = useState(false);
   const [sellProduct, { isLoading, error }] = useSellProductMutation();
+  const { t } = useTranslation('common');
 
   const { toast } = useToast();
 
@@ -65,18 +67,17 @@ export function SellProduct({ row }: { row: Row<Product> }) {
           className="py-1 h-auto text-sm rounded flex gap-1.5"
         >
           <BadgeDollarSign className="size-4" />
-          Sell
+          {t('products.actions.sell')}
         </Button>
       </D.DialogTrigger>
       <D.DialogContent className="sm:max-w-[425px]">
         <D.DialogHeader>
-          <D.DialogTitle className="flex gap-2">
+<D.DialogTitle className="flex gap-2">
             <BadgeDollarSign className="size-5" />
-            Sell product
+            {t('products.sellProduct')}
           </D.DialogTitle>
           <D.DialogDescription className="text-start">
-            Provide selling details of the product. Click save when you are
-            done.
+            {t('products.sellingProduct')}
           </D.DialogDescription>
         </D.DialogHeader>
         <Form {...form}>
@@ -85,7 +86,7 @@ export function SellProduct({ row }: { row: Row<Product> }) {
               sellProduct({ body: values, productId });
 
               toast({
-                description: 'Sales record created successfully',
+                description: t('common.success'),
                 action: (
                   <DownloadInvoice
                     data={{
@@ -111,12 +112,12 @@ export function SellProduct({ row }: { row: Row<Product> }) {
               name="buyer_name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Buyer name</FormLabel>
+                  <FormLabel>{t('sales.buyerName')}</FormLabel>
                   <FormControl>
                     <Input
                       type="text"
                       className="transition-all"
-                      placeholder="Enter buyer name"
+                      placeholder={t('sales.buyerName')}
                       disabled={isLoading}
                       {...field}
                     />
@@ -131,12 +132,12 @@ export function SellProduct({ row }: { row: Row<Product> }) {
               name="quantity_sold"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Quantity sold</FormLabel>
+                  <FormLabel>{t('sales.quantitySold')}</FormLabel>
                   <FormControl>
                     <Input
                       type="number"
                       className="transition-all"
-                      placeholder="Enter how many products were sold"
+                      placeholder={t('sales.quantitySold')}
                       disabled={isLoading}
                       min={1}
                       max={quantity}
@@ -153,7 +154,7 @@ export function SellProduct({ row }: { row: Row<Product> }) {
               name="sold_on"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Sold on</FormLabel>
+                  <FormLabel>{t('sales.soldOn')}</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
@@ -167,7 +168,7 @@ export function SellProduct({ row }: { row: Row<Product> }) {
                           {field.value ? (
                             format(field.value, 'PPP')
                           ) : (
-                            <span>Pick a date</span>
+                            <span>{t('sales.pickDate')}</span>
                           )}
                           <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                         </Button>

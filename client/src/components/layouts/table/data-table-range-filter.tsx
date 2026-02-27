@@ -5,7 +5,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
-import { ContextType, ProductsContext } from '@/pages/dashboard';
+import { ContextType, ProductsContext } from '@/pages/dashboard/products';
 import { useContext, useState } from 'react';
 
 const defaultValues = {
