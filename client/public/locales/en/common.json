@@ -213,6 +213,8 @@
   "quotes": {
     "title": "Quotes",
     "addQuote": "Create Quote",
+    "createQuote": "Create Quote",
+    "addItem": "Add Item",
     "editQuote": "Edit Quote",
     "deleteQuote": "Delete Quote",
     "sendQuote": "Send Quote",
@@ -238,6 +240,15 @@
   "invoices": {
     "title": "Invoices",
     "addInvoice": "Create Invoice",
+    "createInvoice": "Create Invoice",
+    "selectCustomer": "Select a customer",
+    "items": "Items",
+    "addItem": "Add Item",
+    "description": "Description",
+    "quantity": "Qty",
+    "price": "Price",
+    "discount": "Discount",
+    "taxRate": "Tax Rate (%)",
     "editInvoice": "Edit Invoice",
     "deleteInvoice": "Cancel Invoice",
     "sendInvoice": "Send Invoice",
@@ -270,6 +281,7 @@
   "prescriptions": {
     "title": "Prescriptions",
     "addPrescription": "New Prescription",
+    "addPrescriptionDescription": "Fill in the details to add a new prescription",
     "editPrescription": "Edit Prescription",
     "deletePrescription": "Delete Prescription",
     "prescriptionDate": "Prescription Date",

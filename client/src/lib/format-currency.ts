@@ -1,8 +1,8 @@
 export function formatCurrency(num: any) {
-  return Intl.NumberFormat('en-US', {
+  return Intl.NumberFormat('fr-XO', {
     style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+    currency: 'XOF',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
   }).format(num);
 }

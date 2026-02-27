@@ -2,6 +2,7 @@ import { SERVER_DOMAIN } from '@/config';
 import { User } from '@/types/user';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import Cookies from 'js-cookie';
+import { customerApi } from './customers';
 
 export const baseApi = createApi({
   baseQuery: fetchBaseQuery({
@@ -37,3 +38,5 @@ export const baseApi = createApi({
 });
 
 export const { useProfileQuery } = baseApi;
+
+export const { useGetCustomersQuery } = customerApi;

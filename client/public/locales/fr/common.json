@@ -213,6 +213,8 @@
   "quotes": {
     "title": "Devis",
     "addQuote": "Créer un devis",
+    "createQuote": "Créer un devis",
+    "addItem": "Ajouter un article",
     "editQuote": "Modifier le devis",
     "deleteQuote": "Supprimer le devis",
     "sendQuote": "Envoyer le devis",
@@ -238,6 +240,15 @@
   "invoices": {
     "title": "Factures",
     "addInvoice": "Créer une facture",
+    "createInvoice": "Créer une facture",
+    "selectCustomer": "Sélectionner un client",
+    "items": "Articles",
+    "addItem": "Ajouter un article",
+    "description": "Description",
+    "quantity": "Qté",
+    "price": "Prix",
+    "discount": "Remise",
+    "taxRate": "Taux de taxe (%)",
     "editInvoice": "Modifier la facture",
     "deleteInvoice": "Annuler la facture",
     "sendInvoice": "Envoyer la facture",
@@ -270,6 +281,7 @@
   "prescriptions": {
     "title": "Ordonnances",
     "addPrescription": "Nouvelle ordonnance",
+    "addPrescriptionDescription": "Remplissez les détails pour ajouter une nouvelle ordonnance",
     "editPrescription": "Modifier l'ordonnance",
     "deletePrescription": "Supprimer l'ordonnance",
     "prescriptionDate": "Date de prescription",

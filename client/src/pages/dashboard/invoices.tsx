@@ -20,6 +20,7 @@ import { format } from 'date-fns';
 import { fr, enUS } from 'date-fns/locale';
 import { useRouter } from 'next/router';
 import { formatCurrency } from '@/lib/format-currency';
+import { AddInvoice } from '@/components/layouts/table/row-actions/add-invoice';
 
 const statusColors: Record<string, string> = {
   PENDING: 'bg-yellow-100 text-yellow-800',
@@ -51,10 +52,7 @@ export default function DashboardInvoices() {
           <div>
             <h1 className="text-2xl font-bold">{t('invoices.title')}</h1>
           </div>
-          <Button>
-            <PlusIcon className="mr-2 h-4 w-4" />
-            {t('invoices.addInvoice')}
-          </Button>
+          <AddInvoice />
         </div>
 
         <Card>

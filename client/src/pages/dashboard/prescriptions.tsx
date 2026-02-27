@@ -19,6 +19,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { format } from 'date-fns';
 import { fr, enUS } from 'date-fns/locale';
 import { useRouter } from 'next/router';
+import { AddPrescription } from '@/components/layouts/table/row-actions/add-prescription';
 
 export default function DashboardPrescriptions() {
   const { t } = useTranslation('common');
@@ -42,10 +43,7 @@ export default function DashboardPrescriptions() {
           <div>
             <h1 className="text-2xl font-bold">{t('prescriptions.title')}</h1>
           </div>
-          <Button>
-            <PlusIcon className="mr-2 h-4 w-4" />
-            {t('prescriptions.addPrescription')}
-          </Button>
+          <AddPrescription />
         </div>
 
         <Card>
