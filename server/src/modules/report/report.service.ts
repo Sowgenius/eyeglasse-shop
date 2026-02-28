@@ -13,6 +13,18 @@ export async function getDashboardStats(jwtPayload: TJwtPayload) {
   const startOfToday = startOfDay(today);
   const endOfToday = endOfDay(today);
 
+  // Low stock products query (raw SQL for comparison)
+  let lowStockProducts = 0;
+  try {
+    const userIdFilter = jwtPayload.role === 'USER' ? `AND "userId" = '${jwtPayload.userId}'` : '';
+    const lowStockRawResult = await prisma.$queryRawUnsafe<{count: bigint}[]>(
+      `SELECT COUNT(*) as count FROM "Product" WHERE "isActive" = true AND quantity <= "reorderPoint" ${userIdFilter}`
+    );
+    lowStockProducts = lowStockRawResult[0]?.count ? Number(lowStockRawResult[0].count) : 0;
+  } catch (error) {
+    console.error('Error fetching low stock products:', error);
+  }
+
   const [
     totalCustomers,
     totalProducts,
@@ -20,7 +32,6 @@ export async function getDashboardStats(jwtPayload: TJwtPayload) {
     todayRevenue,
     pendingInvoices,
     overdueInvoices,
-    lowStockProducts,
   ] = await Promise.all([
     prisma.customer.count({ where }),
     prisma.product.count({ where: { ...where, isActive: true } }),
@@ -55,15 +66,6 @@ export async function getDashboardStats(jwtPayload: TJwtPayload) {
         ...where,
         status: { in: ['PENDING', 'PARTIAL'] },
         dueDate: { lt: today },
-      },
-    }),
-
-    // Low stock products
-    prisma.product.count({
-      where: {
-        ...where,
-        quantity: { lte: prisma.product.fields.reorderPoint },
-        isActive: true,
       },
     }),
   ]);

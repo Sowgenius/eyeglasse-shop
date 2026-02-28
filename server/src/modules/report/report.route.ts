@@ -20,6 +20,13 @@ router.get(
   getSalesReport
 );
 
+// Alias for /sales-history (used by frontend)
+router.get(
+  '/sales-history',
+  [verifyToken()],
+  getSalesReport
+);
+
 router.get(
   '/products',
   [verifyToken()],
