@@ -13,21 +13,20 @@ router.get(
     const userId = req.jwtPayload.userId;
     const { type, startDate, endDate } = req.query;
     
-    const whereClause: any = {
-      userId,
-    };
-
-    if (startDate || endDate) {
-      whereClause.createdAt = {};
-      if (startDate) whereClause.createdAt.gte = new Date(startDate as string);
-      if (endDate) whereClause.createdAt.lte = new Date(endDate as string);
-    }
+    // Build date filter
+    const dateFilter: any = {};
+    if (startDate) dateFilter.gte = new Date(startDate as string);
+    if (endDate) dateFilter.lte = new Date(endDate as string);
 
     let transactions: any[] = [];
 
     if (!type || type === 'invoice') {
+      const invoiceWhere: any = {};
+      if (userId) invoiceWhere.userId = userId;
+      if (Object.keys(dateFilter).length > 0) invoiceWhere.createdAt = dateFilter;
+
       const invoices = await prisma.invoice.findMany({
-        where: whereClause,
+        where: invoiceWhere,
         include: {
           customer: {
             select: {
@@ -55,8 +54,12 @@ router.get(
     }
 
     if (!type || type === 'payment') {
+      // Payments don't have userId, so we need to get all payments first, then filter
+      const paymentWhere: any = {};
+      if (Object.keys(dateFilter).length > 0) paymentWhere.createdAt = dateFilter;
+
       const payments = await prisma.payment.findMany({
-        where: whereClause,
+        where: paymentWhere,
         include: {
           invoice: {
             include: {
@@ -74,16 +77,19 @@ router.get(
         orderBy: { createdAt: 'desc' },
       });
 
+      // Filter to only include payments for this user's invoices
       transactions = transactions.concat(
-        payments.map(pay => ({
-          id: pay.id,
-          type: 'PAYMENT',
-          invoiceNumber: pay.invoice.invoiceNumber,
-          amount: pay.amount,
-          status: 'COMPLETED',
-          customer: pay.invoice.customer,
-          date: pay.createdAt,
-        }))
+        payments
+          .filter(pay => pay.invoice && (!userId || pay.invoice.userId === userId))
+          .map(pay => ({
+            id: pay.id,
+            type: 'PAYMENT',
+            invoiceNumber: pay.invoice.invoiceNumber,
+            amount: pay.amount,
+            status: 'COMPLETED',
+            customer: pay.invoice.customer,
+            date: pay.createdAt,
+          }))
       );
     }
 

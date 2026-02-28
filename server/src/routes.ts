@@ -10,6 +10,8 @@ import { InstallmentRoutes } from './modules/installment/installment.route';
 import { TransactionRoutes } from './modules/transaction/transaction.route';
 import { SalesRoutes } from './modules/sales/sales.route';
 import { prisma } from './lib/prisma';
+import { catchAsync } from './utils';
+import { sendResponse } from './utils/send-response';
 
 const router = Router();
 
@@ -46,5 +48,16 @@ router.use('/reports', ReportRoutes);
 router.use('/installments', InstallmentRoutes);
 router.use('/transactions', TransactionRoutes);
 router.use('/sales', SalesRoutes);
+
+import { verifyToken } from './middlewares/auth';
+
+// Frontend compatibility: /sales-history -> /reports/sales
+router.get('/sales-history', verifyToken(), catchAsync(async (req, res) => {
+  const data = await (await import('./modules/report/report.service')).getSalesReport(req.query, req.jwtPayload);
+  return sendResponse(res, {
+    message: 'Sales report retrieved successfully',
+    data,
+  });
+}));
 
 export default router;
