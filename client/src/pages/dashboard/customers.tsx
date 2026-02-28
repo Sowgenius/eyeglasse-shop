@@ -18,6 +18,7 @@ import { PlusIcon, SearchIcon, TrashIcon } from 'lucide-react';
 import { Toaster } from '@/components/ui/toaster';
 import { AddCustomer } from '@/components/layouts/table/row-actions/add-customer';
 import { EditCustomer } from '@/components/layouts/table/row-actions/edit-customer';
+import { formatPhoneNumber } from '@/lib/format-phone';
 
 export default function DashboardCustomers() {
   const { t } = useTranslation('common');
@@ -81,7 +82,7 @@ export default function DashboardCustomers() {
                       <TableCell className="font-medium">{customer.firstName}</TableCell>
                       <TableCell>{customer.lastName}</TableCell>
                       <TableCell>{customer.email || '-'}</TableCell>
-                      <TableCell>{customer.phone || '-'}</TableCell>
+                      <TableCell>{formatPhoneNumber(customer.phone) || '-'}</TableCell>
                       <TableCell>{customer.city || '-'}</TableCell>
                       <TableCell>
                         <div className="flex gap-2">

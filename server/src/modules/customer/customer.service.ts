@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import { normalizePhoneNumber } from '@/lib/phone';
 import { TJwtPayload } from '../user/user.interface';
 import { Customer, CustomerUpdate, Query } from './customer.interface';
 
@@ -8,6 +9,7 @@ export async function create(payload: Customer, userId: string) {
       ...payload,
       userId,
       birthDate: payload.birthDate ? new Date(payload.birthDate) : null,
+      phone: normalizePhoneNumber(payload.phone),
     } as any,
   });
 }
@@ -101,6 +103,9 @@ export async function update(
   const data: any = { ...payload };
   if (payload.birthDate) {
     data.birthDate = new Date(payload.birthDate);
+  }
+  if (payload.phone) {
+    data.phone = normalizePhoneNumber(payload.phone);
   }
 
   return prisma.customer.update({
