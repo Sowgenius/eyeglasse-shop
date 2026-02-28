@@ -14,6 +14,8 @@ import {
 import { useState } from 'react';
 import { useGetPrescriptionsQuery, useDeletePrescriptionMutation } from '@/redux/api/prescriptions';
 import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetStaticProps } from 'next';
 import { PlusIcon, SearchIcon, FileTextIcon, TrashIcon, EyeIcon } from 'lucide-react';
 import { Toaster } from '@/components/ui/toaster';
 import { format } from 'date-fns';
@@ -141,3 +143,11 @@ export default function DashboardPrescriptions() {
     </DashboardLayout>
   );
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale || 'fr', ['common'])),
+    },
+  };
+};

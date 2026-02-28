@@ -14,6 +14,8 @@ import {
 import { useState } from 'react';
 import { useGetInvoicesQuery, useDeleteInvoiceMutation, useAddPaymentMutation } from '@/redux/api/invoices';
 import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetStaticProps } from 'next';
 import { PlusIcon, SearchIcon, FileTextIcon, TrashIcon, CreditCardIcon } from 'lucide-react';
 import { Toaster } from '@/components/ui/toaster';
 import { format } from 'date-fns';
@@ -151,3 +153,11 @@ export default function DashboardInvoices() {
     </DashboardLayout>
   );
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale || 'fr', ['common'])),
+    },
+  };
+};

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useGetDashboardStatsQuery, useGetSalesReportQuery } from '@/redux/api/reports';
 import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Link from 'next/link';
 import {
   UsersIcon,
@@ -23,6 +24,7 @@ import { format } from 'date-fns';
 import { fr, enUS } from 'date-fns/locale';
 import { useRouter } from 'next/router';
 import { formatCurrency } from '@/lib/format-currency';
+import { GetStaticProps } from 'next';
 
 export default function DashboardOverview() {
   const { t } = useTranslation('common');
@@ -271,3 +273,11 @@ export default function DashboardOverview() {
     </DashboardLayout>
   );
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale || 'fr', ['common'])),
+    },
+  };
+};

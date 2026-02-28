@@ -14,6 +14,8 @@ import {
 import { useState } from 'react';
 import { useGetCustomersQuery, useDeleteCustomerMutation } from '@/redux/api/customers';
 import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetStaticProps } from 'next';
 import { PlusIcon, SearchIcon, TrashIcon } from 'lucide-react';
 import { Toaster } from '@/components/ui/toaster';
 import { AddCustomer } from '@/components/layouts/table/row-actions/add-customer';
@@ -131,3 +133,11 @@ export default function DashboardCustomers() {
     </DashboardLayout>
   );
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale || 'fr', ['common'])),
+    },
+  };
+};

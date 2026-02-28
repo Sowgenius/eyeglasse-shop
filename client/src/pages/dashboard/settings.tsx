@@ -5,6 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useProfileQuery } from '@/redux/api';
 import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetStaticProps } from 'next';
 import { Toaster } from '@/components/ui/toaster';
 import { UserIcon, MailIcon, LockIcon } from 'lucide-react';
 
@@ -63,3 +65,11 @@ export default function DashboardSettings() {
     </DashboardLayout>
   );
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale || 'fr', ['common'])),
+    },
+  };
+};

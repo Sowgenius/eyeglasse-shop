@@ -6,10 +6,12 @@ import { useProductsQuery } from '@/redux/api/products';
 import { Params } from '@/types/query-params';
 import { createContext, useState } from 'react';
 import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { SearchIcon } from 'lucide-react';
 import { AddProduct } from '@/components/layouts/table/row-actions/add-product';
+import { GetStaticProps } from 'next';
 
 export type ContextType = {
   setUrlParams: (params: Params) => void;
@@ -72,3 +74,11 @@ export default function DashboardProducts() {
     </DashboardLayout>
   );
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale || 'fr', ['common'])),
+    },
+  };
+};

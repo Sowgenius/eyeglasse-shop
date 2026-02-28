@@ -14,6 +14,8 @@ import {
 import { useState } from 'react';
 import { useGetQuotesQuery, useDeleteQuoteMutation } from '@/redux/api/quotes';
 import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetStaticProps } from 'next';
 import { PlusIcon, SearchIcon, FileTextIcon, TrashIcon } from 'lucide-react';
 import { Toaster } from '@/components/ui/toaster';
 import { format } from 'date-fns';
@@ -138,3 +140,11 @@ export default function DashboardQuotes() {
     </DashboardLayout>
   );
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale || 'fr', ['common'])),
+    },
+  };
+};

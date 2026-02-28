@@ -4,6 +4,8 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useTransactionsQuery } from '@/redux/api/sales';
 import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetStaticProps } from 'next';
 import { format } from 'date-fns';
 import { fr, enUS } from 'date-fns/locale';
 import { useRouter } from 'next/router';
@@ -95,3 +97,11 @@ export default function TransactionsPage() {
     </DashboardLayout>
   );
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale || 'fr', ['common'])),
+    },
+  };
+};

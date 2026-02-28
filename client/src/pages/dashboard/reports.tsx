@@ -2,6 +2,8 @@ import { DashboardLayout } from '@/components/layouts/dashboard-layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useGetSalesReportQuery, useGetProductPerformanceQuery } from '@/redux/api/reports';
 import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetStaticProps } from 'next';
 import { TrendingUpIcon, DollarSignIcon, FileTextIcon, PackageIcon } from 'lucide-react';
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
@@ -143,3 +145,11 @@ export default function DashboardReports() {
     </DashboardLayout>
   );
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale || 'fr', ['common'])),
+    },
+  };
+};
