@@ -14,9 +14,10 @@ import {
 import { useState } from 'react';
 import { useGetCustomersQuery, useDeleteCustomerMutation } from '@/redux/api/customers';
 import { useTranslation } from 'next-i18next';
-import { PlusIcon, SearchIcon, PencilIcon, TrashIcon } from 'lucide-react';
+import { PlusIcon, SearchIcon, TrashIcon } from 'lucide-react';
 import { Toaster } from '@/components/ui/toaster';
 import { AddCustomer } from '@/components/layouts/table/row-actions/add-customer';
+import { EditCustomer } from '@/components/layouts/table/row-actions/edit-customer';
 
 export default function DashboardCustomers() {
   const { t } = useTranslation('common');
@@ -84,9 +85,7 @@ export default function DashboardCustomers() {
                       <TableCell>{customer.city || '-'}</TableCell>
                       <TableCell>
                         <div className="flex gap-2">
-                          <Button variant="ghost" size="icon">
-                            <PencilIcon className="h-4 w-4" />
-                          </Button>
+                          <EditCustomer customerId={customer.id} />
                           <Button
                             variant="ghost"
                             size="icon"

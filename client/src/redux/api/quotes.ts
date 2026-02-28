@@ -113,6 +113,13 @@ export const quoteApi = baseApi.injectEndpoints({
       transformResponse: (res: { data: Quote }) => res.data,
       invalidatesTags: (result, error, id) => [{ type: 'quotes', id }, 'quotes'],
     }),
+    convertQuoteToInvoice: build.mutation<any, string>({
+      query: (id) => ({
+        url: `/quotes/${id}/convert`,
+        method: 'POST',
+      }),
+      invalidatesTags: (result, error, id) => [{ type: 'quotes', id }, { type: 'invoices', id }],
+    }),
   }),
 });
 
@@ -123,4 +130,5 @@ export const {
   useUpdateQuoteMutation,
   useDeleteQuoteMutation,
   useSendQuoteMutation,
+  useConvertQuoteToInvoiceMutation,
 } = quoteApi;

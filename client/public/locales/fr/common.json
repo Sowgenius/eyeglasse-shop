@@ -194,6 +194,7 @@
     "addCustomer": "Ajouter un client",
     "addCustomerDescription": "Remplissez les détails pour ajouter un nouveau client",
     "editCustomer": "Modifier le client",
+    "editCustomerDescription": "Mettez à jour les détails du client ci-dessous",
     "deleteCustomer": "Supprimer le client",
     "firstName": "Prénom",
     "lastName": "Nom",

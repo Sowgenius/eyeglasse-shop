@@ -12,6 +12,7 @@ import {
   ArrowLeftRightIcon,
   LucideIcon,
 } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 
@@ -61,7 +62,7 @@ export function Sidebar() {
         <ul className="space-y-1">
           {mainNavItems.map((item) => (
             <li key={item.href}>
-              <a
+              <Link
                 href={item.href}
                 className={cn(
                   'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
@@ -72,7 +73,7 @@ export function Sidebar() {
               >
                 <item.icon className="size-5" />
                 {item.title}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
@@ -80,7 +81,7 @@ export function Sidebar() {
         <ul className="space-y-1 border-t pt-4">
           {bottomNavItems.map((item) => (
             <li key={item.href}>
-              <a
+              <Link
                 href={item.href}
                 className={cn(
                   'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
@@ -91,7 +92,7 @@ export function Sidebar() {
               >
                 <item.icon className="size-5" />
                 {item.title}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>

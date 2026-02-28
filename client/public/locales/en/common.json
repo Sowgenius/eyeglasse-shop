@@ -194,6 +194,7 @@
     "addCustomer": "Add Customer",
     "addCustomerDescription": "Fill in the details to add a new customer",
     "editCustomer": "Edit Customer",
+    "editCustomerDescription": "Update the customer details below",
     "deleteCustomer": "Delete Customer",
     "firstName": "First Name",
     "lastName": "Last Name",

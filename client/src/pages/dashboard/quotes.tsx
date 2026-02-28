@@ -21,6 +21,7 @@ import { fr, enUS } from 'date-fns/locale';
 import { useRouter } from 'next/router';
 import { formatCurrency } from '@/lib/format-currency';
 import { AddQuote } from '@/components/layouts/table/row-actions/add-quote';
+import { EditQuote } from '@/components/layouts/table/row-actions/edit-quote';
 
 const statusColors: Record<string, string> = {
   DRAFT: 'bg-slate-100 text-slate-800',
@@ -104,9 +105,7 @@ export default function DashboardQuotes() {
                       </TableCell>
                       <TableCell>
                         <div className="flex gap-2">
-                          <Button variant="ghost" size="icon">
-                            <FileTextIcon className="h-4 w-4" />
-                          </Button>
+                          <EditQuote quoteId={quote.id} />
                           <Button variant="ghost" size="icon" onClick={() => handleDelete(quote.id)}>
                             <TrashIcon className="h-4 w-4 text-red-500" />
                           </Button>

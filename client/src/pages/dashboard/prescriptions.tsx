@@ -20,6 +20,7 @@ import { format } from 'date-fns';
 import { fr, enUS } from 'date-fns/locale';
 import { useRouter } from 'next/router';
 import { AddPrescription } from '@/components/layouts/table/row-actions/add-prescription';
+import { EditPrescription } from '@/components/layouts/table/row-actions/edit-prescription';
 
 export default function DashboardPrescriptions() {
   const { t } = useTranslation('common');
@@ -27,7 +28,7 @@ export default function DashboardPrescriptions() {
   const locale = router.locale === 'en' ? enUS : fr;
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
-  const { data, isLoading } = useGetPrescriptionsQuery({ page, limit: 10 });
+  const { data, isLoading } = useGetPrescriptionsQuery({ page, limit: 10, search });
   const [deletePrescription] = useDeletePrescriptionMutation();
 
   const handleDelete = async (id: string) => {
@@ -107,12 +108,7 @@ export default function DashboardPrescriptions() {
                       </TableCell>
                       <TableCell>
                         <div className="flex gap-2">
-                          <Button variant="ghost" size="icon">
-                            <EyeIcon className="h-4 w-4" />
-                          </Button>
-                          <Button variant="ghost" size="icon">
-                            <FileTextIcon className="h-4 w-4" />
-                          </Button>
+                          <EditPrescription prescriptionId={prescription.id} />
                           <Button variant="ghost" size="icon" onClick={() => handleDelete(prescription.id)}>
                             <TrashIcon className="h-4 w-4 text-red-500" />
                           </Button>

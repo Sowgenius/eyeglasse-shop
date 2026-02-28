@@ -21,6 +21,7 @@ import { fr, enUS } from 'date-fns/locale';
 import { useRouter } from 'next/router';
 import { formatCurrency } from '@/lib/format-currency';
 import { AddInvoice } from '@/components/layouts/table/row-actions/add-invoice';
+import { EditInvoice } from '@/components/layouts/table/row-actions/edit-invoice';
 
 const statusColors: Record<string, string> = {
   PENDING: 'bg-yellow-100 text-yellow-800',
@@ -110,13 +111,13 @@ export default function DashboardInvoices() {
                       </TableCell>
                       <TableCell>
                         <div className="flex gap-2">
-                          <Button variant="ghost" size="icon">
-                            <FileTextIcon className="h-4 w-4" />
-                          </Button>
+                          <EditInvoice invoiceId={invoice.id} />
                           {invoice.status !== 'PAID' && invoice.status !== 'CANCELLED' && (
-                            <Button variant="ghost" size="icon">
-                              <CreditCardIcon className="h-4 w-4" />
-                            </Button>
+                            <EditInvoice invoiceId={invoice.id} trigger={
+                              <Button variant="ghost" size="icon">
+                                <CreditCardIcon className="h-4 w-4" />
+                              </Button>
+                            } />
                           )}
                           <Button variant="ghost" size="icon" onClick={() => handleDelete(invoice.id)}>
                             <TrashIcon className="h-4 w-4 text-red-500" />
