@@ -29,6 +29,7 @@ export async function create(payload: Prescription, userId: string) {
         select: {
           firstName: true,
           lastName: true,
+          phone: true,
         },
       },
     },
@@ -61,7 +62,7 @@ export async function getAll(query: any, jwtPayload: TJwtPayload) {
     };
   }
 
-  // Search by prescription ID or customer name
+  // Search by prescription ID or customer name/phone
   if (query.search) {
     where.OR = [
       { id: { contains: query.search, mode: 'insensitive' } },
@@ -70,6 +71,7 @@ export async function getAll(query: any, jwtPayload: TJwtPayload) {
           OR: [
             { firstName: { contains: query.search, mode: 'insensitive' } },
             { lastName: { contains: query.search, mode: 'insensitive' } },
+            { phone: { contains: query.search, mode: 'insensitive' } },
           ],
         },
       },
@@ -88,6 +90,7 @@ export async function getAll(query: any, jwtPayload: TJwtPayload) {
           select: {
             firstName: true,
             lastName: true,
+            phone: true,
           },
         },
       },
@@ -116,7 +119,13 @@ export async function getById(prescriptionId: string, jwtPayload: TJwtPayload) {
   return prisma.prescription.findFirst({
     where,
     include: {
-      customer: true,
+      customer: {
+        select: {
+          firstName: true,
+          lastName: true,
+          phone: true,
+        },
+      },
     },
   });
 }
@@ -148,6 +157,7 @@ export async function update(
         select: {
           firstName: true,
           lastName: true,
+          phone: true,
         },
       },
     },

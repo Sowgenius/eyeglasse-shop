@@ -99,7 +99,15 @@ export async function getAll(query: any, jwtPayload: TJwtPayload) {
           OR: [
             { firstName: { contains: query.search, mode: 'insensitive' } },
             { lastName: { contains: query.search, mode: 'insensitive' } },
+            { phone: { contains: query.search, mode: 'insensitive' } },
           ],
+        },
+      },
+      {
+        items: {
+          some: {
+            productId: { contains: query.search, mode: 'insensitive' },
+          },
         },
       },
     ];
@@ -117,6 +125,7 @@ export async function getAll(query: any, jwtPayload: TJwtPayload) {
             firstName: true,
             lastName: true,
             email: true,
+            phone: true,
           },
         },
         items: true,
