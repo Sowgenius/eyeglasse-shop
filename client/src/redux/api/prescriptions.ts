@@ -59,7 +59,7 @@ export interface PrescriptionListResponse {
 
 export const prescriptionApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    getPrescriptions: build.query<PrescriptionListResponse, { page?: number; limit?: number; customerId?: string; expiringSoon?: boolean }>({
+    getPrescriptions: build.query<PrescriptionListResponse, { page?: number; limit?: number; customerId?: string; expiringSoon?: boolean; search?: string }>({
       query: (params) => ({
         url: '/prescriptions',
         params,

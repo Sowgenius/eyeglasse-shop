@@ -61,6 +61,22 @@ export async function getAll(query: any, jwtPayload: TJwtPayload) {
     };
   }
 
+  // Search by prescription ID or customer name
+  if (query.search) {
+    where.OR = [
+      { id: { contains: query.search, mode: 'insensitive' } },
+      {
+        customer: {
+          OR: [
+            { firstName: { contains: query.search, mode: 'insensitive' } },
+            { lastName: { contains: query.search, mode: 'insensitive' } },
+          ],
+        },
+      },
+      { prescribedBy: { contains: query.search, mode: 'insensitive' } },
+    ];
+  }
+
   const [prescriptions, total] = await Promise.all([
     prisma.prescription.findMany({
       where,
