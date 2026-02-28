@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import { normalizePhoneNumber } from '@/lib/phone';
+import { normalizePhoneNumber, getPhoneSearchPatterns } from '@/lib/phone';
 import { TJwtPayload } from '../user/user.interface';
 import { Customer, CustomerUpdate, Query } from './customer.interface';
 
@@ -26,11 +26,15 @@ export async function getAll(query: Query, jwtPayload: TJwtPayload) {
   }
 
   if (query.search) {
+    // Get phone search patterns (handles with/without country code)
+    const phonePatterns = getPhoneSearchPatterns(query.search);
+    
     where.OR = [
       { firstName: { contains: query.search, mode: 'insensitive' } },
       { lastName: { contains: query.search, mode: 'insensitive' } },
       { email: { contains: query.search, mode: 'insensitive' } },
-      { phone: { contains: query.search, mode: 'insensitive' } },
+      // Search phone with multiple patterns
+      ...phonePatterns.map(p => ({ phone: { contains: p, mode: 'insensitive' } })),
     ];
   }
 

@@ -4,13 +4,13 @@
  * Senegal phone number format:
  * - Country code: +221
  * - Mobile numbers: 10 digits, typically start with 70, 75, 76, 77, 78
- * - Examples: +221 77 123 4567, 221771234567, 771234567
+ * - Display format: +221 XX XXX XX XX
  */
 
 /**
  * Formats a phone number for display in Senegal
  * @param phone - Raw phone number (any format)
- * @returns Formatted phone number: +221 XX XXX XXXX
+ * @returns Formatted phone number: +221 XX XXX XX XX
  */
 export function formatPhoneNumber(phone: string | null | undefined): string {
   if (!phone) return '';
@@ -38,12 +38,13 @@ export function formatPhoneNumber(phone: string | null | undefined): string {
     normalized = digits;
   }
   
-  // Format as +221 XX XXX XXXX
+  // Format as +221 XX XXX XX XX (space every 2 digits)
   if (normalized.length >= 10) {
-    const part1 = normalized.substring(3, 5);
-    const part2 = normalized.substring(5, 8);
-    const part3 = normalized.substring(8, 12);
-    return `+221 ${part1} ${part2} ${part3}`.trim();
+    const countryCode = '+221';
+    const number = normalized.substring(3);
+    // Split into groups of 2
+    const parts = number.match(/.{1,2}/g) || [];
+    return `${countryCode} ${parts.join(' ')}`;
   }
   
   return phone; // Return original if can't parse

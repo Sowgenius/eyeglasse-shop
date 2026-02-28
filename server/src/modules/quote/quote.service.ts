@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import { getPhoneSearchPatterns } from '@/lib/phone';
 import { TJwtPayload } from '../user/user.interface';
 import { Quote, QuoteUpdate } from './quote.interface';
 
@@ -92,6 +93,8 @@ export async function getAll(query: any, jwtPayload: TJwtPayload) {
   }
 
   if (query.search) {
+    const phonePatterns = getPhoneSearchPatterns(query.search);
+    
     where.OR = [
       { quoteNumber: { contains: query.search, mode: 'insensitive' } },
       {
@@ -99,7 +102,8 @@ export async function getAll(query: any, jwtPayload: TJwtPayload) {
           OR: [
             { firstName: { contains: query.search, mode: 'insensitive' } },
             { lastName: { contains: query.search, mode: 'insensitive' } },
-            { phone: { contains: query.search, mode: 'insensitive' } },
+            // Search phone with multiple patterns
+            ...phonePatterns.map(p => ({ phone: { contains: p, mode: 'insensitive' } })),
           ],
         },
       },

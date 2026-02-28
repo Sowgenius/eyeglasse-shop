@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import { getPhoneSearchPatterns } from '@/lib/phone';
 import { TJwtPayload } from '../user/user.interface';
 import { Prescription, PrescriptionUpdate } from './prescription.interface';
 
@@ -64,6 +65,8 @@ export async function getAll(query: any, jwtPayload: TJwtPayload) {
 
   // Search by prescription ID or customer name/phone
   if (query.search) {
+    const phonePatterns = getPhoneSearchPatterns(query.search);
+    
     where.OR = [
       { id: { contains: query.search, mode: 'insensitive' } },
       {
@@ -71,7 +74,8 @@ export async function getAll(query: any, jwtPayload: TJwtPayload) {
           OR: [
             { firstName: { contains: query.search, mode: 'insensitive' } },
             { lastName: { contains: query.search, mode: 'insensitive' } },
-            { phone: { contains: query.search, mode: 'insensitive' } },
+            // Search phone with multiple patterns
+            ...phonePatterns.map(p => ({ phone: { contains: p, mode: 'insensitive' } })),
           ],
         },
       },

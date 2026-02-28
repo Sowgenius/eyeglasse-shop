@@ -41,7 +41,7 @@ export function normalizePhoneNumber(phone: string | null | undefined): string |
 
 /**
  * Formats a phone number for display
- * Converts from 221XXXXXXXXX to +221 XX XXX XXXX
+ * Converts from 221XXXXXXXXX to +221 XX XXX XX XX (space every 2 digits)
  */
 export function formatPhoneNumber(phone: string | null | undefined): string {
   if (!phone) return '';
@@ -49,12 +49,40 @@ export function formatPhoneNumber(phone: string | null | undefined): string {
   const normalized = normalizePhoneNumber(phone);
   if (!normalized || normalized.length < 10) return phone;
   
-  // Format as +221 XX XXX XXXX
-  const part1 = normalized.substring(3, 5);
-  const part2 = normalized.substring(5, 8);
-  const part3 = normalized.substring(8, 12);
+  // Format as +221 XX XXX XX XX (space every 2 digits)
+  const number = normalized.substring(3);
+  const parts = number.match(/.{1,2}/g) || [];
   
-  return `+221 ${part1} ${part2} ${part3}`.trim();
+  return `+221 ${parts.join(' ')}`;
+}
+
+/**
+ * Creates search patterns for phone numbers
+ * Handles both with and without country code
+ * @returns Array of possible search patterns
+ */
+export function getPhoneSearchPatterns(search: string): string[] {
+  const digits = search.replace(/\D/g, '');
+  const patterns: string[] = [];
+  
+  if (digits.startsWith(SENEGAL_COUNTRY_CODE)) {
+    // Search includes country code - use as-is and without
+    patterns.push(digits);
+    patterns.push(digits.substring(3)); // Without country code
+  } else if (digits.length === 9) {
+    // Direct 9 digits - search both with and without country code
+    patterns.push(digits);
+    patterns.push(SENEGAL_COUNTRY_CODE + digits);
+  } else if (digits.startsWith('0') && digits.length === 9) {
+    // Starts with 0 - use with and without 0
+    patterns.push(digits);
+    patterns.push(SENEGAL_COUNTRY_CODE + digits.substring(1));
+  } else {
+    // Use original search term
+    patterns.push(digits);
+  }
+  
+  return patterns;
 }
 
 /**
