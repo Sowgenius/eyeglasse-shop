@@ -12,7 +12,7 @@ export const env = z
     RESEND_API_KEY: z.string().optional(),
     CLIENT_URL: z.string().url().default('http://localhost:3000'),
     NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
-    DEBUG: z.boolean().default(false),
+    DEBUG: z.coerce.boolean().default(false),
     isDevelopment: z.boolean().default(process.env.NODE_ENV !== 'production'),
   })
   .parse(process.env);
