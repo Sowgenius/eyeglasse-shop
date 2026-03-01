@@ -12,8 +12,8 @@ import {
   SettingsIcon,
   ShieldIcon,
   ArrowLeftRightIcon,
-  LucideIcon,
   LayoutDashboardIcon,
+  XIcon,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -22,10 +22,15 @@ import { useTranslation } from 'next-i18next';
 interface NavItem {
   title: string;
   href: string;
-  icon: LucideIcon;
+  icon: any;
 }
 
-export function Sidebar() {
+interface SidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
   const { t } = useTranslation('common');
   const router = useRouter();
   const { data: user } = useProfileQuery();
@@ -55,94 +60,66 @@ export function Sidebar() {
     });
   }
 
-  const isActive = (href: string) => {
-    return router.pathname === href || router.pathname.startsWith(href + '/');
-  };
+  const isActive = (href: string) => router.pathname === href || router.pathname.startsWith(href + '/');
+
+  const NavLink = ({ item }: { item: NavItem }) => (
+    <Link
+      href={item.href}
+      className={cn(
+        'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
+        isActive(item.href)
+          ? 'bg-black text-white dark:bg-white dark:text-black'
+          : 'text-gray-600 hover:bg-gray-100 hover:text-black dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white'
+      )}
+      onClick={onClose}
+    >
+      <item.icon className="h-5 w-5 shrink-0" />
+      <span>{item.title}</span>
+    </Link>
+  );
 
   return (
-    <aside className="fixed left-0 top-0 z-40 h-screen w-64 border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
-      {/* Logo */}
-      <div className="flex h-16 items-center border-b border-slate-200 px-6 dark:border-slate-800">
-        <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-blue-700 text-white shadow-md shadow-blue-500/20">
-            <BarChart3Icon className="h-5 w-5" />
-          </div>
-          <span className="text-lg font-semibold text-slate-900 dark:text-white">
+    <>
+      {/* Mobile overlay */}
+      {isOpen && (
+        <div className="fixed inset-0 z-30 bg-black/50 lg:hidden" onClick={onClose} />
+      )}
+
+      {/* Sidebar */}
+      <aside className={cn(
+        "fixed left-0 top-0 z-40 h-screen w-64 border-r border-gray-200 bg-white dark:border-gray-700 dark:bg-black transition-transform duration-200",
+        isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+      )}>
+        {/* Close button for mobile */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 lg:hidden"
+          aria-label="Close menu"
+        >
+          <XIcon className="h-5 w-5" />
+        </button>
+
+        {/* Logo */}
+        <div className="flex h-16 items-center border-b border-gray-200 dark:border-gray-700 px-6">
+          <span className="text-lg font-bold text-black dark:text-white">
             {t('common.appName')}
           </span>
         </div>
-      </div>
 
-      {/* Navigation */}
-      <nav className="flex h-[calc(100vh-4rem)] flex-col justify-between p-3">
-        <ul className="space-y-1">
-          {mainNavItems.map((item) => (
-            <li key={item.href}>
-              <Link
-                href={item.href}
-                className={cn(
-                  'group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200',
-                  isActive(item.href)
-                    ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/50 dark:text-blue-400'
-                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-900 dark:hover:text-white'
-                )}
-              >
-                {/* Active indicator */}
-                {isActive(item.href) && (
-                  <div className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-blue-600 dark:bg-blue-500" />
-                )}
-                
-                <item.icon 
-                  className={cn(
-                    "h-5 w-5 shrink-0 transition-colors",
-                    isActive(item.href)
-                      ? 'text-blue-600 dark:text-blue-400'
-                      : 'text-slate-500 group-hover:text-slate-700 dark:text-slate-500 dark:group-hover:text-slate-300'
-                  )} 
-                />
-                <span className="flex-1">{item.title}</span>
-                
-                {/* Active dot */}
-                {isActive(item.href) && (
-                  <div className="h-1.5 w-1.5 rounded-full bg-blue-600 dark:bg-blue-400" />
-                )}
-              </Link>
-            </li>
-          ))}
-        </ul>
-
-        <ul className="space-y-1 border-t border-slate-200 pt-3 dark:border-slate-800">
-          {bottomNavItems.map((item) => (
-            <li key={item.href}>
-              <Link
-                href={item.href}
-                className={cn(
-                  'group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200',
-                  isActive(item.href)
-                    ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/50 dark:text-blue-400'
-                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-900 dark:hover:text-white'
-                )}
-              >
-                {isActive(item.href) && (
-                  <div className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-blue-600 dark:bg-blue-500" />
-                )}
-                <item.icon 
-                  className={cn(
-                    "h-5 w-5 shrink-0 transition-colors",
-                    isActive(item.href)
-                      ? 'text-blue-600 dark:text-blue-400'
-                      : 'text-slate-500 group-hover:text-slate-700 dark:text-slate-500 dark:group-hover:text-slate-300'
-                  )} 
-                />
-                <span className="flex-1">{item.title}</span>
-                {isActive(item.href) && (
-                  <div className="h-1.5 w-1.5 rounded-full bg-blue-600 dark:bg-blue-400" />
-                )}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    </aside>
+        {/* Navigation */}
+        <nav className="flex h-[calc(100vh-4rem)] flex-col justify-between p-3 overflow-y-auto">
+          <ul className="space-y-1">
+            {mainNavItems.map((item) => (
+              <li key={item.href}><NavLink item={item} /></li>
+            ))}
+          </ul>
+          <ul className="space-y-1 border-t border-gray-200 pt-3 dark:border-gray-700">
+            {bottomNavItems.map((item) => (
+              <li key={item.href}><NavLink item={item} /></li>
+            ))}
+          </ul>
+        </nav>
+      </aside>
+    </>
   );
 }
