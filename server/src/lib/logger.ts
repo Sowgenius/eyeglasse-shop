@@ -1,169 +1,90 @@
+import winston from 'winston';
+import { env } from '@config';
+
 /**
- * Simple logging utility for the server
- * Uses structured JSON logging for production compatibility
+ * Custom format for colorized console output (development)
  */
-
-// Log levels enum
-enum LogLevel {
-  DEBUG = 0,
-  INFO = 1,
-  WARN = 2,
-  ERROR = 3,
-}
-
-// Get current log level from environment
-const getLogLevel = (): LogLevel => {
-  const env = process.env.NODE_ENV || 'development';
-  const debug = process.env.DEBUG === 'true';
-  
-  if (env === 'production') {
-    return LogLevel.INFO;
-  }
-  if (debug) {
-    return LogLevel.DEBUG;
-  }
-  return LogLevel.INFO;
-};
-
-const currentLevel = getLogLevel();
-
-// Color codes for console output (development only)
-const colors = {
-  reset: '\x1b[0m',
-  red: '\x1b[31m',
-  yellow: '\x1b[33m',
-  blue: '\x1b[36m',
-  green: '\x1b[32m',
-  gray: '\x1b[90m',
-};
-
-const levelLabels: Record<LogLevel, string> = {
-  [LogLevel.DEBUG]: 'DEBUG',
-  [LogLevel.INFO]: 'INFO',
-  [LogLevel.WARN]: 'WARN',
-  [LogLevel.ERROR]: 'ERROR',
-};
+const consoleFormat = winston.format.combine(
+  winston.format.colorize({ all: true }),
+  winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+  winston.format.errors({ stack: true }),
+  winston.format.printf(({ timestamp, level, message, ...metadata }) => {
+    const metaStr = Object.keys(metadata).length > 0 
+      ? ` ${JSON.stringify(metadata, null, 0)}` 
+      : '';
+    return `${timestamp} ${level}: ${message}${metaStr}`;
+  })
+);
 
 /**
- * Format metadata for display
+ * JSON format for production
  */
-const formatMetadata = (meta?: any): string => {
-  if (!meta) return '';
-  if (typeof meta === 'string') return meta;
-  
-  try {
-    // Filter out sensitive data
-    const safeMeta = { ...meta };
-    delete safeMeta.password;
-    delete safeMeta.token;
-    delete safeMeta.authorization;
-    delete safeMeta.body?.password;
-    delete safeMeta.body?.token;
-    
-    return JSON.stringify(safeMeta);
-  } catch {
-    return String(meta);
-  }
-};
+const jsonFormat = winston.format.combine(
+  winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+  winston.format.errors({ stack: true }),
+  winston.format.json()
+);
 
 /**
- * Create formatted timestamp
+ * Create logger instance
  */
-const getTimestamp = (): string => {
-  return new Date().toISOString();
-};
+export const logger = winston.createLogger({
+  level: env.DEBUG ? 'debug' : 'info',
+  format: jsonFormat,
+  defaultMeta: { 
+    service: 'eyeglasse-api',
+    environment: env.NODE_ENV,
+  },
+  transports: [
+    new winston.transports.Console({
+      format: consoleFormat,
+    }),
+  ],
+});
 
 /**
- * Core logging function
- */
-function log(level: LogLevel, message: string, meta?: any): void {
-  if (level < currentLevel) return;
-  
-  const isProduction = process.env.NODE_ENV === 'production';
-  const timestamp = getTimestamp();
-  const levelLabel = levelLabels[level];
-  
-  if (isProduction) {
-    // Production: JSON structured logging
-    const logEntry = {
-      timestamp,
-      level: levelLabel,
-      message,
-      ...(meta && { metadata: meta }),
-      service: 'eyeglasse-api',
-      environment: process.env.NODE_ENV || 'development',
-    };
-    console.log(JSON.stringify(logEntry));
-  } else {
-    // Development: Human-readable colored output
-    const color = level === LogLevel.ERROR ? colors.red 
-      : level === LogLevel.WARN ? colors.yellow 
-      : level === LogLevel.INFO ? colors.green 
-      : colors.gray;
-    
-    const metaStr = formatMetadata(meta);
-    const metaPart = metaStr ? ` ${metaStr}` : '';
-    console.log(`${colors.gray}${timestamp}${colors.reset} ${color}${levelLabel}${colors.reset} ${message}${metaPart}`);
-  }
-}
-
-/**
- * Logger API
- */
-export const logger = {
-  debug: (message: string, meta?: any) => log(LogLevel.DEBUG, message, meta),
-  info: (message: string, meta?: any) => log(LogLevel.INFO, message, meta),
-  warn: (message: string, meta?: any) => log(LogLevel.WARN, message, meta),
-  error: (message: string, meta?: any) => log(LogLevel.ERROR, message, meta),
-};
-
-/**
- * Create a child logger with predefined context
+ * Create child logger with module context
  */
 export const createLogger = (module: string) => {
-  return {
-    debug: (message: string, meta?: any) => logger.debug(message, { module, ...meta }),
-    info: (message: string, meta?: any) => logger.info(message, { module, ...meta }),
-    warn: (message: string, meta?: any) => logger.warn(message, { module, ...meta }),
-    error: (message: string, meta?: any) => logger.error(message, { module, ...meta }),
-  };
+  return logger.child({ module });
 };
 
 /**
- * Log HTTP requests
+ * HTTP request logging
  */
 export const logHttpRequest = (req: any, res: any, duration: number) => {
-  const statusLevel = res.statusCode >= 500 ? LogLevel.ERROR 
-    : res.statusCode >= 400 ? LogLevel.WARN 
-    : LogLevel.INFO;
-  
-  logger[levelLabels[statusLevel].toLowerCase() as keyof typeof logger](
-    `${req.method} ${req.originalUrl || req.url}`,
-    {
-      status: res.statusCode,
-      duration: `${duration}ms`,
-      ip: req.ip || req.connection?.remoteAddress,
-      userAgent: req.get('user-agent'),
-      userId: req.jwtPayload?.userId,
-      method: req.method,
-      url: req.originalUrl || req.url,
-    }
-  );
+  const logData = {
+    method: req.method,
+    url: req.originalUrl || req.url,
+    status: res.statusCode,
+    duration: `${duration}ms`,
+    ip: req.ip || req.connection?.remoteAddress,
+    userAgent: req.get('user-agent'),
+    userId: req.jwtPayload?.userId,
+  };
+
+  if (res.statusCode >= 500) {
+    logger.error(`${req.method} ${req.originalUrl || req.url}`, logData);
+  } else if (res.statusCode >= 400) {
+    logger.warn(`${req.method} ${req.originalUrl || req.url}`, logData);
+  } else {
+    logger.http(`${req.method} ${req.originalUrl || req.url}`, logData);
+  }
 };
 
 /**
- * Log database queries (only in debug mode)
+ * Database query logging
  */
 export const logQuery = (query: string, duration: number, params?: any) => {
   logger.debug('Database Query', {
-    query: query.substring(0, 200), // Truncate long queries
+    query: query.substring(0, 200),
     duration: `${duration}ms`,
-    params: params ? `${params.length} params` : undefined,
+    paramsCount: params?.length,
   });
 };
 
 /**
- * Log errors with stack trace
+ * Error logging with context
  */
 export const logError = (error: Error, context?: any) => {
   logger.error(error.message, {
