@@ -25,6 +25,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticProps } from 'next';
 import { SERVER_DOMAIN } from '@/config';
+import Cookies from 'js-cookie';
 
 interface UserData {
   id: string;
@@ -44,9 +45,10 @@ export default function AdminDashboard() {
 
   const fetchUsers = async () => {
     try {
+      const token = Cookies.get('token');
       const res = await fetch(`${SERVER_DOMAIN}/admin/all`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token') || ''}`,
+          'Authorization': `Bearer ${token || ''}`,
         },
       });
       const data = await res.json();
@@ -70,11 +72,12 @@ export default function AdminDashboard() {
 
   const handleAction = async (userId: string, action: string) => {
     setActionLoading(userId);
+    const token = Cookies.get('token');
     try {
       const res = await fetch(`${SERVER_DOMAIN}/admin/${userId}/${action}`, {
         method: 'PATCH',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token') || ''}`,
+          'Authorization': `Bearer ${token || ''}`,
           'Content-Type': 'application/json',
         },
       });
@@ -106,11 +109,12 @@ export default function AdminDashboard() {
 
   const handleRoleChange = async (userId: string, newRole: 'USER' | 'MANAGER') => {
     setActionLoading(userId);
+    const token = Cookies.get('token');
     try {
       const res = await fetch(`${SERVER_DOMAIN}/admin/${userId}/role`, {
         method: 'PATCH',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token') || ''}`,
+          'Authorization': `Bearer ${token || ''}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ role: newRole }),
