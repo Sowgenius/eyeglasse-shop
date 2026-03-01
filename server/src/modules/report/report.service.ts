@@ -18,7 +18,7 @@ export async function getDashboardStats(jwtPayload: TJwtPayload) {
   try {
     const userIdFilter = jwtPayload.role === 'USER' ? `AND "userId" = '${jwtPayload.userId}'` : '';
     const lowStockRawResult = await prisma.$queryRawUnsafe<{count: bigint}[]>(
-      `SELECT COUNT(*) as count FROM "Product" WHERE "isActive" = true AND quantity <= "reorderPoint" ${userIdFilter}`
+      `SELECT COUNT(*) as count FROM product WHERE "isActive" = true AND quantity <= "reorderPoint" ${userIdFilter}`
     );
     lowStockProducts = lowStockRawResult[0]?.count ? Number(lowStockRawResult[0].count) : 0;
   } catch (error) {
