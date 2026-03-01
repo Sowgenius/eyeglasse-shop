@@ -56,6 +56,17 @@
     "transactions": "Transactions",
     "admin": "Administration"
   },
+  "transactions": {
+    "title": "Transactions",
+    "description": "Liste de toutes vos transactions",
+    "all": "Toutes les transactions",
+    "invoice": "Facture",
+    "payment": "Paiement",
+    "date": "Date",
+    "buyer": "Acheteur",
+    "product": "Produit",
+    "totalSale": "Vente totale"
+  },
   "admin": {
     "title": "Tableau de bord admin",
     "totalUsers": "Utilisateurs totaux",
@@ -337,17 +348,6 @@
       "hidePassword": "Masquer le mot de passe",
       "cancel": "Annuler",
       "confirm": "Confirmer"
-    },
-    "transactions": {
-      "title": "Transactions",
-      "description": "Liste de toutes vos transactions",
-      "all": "Toutes les transactions",
-      "invoice": "Facture",
-      "payment": "Paiement",
-      "date": "Date",
-      "buyer": "Acheteur",
-      "product": "Produit",
-      "totalSale": "Vente totale"
     },
     "salesHistory": "Historique des ventes"
   },

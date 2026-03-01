@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "Optician Pro",
+    "appName": "Opticien Pro",
     "loading": "Loading...",
     "save": "Save",
     "cancel": "Cancel",
@@ -19,7 +19,7 @@
     "success": "Success",
     "error": "Error",
     "warning": "Warning",
-    "info": "Information",
+    "info": "Info",
     "yes": "Yes",
     "no": "No",
     "or": "or",
@@ -34,7 +34,7 @@
     "manage": "Manage",
     "openMenu": "Open menu",
     "unselectImage": "Unselect image",
-    "toggleColumns": "Toggle columns",
+    "toggleColumns": "Show/hide columns",
     "rowsPerPage": "Rows per page",
     "goToFirstPage": "Go to first page",
     "goToPreviousPage": "Go to previous page",
@@ -55,6 +55,17 @@
     "logout": "Logout",
     "transactions": "Transactions",
     "admin": "Admin"
+  },
+  "transactions": {
+    "title": "Transactions",
+    "description": "A list of all your transactions",
+    "all": "All Transactions",
+    "invoice": "Invoice",
+    "payment": "Payment",
+    "date": "Date",
+    "buyer": "Buyer",
+    "product": "Product",
+    "totalSale": "Total Sale"
   },
   "admin": {
     "title": "Admin Dashboard",
@@ -337,17 +348,6 @@
       "hidePassword": "Hide password",
       "cancel": "Cancel",
       "confirm": "Confirm"
-    },
-    "transactions": {
-      "title": "Transactions",
-      "description": "A list of all your transactions",
-      "all": "All Transactions",
-      "invoice": "Invoice",
-      "payment": "Payment",
-      "date": "Date",
-      "buyer": "Buyer",
-      "product": "Product",
-      "totalSale": "Total Sale"
     },
     "salesHistory": "Sales History"
   },
