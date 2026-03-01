@@ -3,7 +3,6 @@
 import { useGetSalesReportQuery } from '@/redux/api/reports';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
-import { fr, enUS } from 'date-fns/locale';
 import { 
   AreaChart, 
   Area, 
@@ -33,17 +32,17 @@ interface RevenueChartProps {
 export function RevenueChart({ data = [] }: RevenueChartProps) {
   const { t } = useTranslation('common');
   const router = useRouter();
-  const locale = router.locale === 'en' ? enUS : fr;
 
   const chartData = useMemo(() => {
+    const locale = router.locale === 'en' ? 'en-US' : 'fr-FR';
     return data.map(item => ({
       ...item,
-      date: new Date(item.date).toLocaleDateString(locale.locale === 'en' ? 'en-US' : 'fr-FR', { 
+      date: new Date(item.date).toLocaleDateString(locale, { 
         month: 'short', 
         day: 'numeric' 
       })
     }));
-  }, [data, locale]);
+  }, [data, router.locale]);
 
   return (
     <div className="h-[300px] w-full">
