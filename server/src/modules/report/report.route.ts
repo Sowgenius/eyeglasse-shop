@@ -4,6 +4,7 @@ import {
   getDashboard,
   getProductPerformance,
   getSalesReport,
+  getSalesHistory,
 } from './report.controller';
 
 const router = Router();
@@ -24,7 +25,14 @@ router.get(
 router.get(
   '/sales-history',
   [verifyToken()],
-  getSalesReport
+  getSalesHistory
+);
+
+// Sales history with grouping
+router.get(
+  '/sales-chart',
+  [verifyToken()],
+  getSalesHistory
 );
 
 router.get(

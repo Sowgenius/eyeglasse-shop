@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { TJwtPayload } from '../user/user.interface';
-import { startOfDay, endOfDay, startOfWeek, endOfWeek, startOfMonth, endOfMonth, startOfYear, endOfYear, subDays } from 'date-fns';
+import { startOfDay, endOfDay, startOfWeek, endOfWeek, startOfMonth, endOfMonth, startOfYear, endOfYear, subDays, format } from 'date-fns';
 
 export async function getDashboardStats(jwtPayload: TJwtPayload) {
   const where: any = {};
@@ -195,5 +195,83 @@ export async function getProductPerformance(query: any, jwtPayload: TJwtPayload)
 
   return {
     topProducts: productsWithDetails,
+  };
+}
+
+export async function getSalesHistory(query: any, jwtPayload: TJwtPayload) {
+  const where: any = {};
+
+  if (jwtPayload.role === 'USER') {
+    where.userId = jwtPayload.userId;
+  }
+
+  // Get date range
+  const categorizeBy = query.categorize_by || 'daily';
+  const days = categorizeBy === 'yearly' ? 365 * 2 : categorizeBy === 'monthly' ? 365 : categorizeBy === 'weekly' ? 90 : 30;
+  
+  const endDate = new Date();
+  const startDate = subDays(endDate, days);
+  
+  where.createdAt = {
+    gte: startDate,
+    lte: endDate,
+  };
+
+  // Get all invoices in date range
+  const invoices = await prisma.invoice.findMany({
+    where,
+    select: {
+      total: true,
+      amountPaid: true,
+      createdAt: true,
+      status: true,
+    },
+    orderBy: { createdAt: 'asc' },
+  });
+
+  // Group by date based on categorizeBy
+  const groupedData = invoices.reduce((acc: any, invoice) => {
+    let dateKey: string;
+    const date = new Date(invoice.createdAt);
+    
+    switch (categorizeBy) {
+      case 'yearly':
+        dateKey = format(date, 'yyyy');
+        break;
+      case 'monthly':
+        dateKey = format(date, 'MMM yyyy');
+        break;
+      case 'weekly':
+        dateKey = format(date, 'yyyy-Www');
+        break;
+      default:
+        dateKey = format(date, 'yyyy-MM-dd');
+    }
+    
+    if (!acc[dateKey]) {
+      acc[dateKey] = { date: dateKey, total: 0, paid: 0, count: 0 };
+    }
+    
+    acc[dateKey].total += Number(invoice.total) || 0;
+    acc[dateKey].paid += Number(invoice.amountPaid) || 0;
+    acc[dateKey].count += 1;
+    
+    return acc;
+  }, {});
+
+  const chartData = Object.values(groupedData).sort((a: any, b: any) => 
+    new Date(a.date).getTime() - new Date(b.date).getTime()
+  );
+
+  // Calculate totals
+  const totals = {
+    totalSales: chartData.reduce((sum: number, d: any) => sum + d.total, 0),
+    totalPaid: chartData.reduce((sum: number, d: any) => sum + d.paid, 0),
+    totalInvoices: chartData.reduce((sum: number, d: any) => sum + d.count, 0),
+  };
+
+  return {
+    data: chartData,
+    totals,
   };
 }

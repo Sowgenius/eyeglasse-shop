@@ -19,6 +19,22 @@ export interface SalesReport {
   };
 }
 
+export interface SalesChartData {
+  date: string;
+  total: number;
+  paid: number;
+  count: number;
+}
+
+export interface SalesChartResponse {
+  data: SalesChartData[];
+  totals: {
+    totalSales: number;
+    totalPaid: number;
+    totalInvoices: number;
+  };
+}
+
 export const reportApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getDashboardStats: build.query<DashboardStats, void>({
@@ -33,6 +49,13 @@ export const reportApi = baseApi.injectEndpoints({
       }),
       transformResponse: (res: { data: SalesReport }) => res.data,
     }),
+    getSalesChart: build.query<SalesChartResponse, { categorize_by?: string }>({
+      query: (params) => ({
+        url: '/reports/sales-chart',
+        params,
+      }),
+      transformResponse: (res: { data: SalesChartResponse }) => res.data,
+    }),
     getProductPerformance: build.query<any, { startDate?: string; endDate?: string }>({
       query: (params) => ({
         url: '/reports/products',
@@ -46,5 +69,6 @@ export const reportApi = baseApi.injectEndpoints({
 export const {
   useGetDashboardStatsQuery,
   useGetSalesReportQuery,
+  useGetSalesChartQuery,
   useGetProductPerformanceQuery,
 } = reportApi;

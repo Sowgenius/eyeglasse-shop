@@ -5,6 +5,7 @@ import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
 import { appWithTranslation } from 'next-i18next';
+import { ThemeProvider } from '@/components/theme-provider';
 
 function App({ Component, pageProps }: AppProps) {
   return (
@@ -12,9 +13,11 @@ function App({ Component, pageProps }: AppProps) {
       <NextHead title="Opticien Pro" favicon="/favicon.png" />
 
       <Provider store={store}>
-        <div className={`${dmSans.variable} ${manrope.variable} font-sans`}>
-          <Component {...pageProps} />
-        </div>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+          <div className={`${dmSans.variable} ${manrope.variable} font-sans`}>
+            <Component {...pageProps} />
+          </div>
+        </ThemeProvider>
       </Provider>
     </>
   );

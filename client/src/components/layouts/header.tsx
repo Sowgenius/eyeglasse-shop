@@ -1,6 +1,7 @@
 import { Logo } from '../logo';
 import { UserProfile } from './user-profile';
 import { LanguageSwitcher } from '../language-switcher';
+import { ThemeToggle } from '../theme-toggle';
 
 export function Header() {
   return (
@@ -12,6 +13,7 @@ export function Header() {
         }}
       />
       <div className="flex items-center gap-2">
+        <ThemeToggle />
         <LanguageSwitcher />
         <UserProfile />
       </div>

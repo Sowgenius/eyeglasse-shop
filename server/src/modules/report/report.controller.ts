@@ -21,6 +21,15 @@ export const getSalesReport = catchAsync(async (req: Request, res) => {
   });
 });
 
+export const getSalesHistory = catchAsync(async (req: Request, res) => {
+  const data = await reportServices.getSalesHistory(req.query, req.jwtPayload);
+
+  return sendResponse(res, {
+    message: 'Sales history retrieved successfully',
+    data,
+  });
+});
+
 export const getProductPerformance = catchAsync(async (req: Request, res) => {
   const data = await reportServices.getProductPerformance(req.query, req.jwtPayload);
 
