@@ -68,6 +68,7 @@ model Product {
   id              String   @id @default(uuid())
   name            String
   sku             String   @unique
+  reference       String?  // Additional reference number
   description     String?
   imageSrc        String?
   brand           String

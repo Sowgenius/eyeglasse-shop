@@ -149,6 +149,7 @@
     "uploading": "Uploading image... {{progress}}%",
     "name": "Name",
     "sku": "SKU",
+    "reference": "Reference",
     "brand": "Brand",
     "brandName": "Brand Name",
     "price": "Price",

@@ -10,6 +10,7 @@ const imgErrMessage = 'Please select an image file.';
 
 export const productSchema = z.object({
   name: z.string(),
+  reference: z.string().optional(),
   image: z.instanceof(File, { message: imgErrMessage }).refine(isImage, {
     message: imgErrMessage,
   }),

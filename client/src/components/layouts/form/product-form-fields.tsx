@@ -70,6 +70,26 @@ export function ProductFormFields({
 
       <FormField
         control={form.control}
+        name="reference"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('products.reference') || 'Reference'}</FormLabel>
+            <FormControl>
+              <Input
+                placeholder={t('products.reference') || 'Reference number'}
+                type="text"
+                disabled={isLoading}
+                className="transition-all"
+                {...field}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={form.control}
         name="brand"
         render={({ field }) => (
           <FormItem>

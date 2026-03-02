@@ -149,6 +149,7 @@
     "uploading": "Téléchargement de l'image... {{progress}}%",
     "name": "Nom",
     "sku": "SKU",
+    "reference": "Référence",
     "brand": "Marque",
     "brandName": "Nom de la marque",
     "price": "Prix",
