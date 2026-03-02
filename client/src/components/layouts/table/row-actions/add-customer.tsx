@@ -114,7 +114,7 @@ export function AddCustomer() {
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="phone">{t('customers.phone')}</Label>
-                    <Input id="phone" {...form.register('phone')} placeholder="+33 6 12 34 56 78" />
+                    <Input id="phone" {...form.register('phone')} placeholder={t('customers.phone')} />
                   </div>
                 </div>
 

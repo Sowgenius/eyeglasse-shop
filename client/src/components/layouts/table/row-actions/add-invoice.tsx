@@ -174,7 +174,7 @@ export function AddInvoice() {
                             <HelpCircle className="h-3 w-3" />
                           </TooltipTrigger>
                           <TooltipContent>
-                            <p>Enter discount as percentage (%) or fixed amount ($)</p>
+                            <p>{t('invoices.discountTooltip')}</p>
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>

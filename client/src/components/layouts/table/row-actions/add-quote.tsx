@@ -165,7 +165,7 @@ export function AddQuote() {
                             <HelpCircle className="h-3 w-3" />
                           </TooltipTrigger>
                           <TooltipContent>
-                            <p>Enter discount as percentage (%) or fixed amount ($)</p>
+                            <p>{t('invoices.discountTooltip')}</p>
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
@@ -182,14 +182,14 @@ export function AddQuote() {
                       <div className="space-y-1">
                         <label className="text-xs text-muted-foreground flex items-center gap-1">
                           <Package className="size-3" />
-                          Select Product (Optional)
+                          {t('products.selectProduct')} (Optional)
                         </label>
                         <select
                           {...form.register(`items.${index}.productId`)}
                           onChange={(e) => handleProductSelect(index, e.target.value, productsData || [])}
                           className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                         >
-                          <option value="">-- Select a product --</option>
+                          <option value="">{t('products.selectProduct')}</option>
                           {productsData?.map((product: any) => (
                             <option key={product.id} value={product.id}>
                               {product.name} - {formatCurrency(product.price)} (SKU: {product.sku})
