@@ -9,17 +9,14 @@ import { ThemeProvider } from '@/components/theme-provider';
 
 function App({ Component, pageProps }: AppProps) {
   return (
-    <>
-      <NextHead title="Opticien Pro" favicon="/favicon.png" />
-
-      <Provider store={store}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <div className={`${dmSans.variable} ${manrope.variable} font-sans`}>
-            <Component {...pageProps} />
-          </div>
-        </ThemeProvider>
-      </Provider>
-    </>
+    <Provider store={store}>
+      <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+        <div className={`${dmSans.variable} ${manrope.variable} font-sans`}>
+          <NextHead title="Opticien Pro" favicon="/favicon.png" />
+          <Component {...pageProps} />
+        </div>
+      </ThemeProvider>
+    </Provider>
   );
 }
 

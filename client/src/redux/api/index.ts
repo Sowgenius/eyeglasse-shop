@@ -11,7 +11,7 @@ export const baseApi = createApi({
       const token = Cookies.get('token');
 
       if (token) {
-        headers.set('authorization', token);
+        headers.set('authorization', `Bearer ${token}`);
       }
 
       return headers;

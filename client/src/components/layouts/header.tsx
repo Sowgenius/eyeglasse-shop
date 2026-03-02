@@ -12,6 +12,8 @@ interface HeaderProps {
 }
 
 export function Header({ onMenuClick }: HeaderProps) {
+  const [appName, setAppName] = useState('Opticien Pro');
+  
   return (
     <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-gray-200 bg-white px-4 py-2 dark:border-gray-700 dark:bg-black lg:px-6">
       <div className="flex items-center gap-4">
@@ -23,7 +25,7 @@ export function Header({ onMenuClick }: HeaderProps) {
           <Menu className="h-5 w-5" />
         </button>
         <div className="lg:hidden">
-          <span className="text-lg font-bold text-black dark:text-white">Opticien Pro</span>
+          <span className="text-lg font-bold text-black dark:text-white">{appName}</span>
         </div>
       </div>
       <div className="flex items-center gap-2">

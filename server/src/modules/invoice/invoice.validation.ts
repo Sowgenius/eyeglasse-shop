@@ -4,7 +4,7 @@ export const invoiceItemSchema = z.object({
   description: z.string().min(1),
   quantity: z.number().int().positive(),
   unitPrice: z.number().positive(),
-  discount: z.number().min(0).default(0),
+  discount: z.number().min(0).max(100).default(0),
   productId: z.string().uuid().optional(),
 });
 

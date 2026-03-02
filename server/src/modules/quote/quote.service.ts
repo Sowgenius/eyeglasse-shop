@@ -33,10 +33,11 @@ async function getNextQuoteNumber(): Promise<string> {
 export async function create(payload: Quote, userId: string) {
   const quoteNumber = await getNextQuoteNumber();
   
-  // Calculate totals
+  // Calculate totals - discount is now a percentage
   const subtotal = payload.items.reduce((sum, item) => {
-    const itemTotal = item.quantity * item.unitPrice - item.discount;
-    return sum + itemTotal;
+    const itemSubtotal = item.quantity * item.unitPrice;
+    const discountAmount = itemSubtotal * (item.discount / 100);
+    return sum + (itemSubtotal - discountAmount);
   }, 0);
   
   const taxAmount = subtotal * (payload.taxRate / 100);
@@ -56,14 +57,18 @@ export async function create(payload: Quote, userId: string) {
       terms: payload.terms,
       status: 'DRAFT',
       items: {
-        create: payload.items.map(item => ({
-          description: item.description,
-          quantity: item.quantity,
-          unitPrice: item.unitPrice,
-          discount: item.discount,
-          total: item.quantity * item.unitPrice - item.discount,
-          productId: item.productId || null,
-        })),
+        create: payload.items.map(item => {
+          const itemSubtotal = item.quantity * item.unitPrice;
+          const discountAmount = itemSubtotal * (item.discount / 100);
+          return {
+            description: item.description,
+            quantity: item.quantity,
+            unitPrice: item.unitPrice,
+            discount: item.discount,
+            total: itemSubtotal - discountAmount,
+            productId: item.productId || null,
+          };
+        }),
       },
     },
     include: {

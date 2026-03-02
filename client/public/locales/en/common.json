@@ -69,6 +69,7 @@
   },
   "admin": {
     "title": "Admin Dashboard",
+    "users": "Users",
     "totalUsers": "Total Users",
     "pendingApproval": "Pending Approval",
     "activeUsers": "Active Users",

@@ -9,16 +9,15 @@ import { UserRoutes } from './modules/user/user.route';
 import { InstallmentRoutes } from './modules/installment/installment.route';
 import { TransactionRoutes } from './modules/transaction/transaction.route';
 import { SalesRoutes } from './modules/sales/sales.route';
+import { SettingsRoutes } from './modules/settings/settings.route';
 import { prisma } from './lib/prisma';
 import { catchAsync } from './utils';
 import { sendResponse } from './utils/send-response';
 
 const router = Router();
 
-// Health check endpoint
 router.get('/health', async (req, res) => {
   try {
-    // Check database connection
     await prisma.$queryRaw`SELECT 1`;
 
     res.status(200).json({
@@ -38,6 +37,7 @@ router.get('/health', async (req, res) => {
   }
 });
 
+router.use('/settings', SettingsRoutes);
 router.use('/', UserRoutes);
 router.use('/customers', CustomerRoutes);
 router.use('/products', ProductRoutes);
@@ -51,7 +51,6 @@ router.use('/sales', SalesRoutes);
 
 import { verifyToken } from './middlewares/auth';
 
-// Frontend compatibility: /sales-history -> /reports/sales
 router.get('/sales-history', verifyToken(), catchAsync(async (req, res) => {
   const data = await (await import('./modules/report/report.service')).getSalesReport(req.query, req.jwtPayload);
   return sendResponse(res, {

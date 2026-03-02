@@ -2,10 +2,12 @@ import { Button } from '@/components/ui/button';
 import * as D from '@/components/ui/dialog';
 import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useCreatePrescriptionMutation } from '@/redux/api/prescriptions';
 import { useGetCustomersQuery } from '@/redux/api/customers';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Pill, Plus } from 'lucide-react';
+import { Pill, Plus, HelpCircle, Eye } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
@@ -127,53 +129,139 @@ export function AddPrescription() {
               </div>
 
               <div className="border-t pt-4">
-                <h3 className="font-medium mb-3">{t('prescriptions.rightEye')} (OD)</h3>
+                <div className="flex items-center gap-2 mb-3">
+                  <Eye className="size-4" />
+                  <h3 className="font-medium">{t('prescriptions.rightEye')} (OD)</h3>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger type="button">
+                        <HelpCircle className="size-3 text-muted-foreground" />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Right Eye - Oculus Dexter</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
                 <div className="grid grid-cols-5 gap-2">
                   <div className="space-y-1">
-                    <label className="text-xs text-muted-foreground">SPH</label>
-                    <Input {...form.register('odSph')} placeholder="SPH" />
+                    <Label className="text-xs text-muted-foreground flex items-center gap-1">
+                      SPH
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger type="button">
+                            <HelpCircle className="size-2" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Sphere - Lens power for nearsightedness/farsightedness</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </Label>
+                    <Input {...form.register('odSph')} placeholder="e.g. -2.50" />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-xs text-muted-foreground">CYL</label>
-                    <Input {...form.register('odCyl')} placeholder="CYL" />
+                    <Label className="text-xs text-muted-foreground flex items-center gap-1">
+                      CYL
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger type="button">
+                            <HelpCircle className="size-2" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Cylinder - Lens power for astigmatism</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </Label>
+                    <Input {...form.register('odCyl')} placeholder="e.g. -0.75" />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-xs text-muted-foreground">Axis</label>
-                    <Input {...form.register('odAxis')} placeholder="Axis" />
+                    <Label className="text-xs text-muted-foreground flex items-center gap-1">
+                      Axis
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger type="button">
+                            <HelpCircle className="size-2" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Axis - Orientation of astigmatism (1-180 degrees)</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </Label>
+                    <Input {...form.register('odAxis')} placeholder="e.g. 180" />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-xs text-muted-foreground">Add</label>
-                    <Input {...form.register('odAdd')} placeholder="Add" />
+                    <Label className="text-xs text-muted-foreground flex items-center gap-1">
+                      Add
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger type="button">
+                            <HelpCircle className="size-2" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Addition - Extra power for reading (bifocals/progressives)</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </Label>
+                    <Input {...form.register('odAdd')} placeholder="e.g. +1.50" />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-xs text-muted-foreground">PD</label>
-                    <Input {...form.register('odPd')} placeholder="PD" />
+                    <Label className="text-xs text-muted-foreground flex items-center gap-1">
+                      PD
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger type="button">
+                            <HelpCircle className="size-2" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Pupillary Distance - Distance between pupils in mm</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </Label>
+                    <Input {...form.register('odPd')} placeholder="e.g. 62" />
                   </div>
                 </div>
               </div>
 
               <div className="border-t pt-4">
-                <h3 className="font-medium mb-3">{t('prescriptions.leftEye')} (OS)</h3>
+                <div className="flex items-center gap-2 mb-3">
+                  <Eye className="size-4" />
+                  <h3 className="font-medium">{t('prescriptions.leftEye')} (OS)</h3>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger type="button">
+                        <HelpCircle className="size-3 text-muted-foreground" />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Left Eye - Oculus Sinister</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
                 <div className="grid grid-cols-5 gap-2">
                   <div className="space-y-1">
-                    <label className="text-xs text-muted-foreground">SPH</label>
-                    <Input {...form.register('osSph')} placeholder="SPH" />
+                    <Label className="text-xs text-muted-foreground">SPH</Label>
+                    <Input {...form.register('osSph')} placeholder="e.g. -2.50" />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-xs text-muted-foreground">CYL</label>
-                    <Input {...form.register('osCyl')} placeholder="CYL" />
+                    <Label className="text-xs text-muted-foreground">CYL</Label>
+                    <Input {...form.register('osCyl')} placeholder="e.g. -0.75" />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-xs text-muted-foreground">Axis</label>
-                    <Input {...form.register('osAxis')} placeholder="Axis" />
+                    <Label className="text-xs text-muted-foreground">Axis</Label>
+                    <Input {...form.register('osAxis')} placeholder="e.g. 180" />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-xs text-muted-foreground">Add</label>
-                    <Input {...form.register('osAdd')} placeholder="Add" />
+                    <Label className="text-xs text-muted-foreground">Add</Label>
+                    <Input {...form.register('osAdd')} placeholder="e.g. +1.50" />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-xs text-muted-foreground">PD</label>
-                    <Input {...form.register('osPd')} placeholder="PD" />
+                    <Label className="text-xs text-muted-foreground">PD</Label>
+                    <Input {...form.register('osPd')} placeholder="e.g. 62" />
                   </div>
                 </div>
               </div>

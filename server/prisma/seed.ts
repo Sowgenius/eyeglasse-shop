@@ -221,6 +221,18 @@ async function main() {
 
   console.log("✅ Created sample quote: QT-2025-0001");
 
+  // Create default settings
+  await prisma.settings.upsert({
+    where: { key: 'appName' },
+    update: {},
+    create: {
+      key: 'appName',
+      value: 'Opticien Pro',
+    },
+  });
+
+  console.log("✅ Created default settings");
+
   console.log("\n🎉 Database seeded successfully!");
   console.log("\nYou can now log in with:");
   console.log("  Email: manager@zoomoptic.com");
