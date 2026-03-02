@@ -209,6 +209,7 @@
     "editCustomer": "Modifier le client",
     "editCustomerDescription": "Mettez à jour les détails du client ci-dessous",
     "deleteCustomer": "Supprimer le client",
+    "selectCustomer": "Sélectionner un client",
     "firstName": "Prénom",
     "lastName": "Nom",
     "fullName": "Nom complet",
@@ -296,8 +297,8 @@
     "other": "Autre",
     "paymentReference": "Référence de paiement",
     "overdueInvoices": "Factures en retard",
-    "notesPlaceholder": "Ajouter des notes pour cette facture...",
-    "termsPlaceholder": "Conditions de paiement..."
+    "notesPlaceholder": "Notes supplémentaires pour cette facture...",
+    "termsPlaceholder": "Conditions de paiement, politique de retour, etc."
   },
   "prescriptions": {
     "title": "Ordonnances",
