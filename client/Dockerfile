@@ -19,9 +19,6 @@ COPY . .
 # Build Next.js application
 RUN pnpm run build
 
-# Remove dev dependencies
-RUN pnpm prune --production
-
 # Expose port
 EXPOSE 3000
 
