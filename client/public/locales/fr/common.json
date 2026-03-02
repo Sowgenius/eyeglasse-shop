@@ -165,6 +165,36 @@
     "templeLength": "Longueur de branche",
     "bridgeSize": "Taille du pont",
     "hingeType": "Type de charnière",
+    "materials": {
+      "Acetate": "Acétate",
+      "Plastic": "Plastique",
+      "Titanium": "Titane",
+      "Tr-90": "TR-90",
+      "Wood": "Bois",
+      "Metal": "Métal",
+      "Carbon": "Carbone"
+    },
+    "shapes": {
+      "Aviator": "Aviateur",
+      "Cat-eye": "Chat",
+      "Oval": "Ovale",
+      "Rectangular": "Rectangulaire",
+      "Round": "Rond",
+      "Wayfarer": "Wayfarer",
+      "Square": "Carré",
+      "Oversized": "Oversized"
+    },
+    "hinges": {
+      "standard": "Standard",
+      "spring-loaded": "À ressort",
+      "flexible": "Flexible",
+      "hingeless": "Sans charnière"
+    },
+    "genders": {
+      "Male": "Homme",
+      "Female": "Femme",
+      "Unisex": "Unisexe"
+    },
     "supplierName": "Fournisseur",
     "supplierContact": "Contact fournisseur",
     "location": "Emplacement",

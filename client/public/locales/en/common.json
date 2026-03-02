@@ -165,6 +165,36 @@
     "templeLength": "Temple Length",
     "bridgeSize": "Bridge Size",
     "hingeType": "Hinge Type",
+    "materials": {
+      "Acetate": "Acetate",
+      "Plastic": "Plastic",
+      "Titanium": "Titanium",
+      "Tr-90": "TR-90",
+      "Wood": "Wood",
+      "Metal": "Metal",
+      "Carbon": "Carbon"
+    },
+    "shapes": {
+      "Aviator": "Aviator",
+      "Cat-eye": "Cat-eye",
+      "Oval": "Oval",
+      "Rectangular": "Rectangular",
+      "Round": "Round",
+      "Wayfarer": "Wayfarer",
+      "Square": "Square",
+      "Oversized": "Oversized"
+    },
+    "hinges": {
+      "standard": "Standard",
+      "spring-loaded": "Spring Loaded",
+      "flexible": "Flexible",
+      "hingeless": "Hingeless"
+    },
+    "genders": {
+      "Male": "Male",
+      "Female": "Female",
+      "Unisex": "Unisex"
+    },
     "supplierName": "Supplier",
     "supplierContact": "Supplier Contact",
     "location": "Location",

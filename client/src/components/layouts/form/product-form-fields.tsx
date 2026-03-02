@@ -167,7 +167,7 @@ export function ProductFormFields({
                     value={material}
                     className="capitalize"
                   >
-                    {material}
+                    {t(`products.materials.${material}`)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -189,17 +189,17 @@ export function ProductFormFields({
                   <SelectValue placeholder={t('products.frameShape')} />
                 </SelectTrigger>
 
-                <SelectContent>
-                  {SHAPES.map((shape) => (
-                    <SelectItem
-                      key={shape}
-                      value={shape}
-                      className="capitalize"
-                    >
-                      {shape}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
+              <SelectContent>
+                {SHAPES.map((shape) => (
+                  <SelectItem
+                    key={shape}
+                    value={shape}
+                    className="capitalize"
+                  >
+                    {t(`products.shapes.${shape}`)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
               </Select>
             </FormControl>
             <FormMessage />
@@ -219,17 +219,17 @@ export function ProductFormFields({
                   <SelectValue placeholder={t('products.hingeType')} />
                 </SelectTrigger>
 
-                <SelectContent>
-                  {HINGES.map((hinge) => (
-                    <SelectItem
-                      key={hinge}
-                      value={hinge}
-                      className="capitalize"
-                    >
-                      {hinge}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
+              <SelectContent>
+                {HINGES.map((hinge) => (
+                  <SelectItem
+                    key={hinge}
+                    value={hinge}
+                    className="capitalize"
+                  >
+                    {t(`products.hinges.${hinge}`)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
               </Select>
             </FormControl>
             <FormMessage />
@@ -277,7 +277,7 @@ export function ProductFormFields({
                     value={gender}
                     className="capitalize"
                   >
-                    {gender}
+                    {t(`products.genders.${gender}`)}
                   </SelectItem>
                 ))}
               </SelectContent>
