@@ -33,10 +33,12 @@ async function getNextInvoiceNumber(): Promise<string> {
 export async function create(payload: Invoice, userId: string) {
   const invoiceNumber = await getNextInvoiceNumber();
   
-  // Calculate totals - discount is now a percentage
+  // Calculate totals - handle both percentage and fixed discounts
   const subtotal = payload.items.reduce((sum, item) => {
     const itemSubtotal = item.quantity * item.unitPrice;
-    const discountAmount = itemSubtotal * (item.discount / 100);
+    const discountAmount = item.discountType === 'percentage'
+      ? itemSubtotal * (item.discount / 100)
+      : item.discount;
     return sum + (itemSubtotal - discountAmount);
   }, 0);
   
@@ -64,12 +66,15 @@ export async function create(payload: Invoice, userId: string) {
         items: {
           create: payload.items.map(item => {
             const itemSubtotal = item.quantity * item.unitPrice;
-            const discountAmount = itemSubtotal * (item.discount / 100);
+            const discountAmount = item.discountType === 'percentage'
+              ? itemSubtotal * (item.discount / 100)
+              : item.discount;
             return {
               description: item.description,
               quantity: item.quantity,
               unitPrice: item.unitPrice,
               discount: item.discount,
+              discountType: item.discountType || 'percentage',
               total: itemSubtotal - discountAmount,
               productId: item.productId || null,
             };
@@ -187,6 +192,8 @@ export async function getAll(query: any, jwtPayload: TJwtPayload) {
             lastName: true,
             email: true,
             phone: true,
+            address: true,
+            city: true,
           },
         },
         items: true,

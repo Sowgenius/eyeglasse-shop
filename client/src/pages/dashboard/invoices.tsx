@@ -16,7 +16,7 @@ import { useGetInvoicesQuery, useDeleteInvoiceMutation, useAddPaymentMutation } 
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticProps } from 'next';
-import { PlusIcon, SearchIcon, FileTextIcon, TrashIcon, CreditCardIcon } from 'lucide-react';
+import { PlusIcon, SearchIcon, FileTextIcon, TrashIcon, CreditCardIcon, PrinterIcon, EyeIcon } from 'lucide-react';
 import { Toaster } from '@/components/ui/toaster';
 import { format } from 'date-fns';
 import { fr, enUS } from 'date-fns/locale';
@@ -24,6 +24,7 @@ import { useRouter } from 'next/router';
 import { formatCurrency } from '@/lib/format-currency';
 import { AddInvoice } from '@/components/layouts/table/row-actions/add-invoice';
 import { EditInvoice } from '@/components/layouts/table/row-actions/edit-invoice';
+import { ViewInvoiceDialog } from '@/components/layouts/print-invoice';
 
 const statusColors: Record<string, string> = {
   PENDING: 'bg-yellow-100 text-yellow-800',
@@ -113,6 +114,14 @@ export default function DashboardInvoices() {
                       </TableCell>
                       <TableCell>
                         <div className="flex gap-2">
+                          <ViewInvoiceDialog 
+                            invoice={invoice as any}
+                            trigger={
+                              <Button variant="ghost" size="icon" title="View Invoice">
+                                <EyeIcon className="h-4 w-4" />
+                              </Button>
+                            }
+                          />
                           <EditInvoice invoiceId={invoice.id} />
                           {invoice.status !== 'PAID' && invoice.status !== 'CANCELLED' && (
                             <EditInvoice invoiceId={invoice.id} trigger={

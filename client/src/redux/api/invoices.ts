@@ -6,6 +6,7 @@ export interface InvoiceItem {
   quantity: number;
   unitPrice: number;
   discount: number;
+  discountType: 'fixed' | 'percentage';
   total: number;
   productId?: string;
   product?: {
