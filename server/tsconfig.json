@@ -8,6 +8,7 @@
       "@/*": ["./*"],
       "@config": ["config"],
       "@utils": ["utils"],
+      "@lib/*": ["lib/*"],
       "@middlewares/*": ["middlewares/*"],
       "@helpers/*": ["helpers/*"],
       "@modules/*": ["modules/*"]

@@ -1,7 +1,7 @@
 import { env } from '@config';
 import app from './app';
 import { logger } from './lib/logger';
-import { prisma } from '@lib/prisma';
+import { prisma } from '@/lib/prisma';
 
 (async function () {
   try {
