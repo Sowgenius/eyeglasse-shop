@@ -21,9 +21,6 @@ RUN npx prisma generate
 # Copy source code
 COPY . .
 
-# Run database migrations
-RUN npx prisma migrate deploy
-
 # Build TypeScript
 RUN pnpm run build
 
@@ -34,5 +31,6 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
   CMD nc -z localhost 8080 || exit 1
 
-# Start the application
-CMD ["node", "dist/main.js"]
+# Start the application - run migrations first, then start server
+# Use exit 1 if migrations fail to prevent starting with uninitialized DB
+CMD ["sh", "-c", "npx prisma migrate deploy || { echo 'Migration failed!'; exit 1; } && node dist/main.js"]

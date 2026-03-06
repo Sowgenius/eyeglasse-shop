@@ -1,9 +1,15 @@
 import { env } from '@config';
 import app from './app';
 import { logger } from './lib/logger';
+import { prisma } from '@lib/prisma';
 
 (async function () {
   try {
+    // Verify database connection before starting
+    logger.info('🔌 Checking database connection...');
+    await prisma.$queryRaw`SELECT 1`;
+    logger.info('✅ Database connected successfully');
+    
     app.listen(env.PORT, () => {
       logger.info(`🚀 Server listening on port ${env.PORT}`);
       logger.info(`📚 API Documentation: http://localhost:${env.PORT}/api/health`);
