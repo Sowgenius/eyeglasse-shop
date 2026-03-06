@@ -146,15 +146,18 @@ export async function getAll(query: any, jwtPayload: TJwtPayload) {
     where.userId = jwtPayload.userId;
   }
 
-  if (query.status) {
+  // Helper to check if string is not empty
+  const hasValue = (val: string | undefined) => val !== undefined && val !== '';
+
+  if (hasValue(query.status)) {
     where.status = query.status;
   }
 
-  if (query.customerId) {
+  if (hasValue(query.customerId)) {
     where.customerId = query.customerId;
   }
 
-  if (query.search) {
+  if (hasValue(query.search)) {
     const phonePatterns = getPhoneSearchPatterns(query.search);
     
     where.OR = [

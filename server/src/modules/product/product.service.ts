@@ -34,7 +34,6 @@ export async function add(payload: Product, userId: string) {
 
 export async function get(query: Query, jwtPayload: TJwtPayload) {
   const where: any = {
-    quantity: { gt: 0 },
     isActive: true,
   };
 
@@ -43,22 +42,33 @@ export async function get(query: Query, jwtPayload: TJwtPayload) {
     where.userId = jwtPayload.userId;
   }
 
+  // Helper to check if string is not empty
+  const hasValue = (val: string | undefined) => val !== undefined && val !== '';
+
   // Query filters
-  if (query.brand) where.brand = { contains: query.brand, mode: 'insensitive' };
-  if (query.frameMaterial) where.frameMaterial = { contains: query.frameMaterial, mode: 'insensitive' };
-  if (query.frameShape) where.frameShape = { contains: query.frameShape, mode: 'insensitive' };
-  if (query.lensType) where.lensType = { contains: query.lensType, mode: 'insensitive' };
-  if (query.color) where.color = { contains: query.color, mode: 'insensitive' };
-  if (query.gender) where.gender = { contains: query.gender, mode: 'insensitive' };
-  if (query.hingeType) where.hingeType = query.hingeType;
+  if (hasValue(query.brand)) where.brand = { contains: query.brand, mode: 'insensitive' };
+  if (hasValue(query.frameMaterial)) where.frameMaterial = { contains: query.frameMaterial, mode: 'insensitive' };
+  if (hasValue(query.frameShape)) where.frameShape = { contains: query.frameShape, mode: 'insensitive' };
+  if (hasValue(query.lensType)) where.lensType = { contains: query.lensType, mode: 'insensitive' };
+  if (hasValue(query.color)) where.color = { contains: query.color, mode: 'insensitive' };
+  if (hasValue(query.gender)) where.gender = { contains: query.gender, mode: 'insensitive' };
+  if (hasValue(query.hingeType)) where.hingeType = query.hingeType;
   
   if (query.minPrice || query.maxPrice) {
     where.price = {};
-    if (query.minPrice) where.price.gte = parseFloat(query.minPrice);
-    if (query.maxPrice) where.price.lte = parseFloat(query.maxPrice);
+    if (query.minPrice) {
+      const min = parseFloat(query.minPrice);
+      if (!isNaN(min)) where.price.gte = min;
+    }
+    if (query.maxPrice) {
+      const max = parseFloat(query.maxPrice);
+      if (!isNaN(max)) where.price.lte = max;
+    }
+    // Remove price filter if both are NaN
+    if (Object.keys(where.price).length === 0) delete where.price;
   }
 
-  if (query.search) {
+  if (hasValue(query.search)) {
     where.OR = [
       { name: { contains: query.search, mode: 'insensitive' } },
       { brand: { contains: query.search, mode: 'insensitive' } },
