@@ -14,7 +14,7 @@ export async function proxy(request: NextRequest) {
 
   const res = await fetch(`${SERVER_DOMAIN}/profile`, {
     headers: {
-      Authorization: cookie?.value as string,
+      Authorization: cookie?.value ? `Bearer ${cookie.value}` : '',
     },
   });
 
