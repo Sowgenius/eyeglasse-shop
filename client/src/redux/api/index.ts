@@ -1,6 +1,6 @@
 import { SERVER_DOMAIN } from '@/config';
 import { User } from '@/types/user';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import Cookies from 'js-cookie';
 import { logger } from '@/lib/logger';
 
@@ -34,12 +34,15 @@ export const baseApi = createApi({
         const error = result.error;
         const status = 'status' in error ? error.status : 500;
         
+        // Extract response info if available
+        const responseData = 'data' in error ? error.data : undefined;
+        
         logger.apiError(
           url as string,
           method as string,
           typeof status === 'number' ? status : 500,
           error,
-          result.error.response as Response
+          responseData as unknown as Response
         );
       } else if (!result.data) {
         logger.warn(`Empty response: ${method} ${url}`, { duration });
