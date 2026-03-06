@@ -6,8 +6,15 @@ import type { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
 import { appWithTranslation } from 'next-i18next';
 import { ThemeProvider } from '@/components/theme-provider';
+import { setupGlobalErrorHandlers } from '@/lib/use-error-handler';
+import { useEffect } from 'react';
 
 function App({ Component, pageProps }: AppProps) {
+  // Initialize global error handlers
+  useEffect(() => {
+    setupGlobalErrorHandlers();
+  }, []);
+
   return (
     <Provider store={store}>
       <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
