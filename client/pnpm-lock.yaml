@@ -14,9 +14,6 @@ importers:
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.71.1(react@19.2.4))
-      '@prisma/client':
-        specifier: ^6.3.0
-        version: 6.19.2(typescript@5.9.3)
       '@progress/kendo-react-pdf':
         specifier: ^10.0.0
         version: 10.2.0(@progress/kendo-drawing@1.24.0)(@progress/kendo-file-saver@1.1.2)(@progress/kendo-licensing@1.10.1)(@progress/kendo-react-common@10.2.0(@progress/kendo-licensing@1.10.1)(@progress/kendo-svg-icons@4.8.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -1213,18 +1210,6 @@ packages:
 
   '@polka/url@1.0.0-next.29':
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
-
-  '@prisma/client@6.19.2':
-    resolution: {integrity: sha512-gR2EMvfK/aTxsuooaDA32D8v+us/8AAet+C3J1cc04SW35FPdZYgLF+iN4NDLUgAaUGTKdAB0CYenu1TAgGdMg==}
-    engines: {node: '>=18.18'}
-    peerDependencies:
-      prisma: '*'
-      typescript: '>=5.1.0'
-    peerDependenciesMeta:
-      prisma:
-        optional: true
-      typescript:
-        optional: true
 
   '@progress/kendo-common@1.0.2':
     resolution: {integrity: sha512-PHxnquetSmtmXiF4dmlQiypzXaFLUEPK3VAOHxmnRDrLxaPrcZfaW9FOOiyur8hv4QmXlohISMwMElZS8Xi1Ag==}
@@ -6680,10 +6665,6 @@ snapshots:
       playwright: 1.58.2
 
   '@polka/url@1.0.0-next.29': {}
-
-  '@prisma/client@6.19.2(typescript@5.9.3)':
-    optionalDependencies:
-      typescript: 5.9.3
 
   '@progress/kendo-common@1.0.2':
     dependencies:
