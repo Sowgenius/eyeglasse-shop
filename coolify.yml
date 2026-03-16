@@ -1,0 +1,46 @@
+# Coolify Application Configuration
+# This file helps Coolify understand how to deploy your application
+# Place this in the root of your repository
+
+id: your-application-id-here
+name: eyeglasse-shop
+icon: icon-here
+
+# Build Pack
+build_pack: nixpacks
+nixpacks_start_cmd: npm run start
+
+# Pre-build and post-build commands
+pre_build: |
+  cd server && npm ci
+  cd client && npm ci
+
+build: |
+  cd server && npm run build
+  cd client && npm run build
+
+# Environment variables (managed by Coolify)
+# Add these in Coolify UI under "Environment Variables"
+environments:
+  - key: NODE_ENV
+    value: production
+  - key: PORT
+    value: 8080
+    optional: false
+
+# Ports to expose
+ports:
+  - container: 8080
+    public: true
+
+# Health check
+health_check:
+  path: /api/health
+  port: 8080
+  scheme: http
+  interval: 30
+  timeout: 10
+
+# Persistent volumes (if needed)
+# volumes:
+#   - /data:/app/data

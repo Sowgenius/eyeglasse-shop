@@ -1,5 +1,9 @@
 # Optician Pro - Docker Configuration
-# This setup includes PostgreSQL, Backend, and Frontend services
+# Note: For Coolify, use this locally. Production is managed by Coolify.
+# 
+# Usage:
+#   Local development: docker-compose up --build
+#   Production: Managed by Coolify
 
 version: '3.8'
 
@@ -34,9 +38,9 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: production
-      DATABASE_URL: postgresql://${POSTGRES_USER:-optician}:${POSTGRES_PASSWORD:-optician123}@postgres:5432/${POSTGRES_DB:-optician_db}?schema=public
+      DATABASE_URL: ${DATABASE_URL:-postgresql://${POSTGRES_USER:-optician}:${POSTGRES_PASSWORD:-optician123}@postgres:5432/${POSTGRES_DB:-optician_db}?schema=public}
       JWT_SECRET: ${JWT_SECRET}
-      RESEND_API_KEY: ${RESEND_API_KEY}
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
       PORT: 8080
       CLIENT_URL: ${CLIENT_URL:-http://localhost:3000}
     ports:
@@ -44,15 +48,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    volumes:
-      - ./server/dist:/app/dist:ro
     networks:
       - optician-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/api/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
 
   # Frontend (Next.js)
   frontend:
